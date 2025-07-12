@@ -1,19 +1,27 @@
 "use strict";
 class ClientWebRTC {
-    constructor(tag) {
+    constructor(tag, onConnectedToSignallingServer, onLoggedIn) {
         this.ws = null;
         this.SUBPROTOCOL = "c2multiplayer";
         this.isLoggedIn = false;
+        this.isConnected = false;
         this.isHost = false;
         this.myid = null;
         this.hostId = null;
+        this.onConnectedToSignallingServer = onConnectedToSignallingServer;
         this.tag = tag;
+        this.onLoggedIn = onLoggedIn;
     }
     signallingServerMessageHandler(msg) {
         switch (msg.message) {
             case "welcome":
                 this.myid = msg.clientid;
+                this.onConnectedToSignallingServer(this.tag);
+                this.isConnected = true;
+                break;
             case "login-ok":
+                this.isLoggedIn = true;
+                this.onLoggedIn(this.tag);
                 break;
             case "join-ok":
                 this.isHost = msg.host;
@@ -58,6 +66,16 @@ class ClientWebRTC {
             alias,
         }));
     }
+    async joinRoom(room) {
+        if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+            throw new Error("WebSocket is not connected");
+        }
+        this.ws.send({
+            message: "join",
+            room,
+        });
+    }
+    // send a message to the signalling server
     async sendSgws(message) {
         if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
             throw new Error("WebSocket is not connected");
@@ -70,8 +88,15 @@ class WebRTC {
         this.clients = new Map();
     }
     async connectToSignallingServer(serverUrl, tag) {
-        const client = this.clients.get(tag) || new ClientWebRTC(tag); // Create a new client if it doesn't exist
+        const client = this.clients.get(tag) ||
+            new ClientWebRTC(tag, this.onConnectedToSignallingServer, this.onLoggedIn); // Create a new client if it doesn't exist
         this.clients.set(tag, client);
         client.connectToSignallingServer(serverUrl);
+    }
+    onConnectedToSignallingServer(tag) {
+        this.clients.get(tag);
+    }
+    onLoggedIn(tag) {
+        this.clients.get(tag);
     }
 }

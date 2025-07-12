@@ -1,6 +1,6 @@
 const SERVER_URL = "wss://multiplayer.construct.net/";
 const SUBPROTOCOL = "c2multiplayer";
-const ICE_SERVERS = [	
+const ICE_SERVERS = [
 	{ urls: "stun:stun.l.google.com:19302" },
 	{
 		urls: "turn:multiplayer-turn.construct.net",
@@ -240,3 +240,53 @@ function createClient() {
 		log("✖ Connection closed");
 	};
 }
+
+/**
+ * signallingReceiveMessage - Handles incoming signalling messages.
+ * 	switch (o.message) {
+		case "welcome":
+			this.onSignallingReceiveWelcome(o);
+			break;
+		case "login-ok":
+			this.onSignallingReceiveLoginOK(o);
+			break;
+		case "join-ok":
+			this.onSignallingReceiveJoinOK(o);
+			break;
+		case "leave-ok":
+			this.onSignallingReceiveLeaveOK(o);
+			break;
+		case "kicked":
+			this.onSignallingReceiveKicked(o);
+			break;
+		case "peer-joined":
+			this.onSignallingReceivePeerJoined(o);
+			break;
+		case "peer-quit":
+			this.onSignallingReceivePeerQuit(o);
+			break;
+		case "icecandidate":
+			this.onSignallingReceiveIceCandidate(o);
+			break;
+		case "offer":
+			this.onSignallingReceiveOffer(o);
+			break;
+		case "answer":
+			this.onSignallingReceiveAnswer(o);
+			break;
+		case "instance-list":
+			this.onSignallingReceiveInstanceList(o);
+			break;
+		case "room-list":
+			this.onSignallingReceiveRoomList(o);
+			break;
+		case "error":
+			if (this.onsignallingerror)
+				this.onsignallingerror(o.details);
+			break;
+		default:
+			if (this.onsignallingerror)
+				this.onsignallingerror("received unknown signalling message");
+			break;
+		}
+ */

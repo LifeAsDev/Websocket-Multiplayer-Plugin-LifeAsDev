@@ -10,7 +10,7 @@ const SDK = globalThis.SDK;
 const PLUGIN_ID = "Lifeasdev_MultiplayerPlugin";
 ////////////////////////////////////////////
 const PLUGIN_CATEGORY = "web";
-const PLUGIN_CLASS = (SDK.Plugins.Multiplayer2 = class Multiplayer2Plugin extends SDK.IPluginBase {
+const PLUGIN_CLASS = (SDK.Plugins.Lifeasdev_MultiplayerPlugin = class Multiplayer2Plugin extends (SDK.IPluginBase) {
     constructor() {
         super(PLUGIN_ID);
         SDK.Lang.PushContext("plugins." + PLUGIN_ID.toLowerCase());

@@ -16,7 +16,10 @@
 					}
 				},
 				"aceCategories": {
-					"custom": "Custom"
+					"signalling": "Signalling",
+					"roomHost": "Room: Host",
+					"roomClient": "Room: Client",
+					"room": "Room"
 				},
 				"conditions": {
 					"is-large-number": {

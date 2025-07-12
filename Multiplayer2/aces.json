@@ -1,7 +1,7 @@
 ﻿{
 	"$schema": "../aces.schema.json",
 
-	"custom": {
+	"signalling": {
 		"conditions": [
 			{
 				"id": "is-large-number",
@@ -13,8 +13,7 @@
 						"type": "number"
 					}
 				]
-			},
-			{}
+			}
 		],
 		"actions": [
 			{

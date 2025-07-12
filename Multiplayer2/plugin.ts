@@ -14,7 +14,9 @@ const PLUGIN_ID = "Lifeasdev_MultiplayerPlugin";
 const PLUGIN_CATEGORY = "web";
 
 const PLUGIN_CLASS =
-	(SDK.Plugins.Multiplayer2 = class Multiplayer2Plugin extends SDK.IPluginBase {
+	(SDK.Plugins.Lifeasdev_MultiplayerPlugin = class Multiplayer2Plugin extends (
+		SDK.IPluginBase
+	) {
 		constructor() {
 			super(PLUGIN_ID);
 

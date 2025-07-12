@@ -1,5 +1,5 @@
 const SDK = globalThis.SDK;
-const PLUGIN_CLASS = SDK.Plugins.Multiplayer2;
+const PLUGIN_CLASS = SDK.Plugins.Lifeasdev_MultiplayerPlugin;
 PLUGIN_CLASS.Instance = class Multiplayer2Instance extends SDK.IInstanceBase {
     constructor(sdkType, inst) {
         super(sdkType, inst);

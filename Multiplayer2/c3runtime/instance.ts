@@ -1,4 +1,5 @@
-import { WebRTC } from "./webrtc";
+import { WebRTC } from "./webrtc.js";
+import { OnPeerMessageCallback, TagCallback } from "./webrtcTypes";
 
 const C3 = globalThis.C3;
 
@@ -6,9 +7,46 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 	/* _testProperty: number;
 	 */
 	_instanceWebRTC = new WebRTC();
+	clientTag: string = "";
+	msgTag: string = "";
+	msg: string = "";
+	peerId: string = "";
+
 	constructor() {
 		super();
+		this._instanceWebRTC.onConnectedToSgWsCallback = (tag: string) => {
+			this.clientTag = tag;
+			this._trigger(
+				C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onConnectedToSgWs
+			);
+		};
 
+		this._instanceWebRTC.onLoggedInCallback = (tag: string) => {
+			this.clientTag = tag;
+			this._trigger(
+				C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onLoggedInToSgWs
+			);
+		};
+
+		this._instanceWebRTC.onJoinedRoomCallback = (tag: string) => {
+			this.clientTag = tag;
+			this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onJoinedRoom);
+		};
+
+		this._instanceWebRTC.onPeerMessageCallback = (
+			peerId,
+			clientTag,
+			message,
+			tag
+		) => {
+
+			this.msgTag = tag;
+			this.msg = message;
+			this.clientTag = clientTag;
+			this.peerId = peerId;
+
+			this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onPeerMessage);
+		};
 		// Initialise object properties
 		/* 	this._testProperty = 0; */
 

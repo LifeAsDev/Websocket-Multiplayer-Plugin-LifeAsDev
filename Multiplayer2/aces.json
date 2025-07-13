@@ -28,6 +28,16 @@
 					}
 				],
 				"isTrigger": true
+			},
+			{
+				"id": "isHost",
+				"scriptName": "isHost",
+				"params": [
+					{
+						"id": "tag",
+						"type": "string"
+					}
+				]
 			}
 		],
 		"actions": [
@@ -38,7 +48,7 @@
 					{
 						"id": "url",
 						"type": "string",
-						"initialValue": "wss://multiplayer.construct.net"
+						"initialValue": "\"wss://multiplayer.construct.net\""
 					},
 					{ "id": "tag", "type": "string" }
 				]
@@ -79,16 +89,21 @@
 				"scriptName": "sendPeerMessage",
 				"params": [
 					{ "id": "peerId", "type": "string" },
-					{ "id": "message", "type": "string" },
 					{ "id": "tag", "type": "string" },
-					{ "id": "clientTag", "type": "string" }
+					{ "id": "clientTag", "type": "string" },
+					{ "id": "message", "type": "string" },
+					{
+						"id": "mode",
+						"type": "combo",
+						"items": ["unorderedReliable", "orderedReliable", "unreliable"]
+					}
 				]
 			}
 		],
 		"expressions": [
 			{
 				"id": "message",
-				"expressionName": "PeerMessage",
+				"expressionName": "message",
 				"highlight": false,
 				"returnType": "string"
 			},

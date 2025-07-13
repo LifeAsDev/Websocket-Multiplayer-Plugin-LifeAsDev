@@ -12,17 +12,21 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 	connect(this: SDKInstanceClass, url: string, tag: string): void {
 		this._instanceWebRTC.connectToSignallingServer(url, tag);
 	},
-	logIn(alias: string, tag: string): void {
-		// Log in to signalling server
+	logIn(this: SDKInstanceClass, alias: string, tag: string): void {
+		this._instanceWebRTC.clients.get(tag)?.loginToSignallingServer(alias);
 	},
 
 	joinRoom(
+		this: SDKInstanceClass,
 		game: string,
 		instance: string,
 		room: string,
 		tag: string,
 		maxPeers: number
 	): void {
+		this._instanceWebRTC.clients
+			.get(tag)
+			?.joinRoom(game, instance, room, maxPeers);
 		// Join a room on the signalling server
 	},
 	autoJoinRoom(
@@ -35,13 +39,23 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 	): void {
 		// Automatically join a room on the signalling server
 	},
-	sendMessage(
+	sendPeerMessage(
+		this: SDKInstanceClass,
 		peerId: string,
 		tag: string,
 		clientTag: string,
 		message: string,
-		mode: string
+		mode: number = 0
 	): void {
-		// Send a message to a peer in the room
+		const modes = ["unorderedReliable", "orderedReliable", "unreliable"];
+		const modeName = modes[mode] as
+			| "unorderedReliable"
+			| "orderedReliable"
+			| "unreliable";
+
+		const messageString = JSON.stringify({ type: "default", tag, message });
+		this._instanceWebRTC.clients
+			.get(clientTag)
+			?.sendMessageToPeer(peerId, messageString, modeName);
 	},
 };

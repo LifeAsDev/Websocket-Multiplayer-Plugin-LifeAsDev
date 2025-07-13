@@ -1,8 +1,22 @@
 const C3 = globalThis.C3;
 C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
-    IsLargeNumber(num) {
+    /* 	IsLargeNumber(this: SDKInstanceClass, num: number) {
         return num > 100;
+    }, */
+    onConnectedToSgWs(tag) {
+        return true;
     },
-    onConnectedToSgWs() { },
+    onLoggedInToSgWs(tag) {
+        return true;
+    },
+    onJoinedRoom(tag) {
+        return true;
+    },
+    isHost(tag) {
+        return !!this._instanceWebRTC.clients.get(tag)?.isHost;
+    },
+    onPeerMessage(tag) {
+        return tag === this.msgTag;
+    },
 };
 export {};

@@ -10,16 +10,24 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
         this._instanceWebRTC.connectToSignallingServer(url, tag);
     },
     logIn(alias, tag) {
-        // Log in to signalling server
+        this._instanceWebRTC.clients.get(tag)?.loginToSignallingServer(alias);
     },
     joinRoom(game, instance, room, tag, maxPeers) {
+        this._instanceWebRTC.clients
+            .get(tag)
+            ?.joinRoom(game, instance, room, maxPeers);
         // Join a room on the signalling server
     },
     autoJoinRoom(game, instance, room, tag, maxPeers, locking) {
         // Automatically join a room on the signalling server
     },
-    sendMessage(peerId, tag, clientTag, message, mode) {
-        // Send a message to a peer in the room
+    sendPeerMessage(peerId, tag, clientTag, message, mode = 0) {
+        const modes = ["unorderedReliable", "orderedReliable", "unreliable"];
+        const modeName = modes[mode];
+        const messageString = JSON.stringify({ type: "default", tag, message });
+        this._instanceWebRTC.clients
+            .get(clientTag)
+            ?.sendMessageToPeer(peerId, messageString, modeName);
     },
 };
 export {};

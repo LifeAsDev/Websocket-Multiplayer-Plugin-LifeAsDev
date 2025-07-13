@@ -41,6 +41,17 @@
 								"desc": "tag to identify message."
 							}
 						}
+					},
+					"isHost": {
+						"list-name": "Is Host",
+						"display-text": "Is host clientTag [i]{0}[/i]",
+						"description": "Returns true if the client tag is host.",
+						"params": {
+							"tag": {
+								"name": "Tag",
+								"desc": "Client Tag."
+							}
+						}
 					}
 				},
 				"actions": {
@@ -65,7 +76,7 @@
 						"description": "Log in to the signalling server with a alias.",
 						"params": {
 							"alias": {
-								"name": "Username",
+								"name": "Alias",
 								"desc": "The alias to log in with."
 							},
 							"tag": {
@@ -138,7 +149,7 @@
 					},
 					"sendMessage": {
 						"list-name": "Send message to peer",
-						"display-text": "Send message [i]{2}[/i] to peer [i]{0}[/i] tag [i]{1}[/i] clientTag [i]{3}[/i] ",
+						"display-text": "Send message [i]{3}[/i] to peer [i]{0}[/i] tag [i]{1}[/i] clientTag [i]{2}[/i] mode [i]{4}[/i]",
 						"description": "Send a message to a peer in the room.",
 						"params": {
 							"peerId": {
@@ -161,8 +172,8 @@
 								"name": "Mode",
 								"desc": "Transmision mode of the message.",
 								"items": {
-									"reliableOrdered": "Reliable ordered",
-									"reliableUnordered": "Reliable unordered",
+									"orderedReliable": "Reliable ordered",
+									"unorderedReliable": "Reliable unordered",
 									"unreliable": "Unreliable"
 								}
 							}

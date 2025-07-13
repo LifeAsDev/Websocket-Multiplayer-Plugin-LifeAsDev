@@ -1,6 +1,6 @@
-import { ChannelSendQueue } from "./channelSendQueue";
+import { ChannelSendQueue } from "./channelSendQueue.js";
 class ClientWebRTC {
-    constructor(tag, onConnectedToSignallingServer, onLoggedIn, onJoinedRoom, onPeerJoined) {
+    constructor(tag, onConnectedToSignallingServer, onLoggedIn, onJoinedRoom, onPeerJoined, onPeerMessage) {
         this.ws = null;
         this.SUBPROTOCOL = "c2multiplayer";
         this.isLoggedIn = false;
@@ -8,27 +8,41 @@ class ClientWebRTC {
         this.isHost = false;
         this.myid = null;
         this.hostId = null;
+        this.hostAlias = null;
         this.game = null;
         this.instance = null;
         this.room = null;
         this.isOnRoom = false;
         this.connectionsWebRTC = new Map();
-        this.ice_servers = null;
+        this.ice_servers = [];
         this.simLatency = 0; // in milliseconds
         this.simPdv = 0; // in milliseconds
         this.simPacketLoss = 0; // percentage
         this.sendQueues = new Map();
+        this.onPeerMessageReceived = (peerId, message) => {
+            const parsedMessage = JSON.parse(message);
+            if (parsedMessage.type === "default") {
+                this.onPeerMessage(peerId, parsedMessage.message, parsedMessage.tag, this.tag);
+            }
+        };
         this.onConnectedToSignallingServer = onConnectedToSignallingServer;
         this.tag = tag;
         this.onLoggedIn = onLoggedIn;
         this.onJoinedRoom = onJoinedRoom;
         this.onPeerJoined = onPeerJoined;
+        this.onPeerMessage = onPeerMessage;
     }
     signallingServerMessageHandler(msg) {
         switch (msg.message) {
             case "welcome":
                 this.myid = msg.clientid;
-                this.ice_servers = msg.ice_servers;
+                let rawIceServers = msg.ice_servers || [];
+                this.ice_servers = rawIceServers.map((server) => {
+                    if (typeof server === "string") {
+                        return { urls: server };
+                    }
+                    return server;
+                });
                 this.onConnectedToSignallingServer(this.tag);
                 this.isConnected = true;
                 break;
@@ -39,16 +53,16 @@ class ClientWebRTC {
             case "join-ok":
                 this.isHost = msg.host;
                 this.hostId = msg.hostid;
+                this.hostAlias = msg.hostalias;
                 this.isOnRoom = true;
-                if (!this.isHost)
-                    this.onPeerJoinedSGWS(msg.hostId, msg.hostalias);
-                else
+                if (this.isHost)
                     this.onJoinedRoom(this.tag);
                 break;
             case "peer-joined":
-                this.onPeerJoinedSGWS(msg.clientid, msg.alias);
+                this.onPeerJoinedSGWS(msg.peerid, msg.peeralias);
                 break;
             case "offer":
+                this.onPeerJoinedSGWS(msg.from, this.hostAlias);
                 this.handleOffer(msg.from, msg.offer);
                 break;
             case "answer":
@@ -105,6 +119,9 @@ class ClientWebRTC {
         if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
             throw new Error("WebSocket is not connected");
         }
+        this.game = game;
+        this.instance = instance;
+        this.room = room;
         this.sendSgws({
             message: "join",
             game,
@@ -138,9 +155,42 @@ class ClientWebRTC {
             }
         };
         peerConnection.conn.onconnectionstatechange = () => { };
-        this.setupDataChannel(peerConnection);
-        this.sendQueues.set(peerId, new ChannelSendQueue(peerConnection.channels.orderedReliable, peerId, this.tag, this.simLatency, this.simPdv));
-        if (this.isHost)
+        if (this.isHost) {
+            this.setupDataChannel(peerConnection);
+        }
+        else {
+            let channelsReady = 0;
+            const expectedChannels = 3;
+            peerConnection.conn.ondatachannel = (event) => {
+                const dc = event.channel;
+                if (dc.label === "ordered-reliable") {
+                    peerConnection.channels.orderedReliable = dc;
+                }
+                else if (dc.label === "unordered-reliable") {
+                    peerConnection.channels.unorderedReliable = dc;
+                }
+                else if (dc.label === "unreliable") {
+                    peerConnection.channels.unreliable = dc;
+                }
+                else {
+                    console.warn(`[${this.tag}] Canal desconocido: ${dc.label}`);
+                    return;
+                }
+                dc.onmessage = (e) => {
+                    this.onPeerMessageReceived(peerConnection.peerId, e.data);
+                };
+                dc.onopen = () => {
+                    channelsReady++;
+                    if (channelsReady === expectedChannels) {
+                        peerConnection.isReady = true;
+                        this.sendQueues.set(peerId, new ChannelSendQueue(peerConnection.channels.orderedReliable, peerId, this.tag, this.simLatency, this.simPdv));
+                        this.onJoinedRoom(this.tag);
+                    }
+                };
+            };
+        }
+        if (this.isHost) {
+            this.sendQueues.set(peerId, new ChannelSendQueue(peerConnection.channels.orderedReliable, peerId, this.tag, this.simLatency, this.simPdv));
             peerConnection.conn.createOffer().then(async (offer) => {
                 return peerConnection.conn.setLocalDescription(offer).then(() => {
                     this.sendSgws({
@@ -150,37 +200,48 @@ class ClientWebRTC {
                     });
                 });
             });
-        this.waitForReady(peerConnection).then(() => {
-            peerConnection.isReady = true;
-            if (this.isHost) {
+            this.waitForReady(peerConnection).then(() => {
+                peerConnection.isReady = true;
                 this.onPeerJoined(peerConnection.peerId, peerConnection.peerAlias, this.tag);
-            }
-            else {
-                this.onJoinedRoom(this.tag);
-            }
-        });
+                this.sendSgws({
+                    message: "confirm-peer",
+                    id: peerConnection.peerId,
+                });
+            });
+        }
     }
     setupDataChannel(peerConnection) {
         const dc_protocol = "C3M_" + this.game + "_" + this.instance + "_" + this.room;
+        const assignOnMessage = (dc) => {
+            if (!dc)
+                return;
+            dc.onmessage = (e) => {
+                this.onPeerMessageReceived(peerConnection.peerId, e.data);
+            };
+        };
         peerConnection.channels.orderedReliable =
             peerConnection.conn.createDataChannel("ordered-reliable", {
                 ordered: true,
                 protocol: dc_protocol,
             });
+        assignOnMessage(peerConnection.channels.orderedReliable);
         peerConnection.channels.unorderedReliable =
             peerConnection.conn.createDataChannel("unordered-reliable", {
                 ordered: false,
                 protocol: dc_protocol,
             });
+        assignOnMessage(peerConnection.channels.unorderedReliable);
         peerConnection.channels.unreliable = peerConnection.conn.createDataChannel("unreliable", {
             ordered: false,
             maxRetransmits: 0,
             protocol: dc_protocol,
         });
+        assignOnMessage(peerConnection.channels.unreliable);
     }
     async handleOffer(peerId, offer) {
         const peerConnection = this.connectionsWebRTC.get(peerId);
         if (!peerConnection) {
+            console.warn(`[${this.tag}] Peer connection not found for ${peerId}`);
             return;
         }
         await peerConnection.conn.setRemoteDescription(new RTCSessionDescription(offer));
@@ -217,7 +278,7 @@ class ClientWebRTC {
         return new Promise((resolve) => {
             const checkReady = () => {
                 const connReady = peerConnection.conn.connectionState === "connected";
-                const allChannelsReady = Object.values(peerConnection.channels).every((dc) => !dc || dc.readyState === "open");
+                const allChannelsReady = Object.values(peerConnection.channels).every((dc) => dc && dc.readyState === "open");
                 if (connReady && allChannelsReady) {
                     resolve();
                 }
@@ -274,24 +335,34 @@ class ClientWebRTC {
 }
 export class WebRTC {
     constructor() {
+        this.onConnectedToSgWsCallback = () => { };
+        this.onLoggedInCallback = () => { };
+        this.onJoinedRoomCallback = () => { };
+        this.onPeerMessageCallback = () => { };
+        this.connectToSignallingServer = async (serverUrl, tag) => {
+            const client = this.clients.get(tag) ||
+                new ClientWebRTC(tag, this.onConnectedToSignallingServer, this.onLoggedIn, this.onJoinedRoom, this.onPeerJoined, this.onPeerMessage);
+            this.clients.set(tag, client);
+            await client.connectToSignallingServer(serverUrl);
+        };
+        this.onPeerMessage = (peerId, message, tag, clientTag) => {
+            this.onPeerMessageCallback(peerId, clientTag, message, tag);
+        };
+        this.onConnectedToSignallingServer = (tag) => {
+            this.clients.get(tag);
+            this.onConnectedToSgWsCallback(tag);
+        };
+        this.onLoggedIn = (tag) => {
+            this.clients.get(tag);
+            this.onLoggedInCallback(tag);
+        };
+        this.onJoinedRoom = (tag) => {
+            this.clients.get(tag);
+            this.onJoinedRoomCallback(tag);
+        };
+        this.onPeerJoined = (peerId, peerAlias, tag) => {
+            this.clients.get(tag);
+        };
         this.clients = new Map();
-    }
-    async connectToSignallingServer(serverUrl, tag) {
-        const client = this.clients.get(tag) ||
-            new ClientWebRTC(tag, this.onConnectedToSignallingServer, this.onLoggedIn, this.onJoinedRoom, this.onPeerJoined); // Create a new client if it doesn't exist
-        this.clients.set(tag, client);
-        await client.connectToSignallingServer(serverUrl);
-    }
-    onConnectedToSignallingServer(tag) {
-        this.clients.get(tag);
-    }
-    onLoggedIn(tag) {
-        this.clients.get(tag);
-    }
-    onJoinedRoom(tag) {
-        this.clients.get(tag);
-    }
-    onPeerJoined(peerId, peerAlias, tag) {
-        this.clients.get(tag);
     }
 }

@@ -3,5 +3,6 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
     IsLargeNumber(num) {
         return num > 100;
     },
+    onConnectedToSgWs() { },
 };
 export {};

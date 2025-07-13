@@ -1,8 +1,11 @@
+import { WebRTC } from "./webrtc";
+
 const C3 = globalThis.C3;
 
 class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 	/* _testProperty: number;
 	 */
+	_instanceWebRTC = new WebRTC();
 	constructor() {
 		super();
 

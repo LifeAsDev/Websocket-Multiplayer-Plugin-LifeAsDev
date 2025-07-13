@@ -1,9 +1,11 @@
+import { WebRTC } from "./webrtc";
 const C3 = globalThis.C3;
 class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
-    /* _testProperty: number;
-     */
     constructor() {
         super();
+        /* _testProperty: number;
+         */
+        this._instanceWebRTC = new WebRTC();
         // Initialise object properties
         /* 	this._testProperty = 0; */
         const properties = this._getInitProperties();
@@ -33,4 +35,3 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
     }
 }
 C3.Plugins.Lifeasdev_MultiplayerPlugin.Instance = SingleGlobalInstance;
-export {};

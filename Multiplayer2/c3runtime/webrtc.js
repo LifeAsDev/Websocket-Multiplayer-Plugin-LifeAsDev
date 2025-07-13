@@ -272,7 +272,7 @@ class ClientWebRTC {
         }
     }
 }
-class WebRTC {
+export class WebRTC {
     constructor() {
         this.clients = new Map();
     }

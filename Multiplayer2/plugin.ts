@@ -33,8 +33,8 @@ const PLUGIN_CLASS =
 			SDK.Lang.PushContext(".properties");
 
 			this._info.SetProperties([
-				new SDK.PluginProperty("integer", "test-property", 0),
-			]);
+/* 				new SDK.PluginProperty("integer", "test-property", 0),
+ */			]);
 
 			SDK.Lang.PopContext(); // .properties
 

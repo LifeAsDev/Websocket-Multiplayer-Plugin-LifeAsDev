@@ -23,8 +23,8 @@ const PLUGIN_CLASS = (SDK.Plugins.Lifeasdev_MultiplayerPlugin = class Multiplaye
         this._info.SetRuntimeModuleMainScript("c3runtime/main.js");
         SDK.Lang.PushContext(".properties");
         this._info.SetProperties([
-            new SDK.PluginProperty("integer", "test-property", 0),
-        ]);
+        /* 				new SDK.PluginProperty("integer", "test-property", 0),
+         */ ]);
         SDK.Lang.PopContext(); // .properties
         SDK.Lang.PopContext();
     }

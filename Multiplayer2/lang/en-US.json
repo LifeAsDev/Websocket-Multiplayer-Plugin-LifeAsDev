@@ -7,14 +7,8 @@
 		"plugins": {
 			"lifeasdev_multiplayerplugin": {
 				"name": "Multiplayer2",
-				"description": "An example third-party plugin.",
+				"description": "Multiplayer2 with multiple room connections",
 				"help-url": "https://www.construct.net",
-				"properties": {
-					"test-property": {
-						"name": "Test property",
-						"desc": "A test number property. Displayed by 'Alert' action."
-					}
-				},
 				"aceCategories": {
 					"signalling": "Signalling",
 					"roomHost": "Room: Host",
@@ -22,33 +16,189 @@
 					"room": "Room"
 				},
 				"conditions": {
-					"is-large-number": {
-						"list-name": "Is large number",
-						"display-text": "[i]{0}[/i] is a large number",
-						"description": "Test if a number is greater than 100.",
+					"onConnectedToSgWs": {
+						"list-name": "On Connected",
+						"display-text": "On signalling connected",
+						"description": "Triggered when connected to the signalling."
+					},
+					"onLoggedInToSgWs": {
+						"list-name": "On Logged In",
+						"display-text": "On signalling logged in",
+						"description": "Triggered when logged in to the signalling."
+					},
+					"onJoinedRoom": {
+						"list-name": "On Joined Room",
+						"display-text": "On joined room",
+						"description": "Triggered when successfully joined a room."
+					},
+					"onPeerMessage": {
+						"list-name": "On Peer Message",
+						"display-text": "On peer message with tag [i]{0}[/i]",
+						"description": "Triggered when a message is received.",
 						"params": {
-							"number": {
-								"name": "Number",
-								"desc": "Number to test if greater than 100."
+							"tag": {
+								"name": "Tag",
+								"desc": "tag to identify message."
 							}
 						}
 					}
 				},
 				"actions": {
-					"log-to-console": {
-						"list-name": "Log to console",
-						"display-text": "Log to console",
-						"description": "Log a test message to the console."
+					"connect": {
+						"list-name": "Connect to signalling server",
+						"display-text": "Connect to signalling server at [i]{0}[/i] clientTag [i]{1}[/i]",
+						"description": "Connect to the signalling server.",
+						"params": {
+							"url": {
+								"name": "URL",
+								"desc": "The URL of the signalling server to connect to."
+							},
+							"tag": {
+								"name": "Tag",
+								"desc": "Client Tag. Create if not found."
+							}
+						}
+					},
+					"log-in": {
+						"list-name": "Log in",
+						"display-text": "Log in with alias [i]{0}[/i] clientTag [i]{1}[/i]",
+						"description": "Log in to the signalling server with a alias.",
+						"params": {
+							"alias": {
+								"name": "Username",
+								"desc": "The alias to log in with."
+							},
+							"tag": {
+								"name": "Tag",
+								"desc": "Client Tag. Ignored if not found."
+							}
+						}
+					},
+					"join-room": {
+						"list-name": "Join room",
+						"display-text": "Join room [i]{2}[/i] Game [i]{0}[/i] Instance [i]{1}[/i] max-peers [i]{4}[/i] clientTag [i]{3}[/i]",
+						"description": "Join a room on the signalling server.",
+						"params": {
+							"game": {
+								"name": "Game",
+								"desc": "The name of the game to join."
+							},
+							"instance": {
+								"name": "Instance",
+								"desc": "The name of the instance to join."
+							},
+							"room": {
+								"name": "Room",
+								"desc": "The name of the room to join."
+							},
+							"tag": {
+								"name": "Tag",
+								"desc": "Client Tag. Ignored if not found."
+							},
+							"max-peers": {
+								"name": "Max Peers",
+								"desc": "The maximum number of peers allowed in the room. Leave 0 to ignore."
+							}
+						}
+					},
+					"auto-join-room": {
+						"list-name": "Auto join room",
+						"display-text": "Join room [i]{2}[/i] Game [i]{0}[/i] Instance [i]{1}[/i] max-peers [i]{4}[/i] locking [i]{5}[/i] clientTag [i]{3}[/i]",
+						"description": "Automatically join a room on the signalling server.",
+						"params": {
+							"game": {
+								"name": "Game",
+								"desc": "The name of the game to auto join."
+							},
+							"instance": {
+								"name": "Instance",
+								"desc": "The name of the instance to auto join."
+							},
+							"room": {
+								"name": "Room",
+								"desc": "The name of the room to auto join."
+							},
+							"tag": {
+								"name": "Tag",
+								"desc": "Client Tag. Ignored if not found."
+							},
+							"max-peers": {
+								"name": "Max Peers",
+								"desc": "The maximum number of peers allowed in the room. Leave 0 to ignore."
+							},
+							"locking": {
+								"name": "Locking",
+								"desc": "If true, the room will be locked to prevent new peers from joining.",
+								"items": {
+									"true": "Yes",
+									"false": "No"
+								}
+							}
+						}
+					},
+					"sendMessage": {
+						"list-name": "Send message to peer",
+						"display-text": "Send message [i]{2}[/i] to peer [i]{0}[/i] tag [i]{1}[/i] clientTag [i]{3}[/i] ",
+						"description": "Send a message to a peer in the room.",
+						"params": {
+							"peerId": {
+								"name": "Peer ID",
+								"desc": "The ID of the peer to send the message to."
+							},
+							"tag": {
+								"name": "Tag",
+								"desc": "tag to identify message."
+							},
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							},
+							"message": {
+								"name": "Message",
+								"desc": "The message to send."
+							},
+							"mode": {
+								"name": "Mode",
+								"desc": "Transmision mode of the message.",
+								"items": {
+									"reliableOrdered": "Reliable ordered",
+									"reliableUnordered": "Reliable unordered",
+									"unreliable": "Unreliable"
+								}
+							}
+						}
 					}
 				},
 				"expressions": {
-					"double": {
-						"description": "Double a number.",
-						"translated-name": "Double",
+					"message": {
+						"translated-name": "Message",
+						"description": "Returns the message of the revelant trigger."
+					},
+					"peerId": {
+						"translated-name": "PeerID",
+						"description": "Returns the peer ID of the revelant trigger."
+					},
+					"clientTag": {
+						"translated-name": "ClientTag",
+						"description": "Returns the client tag of the revelant trigger."
+					},
+					"myId": {
+						"translated-name": "MyID",
+						"description": "Returns the ID of the client tag.",
 						"params": {
-							"number": {
-								"name": "Number",
-								"desc": "The number to double."
+							"tag": {
+								"name": "Tag",
+								"desc": "Client Tag. return emtpy string if not found."
+							}
+						}
+					},
+					"hostId": {
+						"translated-name": "HostID",
+						"description": "Returns the host ID of the client tag.",
+						"params": {
+							"tag": {
+								"name": "Tag",
+								"desc": "Client Tag. return emtpy string if not found."
 							}
 						}
 					}

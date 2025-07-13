@@ -4,34 +4,127 @@
 	"signalling": {
 		"conditions": [
 			{
-				"id": "is-large-number",
-				"scriptName": "IsLargeNumber",
-				"highlight": true,
+				"id": "onConnectedToSgWs",
+				"scriptName": "onConnectedToSgWs",
+				"isTrigger": true
+			},
+			{
+				"id": "onLoggedInToSgWs",
+				"scriptName": "onLoggedInToSgWs",
+				"isTrigger": true
+			},
+			{
+				"id": "onJoinedRoom",
+				"scriptName": "onJoinedRoom",
+				"isTrigger": true
+			},
+			{
+				"id": "onPeerMessage",
+				"scriptName": "onPeerMessage",
 				"params": [
 					{
-						"id": "number",
-						"type": "number"
+						"id": "tag",
+						"type": "string"
 					}
-				]
+				],
+				"isTrigger": true
 			}
 		],
 		"actions": [
 			{
-				"id": "log-to-console",
-				"scriptName": "LogToConsole",
-				"highlight": true
+				"id": "connect",
+				"scriptName": "connect",
+				"params": [
+					{
+						"id": "url",
+						"type": "string",
+						"initialValue": "wss://multiplayer.construct.net"
+					},
+					{ "id": "tag", "type": "string" }
+				]
+			},
+			{
+				"id": "log-in",
+				"scriptName": "logIn",
+				"params": [
+					{ "id": "alias", "type": "string" },
+					{ "id": "tag", "type": "string" }
+				]
+			},
+			{
+				"id": "join-room",
+				"scriptName": "joinRoom",
+				"params": [
+					{ "id": "game", "type": "string" },
+					{ "id": "instance", "type": "string" },
+					{ "id": "room", "type": "string" },
+					{ "id": "tag", "type": "string" },
+					{ "id": "max-peers", "type": "number" }
+				]
+			},
+			{
+				"id": "auto-join-room",
+				"scriptName": "autoJoinRoom",
+				"params": [
+					{ "id": "game", "type": "string" },
+					{ "id": "instance", "type": "string" },
+					{ "id": "room", "type": "string" },
+					{ "id": "tag", "type": "string" },
+					{ "id": "max-peers", "type": "number" },
+					{ "id": "locking", "type": "combo", "items": ["true", "false"] }
+				]
+			},
+			{
+				"id": "sendMessage",
+				"scriptName": "sendPeerMessage",
+				"params": [
+					{ "id": "peerId", "type": "string" },
+					{ "id": "message", "type": "string" },
+					{ "id": "tag", "type": "string" },
+					{ "id": "clientTag", "type": "string" }
+				]
 			}
 		],
 		"expressions": [
 			{
-				"id": "double",
-				"expressionName": "Double",
-				"highlight": true,
-				"returnType": "number",
+				"id": "message",
+				"expressionName": "PeerMessage",
+				"highlight": false,
+				"returnType": "string"
+			},
+			{
+				"id": "peerId",
+				"expressionName": "PeerID",
+				"highlight": false,
+				"returnType": "string"
+			},
+			{
+				"id": "clientTag",
+				"expressionName": "ClientTag",
+				"highlight": false,
+				"returnType": "string"
+			},
+			{
+				"id": "myId",
+				"expressionName": "MyID",
+				"highlight": false,
+				"returnType": "string",
 				"params": [
 					{
-						"id": "number",
-						"type": "number"
+						"id": "tag",
+						"type": "string"
+					}
+				]
+			},
+			{
+				"id": "hostId",
+				"expressionName": "HostID",
+				"highlight": false,
+				"returnType": "string",
+				"params": [
+					{
+						"id": "tag",
+						"type": "string"
 					}
 				]
 			}

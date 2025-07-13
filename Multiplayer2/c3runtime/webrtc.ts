@@ -385,7 +385,7 @@ class ClientWebRTC {
 	}
 }
 
-class WebRTC {
+export class WebRTC {
 	public clients: Map<string, ClientWebRTC>;
 
 	constructor() {

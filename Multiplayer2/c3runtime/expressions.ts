@@ -18,4 +18,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
 	HostID(this: SDKInstanceClass, tag: string) {
 		return this._instanceWebRTC.clients.get(tag)?.hostId || "";
 	},
+	MyID(this: SDKInstanceClass, tag: string) {
+		return this._instanceWebRTC.clients.get(tag)?.myid || "";
+	},
 };

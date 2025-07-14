@@ -22,7 +22,8 @@ class ClientWebRTC {
 	public isLoggedIn: boolean = false;
 	public isConnected: boolean = false;
 	public isHost: boolean = false;
-	public myid: string | null = "";
+	public myid: string = "";
+	public myAlias: string = "";
 	public hostId: string = "";
 	public hostAlias: string = "";
 	public game: string = "";
@@ -85,6 +86,7 @@ class ClientWebRTC {
 				break;
 			case "login-ok":
 				this.isLoggedIn = true;
+				this.myAlias = msg.alias;
 				this.onLoggedIn(this.tag);
 				break;
 
@@ -93,7 +95,11 @@ class ClientWebRTC {
 				this.hostId = msg.hostid;
 				this.hostAlias = msg.hostalias;
 				this.isOnRoom = true;
-				if (this.isHost) this.onJoinedRoom(this.tag);
+				if (this.isHost) {
+					this.hostId = this.myid;
+					this.hostAlias = this.myAlias;
+					this.onJoinedRoom(this.tag);
+				}
 				break;
 
 			case "peer-joined":

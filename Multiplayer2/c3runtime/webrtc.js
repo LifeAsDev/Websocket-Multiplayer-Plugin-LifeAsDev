@@ -7,6 +7,7 @@ class ClientWebRTC {
         this.isConnected = false;
         this.isHost = false;
         this.myid = "";
+        this.myAlias = "";
         this.hostId = "";
         this.hostAlias = "";
         this.game = "";
@@ -48,6 +49,7 @@ class ClientWebRTC {
                 break;
             case "login-ok":
                 this.isLoggedIn = true;
+                this.myAlias = msg.alias;
                 this.onLoggedIn(this.tag);
                 break;
             case "join-ok":
@@ -55,8 +57,11 @@ class ClientWebRTC {
                 this.hostId = msg.hostid;
                 this.hostAlias = msg.hostalias;
                 this.isOnRoom = true;
-                if (this.isHost)
+                if (this.isHost) {
+                    this.hostId = this.myid;
+                    this.hostAlias = this.myAlias;
                     this.onJoinedRoom(this.tag);
+                }
                 break;
             case "peer-joined":
                 this.onPeerJoinedSGWS(msg.peerid, msg.peeralias);

@@ -30,14 +30,18 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 		// Join a room on the signalling server
 	},
 	autoJoinRoom(
+		this: SDKInstanceClass,
 		game: string,
 		instance: string,
 		room: string,
 		tag: string,
 		maxPeers: number,
-		locking: boolean
+		locking: number
 	): void {
-		// Automatically join a room on the signalling server
+		console.log(typeof locking, locking);
+		this._instanceWebRTC.clients
+			.get(tag)
+			?.autoJoinRoom(game, instance, room, maxPeers, locking === 0);
 	},
 	sendPeerMessage(
 		this: SDKInstanceClass,

@@ -19,7 +19,10 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
         // Join a room on the signalling server
     },
     autoJoinRoom(game, instance, room, tag, maxPeers, locking) {
-        // Automatically join a room on the signalling server
+        console.log(typeof locking, locking);
+        this._instanceWebRTC.clients
+            .get(tag)
+            ?.autoJoinRoom(game, instance, room, maxPeers, locking === 0);
     },
     sendPeerMessage(peerId, tag, clientTag, message, mode = 0) {
         const modes = ["unorderedReliable", "orderedReliable", "unreliable"];

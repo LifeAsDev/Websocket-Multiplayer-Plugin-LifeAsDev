@@ -38,7 +38,6 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 		maxPeers: number,
 		locking: number
 	): void {
-		console.log(typeof locking, locking);
 		this._instanceWebRTC.clients
 			.get(tag)
 			?.autoJoinRoom(game, instance, room, maxPeers, locking === 0);

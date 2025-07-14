@@ -19,7 +19,6 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
         // Join a room on the signalling server
     },
     autoJoinRoom(game, instance, room, tag, maxPeers, locking) {
-        console.log(typeof locking, locking);
         this._instanceWebRTC.clients
             .get(tag)
             ?.autoJoinRoom(game, instance, room, maxPeers, locking === 0);

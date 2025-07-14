@@ -38,6 +38,11 @@
 						"type": "string"
 					}
 				]
+			},
+			{
+				"id": "onPeerConnected",
+				"scriptName": "onPeerConnected",
+				"isTrigger": true
 			}
 		],
 		"actions": [

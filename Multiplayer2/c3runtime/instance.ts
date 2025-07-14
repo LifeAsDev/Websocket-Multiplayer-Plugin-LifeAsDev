@@ -39,7 +39,6 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 			message,
 			tag
 		) => {
-
 			this.msgTag = tag;
 			this.msg = message;
 			this.clientTag = clientTag;
@@ -47,6 +46,15 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 
 			this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onPeerMessage);
 		};
+
+		this._instanceWebRTC.onPeerConnected = (tag: string, peerId: string) => {
+			this.clientTag = tag;
+			this.peerId = peerId;
+			this._trigger(
+				C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onPeerConnected
+			);
+		};
+
 		// Initialise object properties
 		/* 	this._testProperty = 0; */
 

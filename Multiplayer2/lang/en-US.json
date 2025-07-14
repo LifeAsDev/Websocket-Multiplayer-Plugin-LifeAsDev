@@ -52,6 +52,11 @@
 								"desc": "Client Tag."
 							}
 						}
+					},
+					"onPeerConnected": {
+						"list-name": "On Peer Connected",
+						"display-text": "On peer connected",
+						"description": "Triggered on peer connected to host."
 					}
 				},
 				"actions": {

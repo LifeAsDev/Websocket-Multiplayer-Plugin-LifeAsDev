@@ -29,6 +29,11 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
             this.peerId = peerId;
             this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onPeerMessage);
         };
+        this._instanceWebRTC.onPeerConnected = (tag, peerId) => {
+            this.clientTag = tag;
+            this.peerId = peerId;
+            this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onPeerConnected);
+        };
         // Initialise object properties
         /* 	this._testProperty = 0; */
         const properties = this._getInitProperties();

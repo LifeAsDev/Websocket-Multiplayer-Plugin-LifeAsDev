@@ -490,6 +490,11 @@ export class WebRTC {
 	public onLoggedInCallback: TagCallback = () => {};
 	public onJoinedRoomCallback: TagCallback = () => {};
 	public onPeerMessageCallback: OnPeerMessageCallback = () => {};
+	public onPeerConnected: (
+		tag: string,
+		peerId: string,
+		peerAlias: string
+	) => void = () => {};
 
 	constructor() {
 		this.clients = new Map();
@@ -536,5 +541,6 @@ export class WebRTC {
 
 	onPeerJoined = (peerId: string, peerAlias: string, tag: string) => {
 		this.clients.get(tag);
+		this.onPeerConnected(tag, peerId, peerAlias);
 	};
 }

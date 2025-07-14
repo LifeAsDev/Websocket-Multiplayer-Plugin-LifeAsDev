@@ -344,6 +344,7 @@ export class WebRTC {
         this.onLoggedInCallback = () => { };
         this.onJoinedRoomCallback = () => { };
         this.onPeerMessageCallback = () => { };
+        this.onPeerConnected = () => { };
         this.connectToSignallingServer = async (serverUrl, tag) => {
             const client = this.clients.get(tag) ||
                 new ClientWebRTC(tag, this.onConnectedToSignallingServer, this.onLoggedIn, this.onJoinedRoom, this.onPeerJoined, this.onPeerMessage);
@@ -367,6 +368,7 @@ export class WebRTC {
         };
         this.onPeerJoined = (peerId, peerAlias, tag) => {
             this.clients.get(tag);
+            this.onPeerConnected(tag, peerId, peerAlias);
         };
         this.clients = new Map();
     }

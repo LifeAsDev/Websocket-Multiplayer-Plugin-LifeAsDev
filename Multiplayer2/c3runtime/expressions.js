@@ -12,5 +12,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
     PeerID() {
         return this.peerId;
     },
+    HostID(tag) {
+        return this._instanceWebRTC.clients.get(tag)?.hostId || "";
+    },
 };
 export {};

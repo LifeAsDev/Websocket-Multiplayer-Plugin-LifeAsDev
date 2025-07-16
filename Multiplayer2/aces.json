@@ -110,6 +110,21 @@
 						"items": ["unorderedReliable", "orderedReliable", "unreliable"]
 					}
 				]
+			},
+			{
+				"id": "broadcastMessage",
+				"scriptName": "broadcastMessage",
+				"params": [
+					{ "id": "peerId", "type": "string" },
+					{ "id": "tag", "type": "string" },
+					{ "id": "clientTag", "type": "string" },
+					{ "id": "message", "type": "string" },
+					{
+						"id": "mode",
+						"type": "combo",
+						"items": ["unorderedReliable", "orderedReliable", "unreliable"]
+					}
+				]
 			}
 		],
 		"expressions": [

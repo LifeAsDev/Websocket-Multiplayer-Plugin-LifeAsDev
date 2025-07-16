@@ -206,6 +206,38 @@
 								"desc": "The client tag. Ignored if not found."
 							}
 						}
+					},
+					"broadcastMessage": {
+						"list-name": "Broadcast Message",
+						"display-text": "Broadcast tag [i]{1}[/i] message [i]{3}[/i] (from [i]{0}[/i], Client Tag [i]{2}[/i], mode [i]{4}[/i])",
+						"description": "Send a message to a peer in the room.",
+						"params": {
+							"peerId": {
+								"name": "Peer ID",
+								"desc": "The ID of the peer origin. blank to indicate from host."
+							},
+							"tag": {
+								"name": "Tag",
+								"desc": "tag to identify message."
+							},
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							},
+							"message": {
+								"name": "Message",
+								"desc": "The message to send."
+							},
+							"mode": {
+								"name": "Mode",
+								"desc": "Transmision mode of the message.",
+								"items": {
+									"orderedReliable": "Reliable ordered",
+									"unorderedReliable": "Reliable unordered",
+									"unreliable": "Unreliable"
+								}
+							}
+						}
 					}
 				},
 				"expressions": {

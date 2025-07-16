@@ -42,5 +42,20 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
             clientTag,
         });
     },
+    broadcastMessage(peerId, tag, clientTag, message, mode = 0) {
+        const modes = ["unorderedReliable", "orderedReliable", "unreliable"];
+        const modeName = modes[mode];
+        const messageString = JSON.stringify({
+            type: "default",
+            tag,
+            message,
+        });
+        this._postToDOM("broadcastMessage", {
+            fromId: peerId,
+            clientTag,
+            message: messageString,
+            mode: modeName,
+        });
+    },
 };
 export {};

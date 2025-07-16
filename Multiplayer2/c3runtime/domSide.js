@@ -11,6 +11,7 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
             ["autoJoinRoom", (data) => this._handleAutoJoinRoom(data)],
             ["sendPeerMessage", (data) => this._handleSendPeerMessage(data)],
             ["simulate-latency", (data) => this._handleSimulateLatency(data)],
+            ["broadcastMessage", (data) => this._handleBroadcastMessage(data)],
         ]);
         this._instanceWebRTC.onConnectedToSgWsCallback = (tag) => {
             const client = this._instanceWebRTC.clients.get(tag);
@@ -87,6 +88,12 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
         client.simLatency = latency;
         client.simPdv = pdv;
         client.simPacketLoss = loss;
+    }
+    _handleBroadcastMessage(data) {
+        const { peerId, clientTag, message, mode } = data;
+        this._instanceWebRTC.clients
+            .get(clientTag)
+            ?.broadcastMessageToPeers(peerId, message, mode);
     }
 }
 globalThis.RuntimeInterface.AddDOMHandlerClass(WebRTCDOMHandler);

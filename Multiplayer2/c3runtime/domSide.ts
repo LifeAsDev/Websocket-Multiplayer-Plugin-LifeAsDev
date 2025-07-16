@@ -13,6 +13,7 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 			["autoJoinRoom", (data) => this._handleAutoJoinRoom(data)],
 			["sendPeerMessage", (data) => this._handleSendPeerMessage(data)],
 			["simulate-latency", (data) => this._handleSimulateLatency(data)],
+			["broadcastMessage", (data) => this._handleBroadcastMessage(data)],
 		]);
 
 		this._instanceWebRTC.onConnectedToSgWsCallback = (tag: string) => {
@@ -134,6 +135,17 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 		client.simLatency = latency;
 		client.simPdv = pdv;
 		client.simPacketLoss = loss;
+	}
+	_handleBroadcastMessage(data: JSONValue): void {
+		const { peerId, clientTag, message, mode } = data as {
+			peerId: string;
+			clientTag: string;
+			message: string;
+			mode: "unorderedReliable" | "orderedReliable" | "unreliable";
+		};
+		this._instanceWebRTC.clients
+			.get(clientTag)
+			?.broadcastMessageToPeers(peerId, message, mode);
 	}
 }
 

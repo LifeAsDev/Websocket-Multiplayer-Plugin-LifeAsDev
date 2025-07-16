@@ -214,14 +214,14 @@ class ClientWebRTC {
                     channelsReady++;
                     if (channelsReady === expectedChannels) {
                         peerConnection.isReady = true;
-                        this.sendQueues.set(peerId, new self.ChannelSendQueue(peerConnection.channels.orderedReliable, peerId, this.tag, this.simLatency, this.simPdv));
+                        this.sendQueues.set(peerId, new self.ChannelSendQueue(peerConnection.channels.orderedReliable, peerId, this.tag));
                         this.onJoinedRoom(this.tag);
                     }
                 };
             };
         }
         if (this.isHost) {
-            this.sendQueues.set(peerId, new self.ChannelSendQueue(peerConnection.channels.orderedReliable, peerId, this.tag, this.simLatency, this.simPdv));
+            this.sendQueues.set(peerId, new self.ChannelSendQueue(peerConnection.channels.orderedReliable, peerId, this.tag));
             peerConnection.conn.createOffer().then(async (offer) => {
                 return peerConnection.conn.setLocalDescription(offer).then(() => {
                     this.sendSgws({
@@ -332,21 +332,26 @@ class ClientWebRTC {
         const datachannel = peerConnection.channels[channel];
         if (!datachannel || datachannel.readyState !== "open")
             return;
-        // Simular pérdida
-        if (this.simPacketLoss > 0 && Math.random() < this.simPacketLoss / 100) {
-            console.warn(`[${this.tag}] Paquete perdido simulado para ${peerId}`);
+        if (channel === "unreliable" &&
+            this.simPacketLoss > 0 &&
+            Math.random() < this.simPacketLoss / 100) {
             return;
         }
+        let delayMultiplier = 1;
+        if (channel !== "unreliable" &&
+            this.simPacketLoss > 0 &&
+            Math.random() < this.simPacketLoss / 100) {
+            delayMultiplier = 3;
+        }
+        const jitter = Math.random() * this.simPdv * 2 - this.simPdv;
+        const delay = Math.max(0, (this.simLatency + jitter) * delayMultiplier);
         if (channel === "orderedReliable") {
             const queueMap = this.sendQueues.get(peerId);
             if (queueMap) {
-                queueMap.enqueue(message);
+                queueMap.enqueue(message, delay);
                 return;
             }
         }
-        // Unordered: delay directo
-        const jitter = Math.random() * this.simPdv * 2 - this.simPdv;
-        const delay = Math.max(0, this.simLatency + jitter);
         setTimeout(() => {
             try {
                 datachannel.send(message);

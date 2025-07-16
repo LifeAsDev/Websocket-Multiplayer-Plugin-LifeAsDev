@@ -7,17 +7,12 @@ class ChannelSendQueue {
 	constructor(
 		private datachannel: RTCDataChannel,
 		private peerId: string,
-		private tag: string,
-		private simLatency: number,
-		private simPdv: number
+		private tag: string
 	) {}
 
-	public enqueue(message: string): void {
+	public enqueue(message: string, delay: number): void {
 		const entry: SendQueueEntry = { message, ready: false };
 		this.queue.push(entry);
-
-		const jitter = Math.random() * this.simPdv * 2 - this.simPdv;
-		const delay = Math.max(0, this.simLatency + jitter);
 
 		setTimeout(() => {
 			entry.ready = true;

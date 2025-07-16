@@ -183,6 +183,29 @@
 								}
 							}
 						}
+					},
+					"simulateLatency": {
+						"list-name": "Simulate Latency",
+						"display-text": "Simulate network conditions: latency [i]{0}[/i] ms, jitter [i]{1}[/i] ms, packet loss [i]{2}[/i]% client tag [i]{3}[/i]",
+						"description": "Set artificial latency, jitter (PDV) and packet loss percentage for network simulation.",
+						"params": {
+							"latencyMs": {
+								"name": "Latency (ms)",
+								"desc": "The artificial latency in milliseconds."
+							},
+							"pdvMs": {
+								"name": "Jitter (ms)",
+								"desc": "The packet delay variation (jitter) in milliseconds."
+							},
+							"lossPercent": {
+								"name": "Packet loss (%)",
+								"desc": "The percentage of simulated packet loss."
+							},
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "The client tag. Ignored if not found."
+							}
+						}
 					}
 				},
 				"expressions": {

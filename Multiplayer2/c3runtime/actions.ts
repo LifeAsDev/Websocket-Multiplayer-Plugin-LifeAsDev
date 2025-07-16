@@ -68,4 +68,18 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 			mode: modeName,
 		});
 	},
+	simulateLatency(
+		this: SDKInstanceClass,
+		latencyMs: number,
+		pdvMs: number,
+		lossPercent: number,
+		clientTag: string
+	): void {
+		this._postToDOM("simulate-latency", {
+			latency: latencyMs,
+			pdv: pdvMs,
+			loss: lossPercent,
+			clientTag,
+		});
+	},
 };

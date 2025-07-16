@@ -2,22 +2,16 @@ class ChannelSendQueue {
     datachannel;
     peerId;
     tag;
-    simLatency;
-    simPdv;
     queue = [];
     sending = false;
-    constructor(datachannel, peerId, tag, simLatency, simPdv) {
+    constructor(datachannel, peerId, tag) {
         this.datachannel = datachannel;
         this.peerId = peerId;
         this.tag = tag;
-        this.simLatency = simLatency;
-        this.simPdv = simPdv;
     }
-    enqueue(message) {
+    enqueue(message, delay) {
         const entry = { message, ready: false };
         this.queue.push(entry);
-        const jitter = Math.random() * this.simPdv * 2 - this.simPdv;
-        const delay = Math.max(0, this.simLatency + jitter);
         setTimeout(() => {
             entry.ready = true;
             this.processNext();

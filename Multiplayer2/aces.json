@@ -34,6 +34,16 @@
 					{ "id": "alias", "type": "string" },
 					{ "id": "tag", "type": "string" }
 				]
+			},
+			{
+				"id": "simulateLatency",
+				"scriptName": "simulateLatency",
+				"params": [
+					{ "id": "latencyMs", "type": "number", "initialValue": "100" },
+					{ "id": "pdvMs", "type": "number", "initialValue": "30" },
+					{ "id": "lossPercent", "type": "number", "initialValue": "5" },
+					{ "id": "clientTag", "type": "string" }
+				]
 			}
 		]
 	},

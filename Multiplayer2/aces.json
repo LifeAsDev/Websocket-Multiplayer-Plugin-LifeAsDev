@@ -12,37 +12,6 @@
 				"id": "onLoggedInToSgWs",
 				"scriptName": "onLoggedInToSgWs",
 				"isTrigger": true
-			},
-			{
-				"id": "onJoinedRoom",
-				"scriptName": "onJoinedRoom",
-				"isTrigger": true
-			},
-			{
-				"id": "onPeerMessage",
-				"scriptName": "onPeerMessage",
-				"params": [
-					{
-						"id": "tag",
-						"type": "string"
-					}
-				],
-				"isTrigger": true
-			},
-			{
-				"id": "isHost",
-				"scriptName": "isHost",
-				"params": [
-					{
-						"id": "tag",
-						"type": "string"
-					}
-				]
-			},
-			{
-				"id": "onPeerConnected",
-				"scriptName": "onPeerConnected",
-				"isTrigger": true
 			}
 		],
 		"actions": [
@@ -65,7 +34,35 @@
 					{ "id": "alias", "type": "string" },
 					{ "id": "tag", "type": "string" }
 				]
+			}
+		]
+	},
+
+	"room": {
+		"conditions": [
+			{
+				"id": "onJoinedRoom",
+				"scriptName": "onJoinedRoom",
+				"isTrigger": true
 			},
+			{
+				"id": "onPeerMessage",
+				"scriptName": "onPeerMessage",
+				"isTrigger": true,
+				"params": [{ "id": "tag", "type": "string" }]
+			},
+			{
+				"id": "onPeerConnected",
+				"scriptName": "onPeerConnected",
+				"isTrigger": true
+			},
+			{
+				"id": "isHost",
+				"scriptName": "isHost",
+				"params": [{ "id": "tag", "type": "string" }]
+			}
+		],
+		"actions": [
 			{
 				"id": "join-room",
 				"scriptName": "joinRoom",
@@ -129,31 +126,26 @@
 				"expressionName": "MyID",
 				"highlight": false,
 				"returnType": "string",
-				"params": [
-					{
-						"id": "tag",
-						"type": "string"
-					}
-				]
-			},
-			{
-				"id": "hostId",
-				"expressionName": "HostID",
-				"highlight": false,
-				"returnType": "string",
-				"params": [
-					{
-						"id": "tag",
-						"type": "string"
-					}
-				]
+				"params": [{ "id": "tag", "type": "string" }]
 			},
 			{
 				"id": "peerAlias",
 				"expressionName": "PeerAlias",
 				"highlight": false,
 				"returnType": "string"
+			},
+			{
+				"id": "hostId",
+				"expressionName": "HostID",
+				"highlight": false,
+				"returnType": "string",
+				"params": [{ "id": "tag", "type": "string" }]
 			}
 		]
+	},
+
+	"roomHost": {
+		"conditions": [],
+		"expressions": []
 	}
 }

@@ -67,8 +67,43 @@ class ClientWebRTC {
 		this.tag = tag;
 		this.onLoggedIn = onLoggedIn;
 		this.onJoinedRoom = onJoinedRoom;
-		this.onPeerJoined = onPeerJoined;
+		this.onPeerJoined = (peerId: string, peerAlias: string, tag: string) => {
+			if (this.isHost) {
+				this.sendPeerConnecteds(peerId);
+				this.broadcastPeerConnected(peerId, peerAlias);
+			}
+			onPeerJoined(peerId, peerAlias, tag);
+		};
 		this.onPeerMessage = onPeerMessage;
+	}
+	broadcastPeerConnected(peerId: string, peerAlias: string) {
+		const message = JSON.stringify({
+			type: "peer-connected",
+			peerId,
+			peerAlias,
+		});
+		this.broadcastMessageToPeers(peerId, message, "unorderedReliable");
+	}
+
+	sendPeerConnecteds(peerId: string) {
+		const peers: { peerId: string; alias: string }[] = [];
+
+		// Primero los peers conectados (del Map)
+		for (const [id, conn] of this.connectionsWebRTC.entries()) {
+			peers.push({ peerId: id, alias: conn.peerAlias });
+		}
+
+		// Luego el host, si no está incluido
+		if (!this.connectionsWebRTC.has(this.hostId!)) {
+			peers.push({ peerId: this.hostId, alias: "Host" });
+		}
+
+		const message = JSON.stringify({
+			type: "peer-connecteds-list",
+			peers,
+		});
+
+		this.sendMessageToPeer(peerId, message, "unorderedReliable");
 	}
 
 	signallingServerMessageHandler(msg: any) {
@@ -123,7 +158,6 @@ class ClientWebRTC {
 				break;
 		}
 	}
-
 	async connectToSignallingServer(serverUrl: string): Promise<void> {
 		if (this.ws) {
 			return;
@@ -474,13 +508,31 @@ class ClientWebRTC {
 
 	onPeerMessageReceived = (peerId: string, message: string) => {
 		const parsedMessage = JSON.parse(message);
-		if (parsedMessage.type === "default") {
-			this.onPeerMessage(
-				peerId,
-				parsedMessage.message,
-				parsedMessage.tag,
-				this.tag
-			);
+
+		switch (parsedMessage.type) {
+			case "default":
+				this.onPeerMessage(
+					peerId,
+					parsedMessage.message,
+					parsedMessage.tag,
+					this.tag
+				);
+				break;
+
+			case "peer-connected":
+				this.onPeerJoined(
+					parsedMessage.peerId,
+					parsedMessage.peerAlias,
+					this.tag
+				);
+				break;
+
+			case "peer-connecteds-list":
+				for (const p of parsedMessage.peers) {
+					if (p.peerId === this.myid) continue;
+					this.onPeerJoined(p.peerId, p.alias, this.tag);
+				}
+				break;
 		}
 	};
 

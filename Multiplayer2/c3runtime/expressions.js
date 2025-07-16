@@ -13,10 +13,10 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
         return this.peerId;
     },
     HostID(tag) {
-        return this._instanceWebRTC.clients.get(tag)?.hostId || "";
+        return this.clients.get(tag)?.hostId || "";
     },
     MyID(tag) {
-        return this._instanceWebRTC.clients.get(tag)?.myid || "";
+        return this.clients.get(tag)?.myid || "";
     },
 };
 export {};

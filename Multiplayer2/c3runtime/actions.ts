@@ -3,17 +3,12 @@ import type { SDKInstanceClass } from "./instance.ts";
 const C3 = globalThis.C3;
 
 C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
-	/* 	LogToConsole(this: SDKInstanceClass) {
-		console.log(
-			"This is the 'Log to console' action. Test property = " +
-				this._getTestProperty()
-		);
-	}, */
 	connect(this: SDKInstanceClass, url: string, tag: string): void {
-		this._instanceWebRTC.connectToSignallingServer(url, tag);
+		this._postToDOM("connect", { url, tag });
 	},
+
 	logIn(this: SDKInstanceClass, alias: string, tag: string): void {
-		this._instanceWebRTC.clients.get(tag)?.loginToSignallingServer(alias);
+		this._postToDOM("login", { alias, tag });
 	},
 
 	joinRoom(
@@ -24,11 +19,9 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 		tag: string,
 		maxPeers: number
 	): void {
-		this._instanceWebRTC.clients
-			.get(tag)
-			?.joinRoom(game, instance, room, maxPeers);
-		// Join a room on the signalling server
+		this._postToDOM("joinRoom", { game, instance, room, tag, maxPeers });
 	},
+
 	autoJoinRoom(
 		this: SDKInstanceClass,
 		game: string,
@@ -38,10 +31,16 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 		maxPeers: number,
 		locking: number
 	): void {
-		this._instanceWebRTC.clients
-			.get(tag)
-			?.autoJoinRoom(game, instance, room, maxPeers, locking === 0);
+		this._postToDOM("autoJoinRoom", {
+			game,
+			instance,
+			room,
+			tag,
+			maxPeers,
+			locking: locking === 0,
+		});
 	},
+
 	sendPeerMessage(
 		this: SDKInstanceClass,
 		peerId: string,
@@ -56,9 +55,17 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 			| "orderedReliable"
 			| "unreliable";
 
-		const messageString = JSON.stringify({ type: "default", tag, message });
-		this._instanceWebRTC.clients
-			.get(clientTag)
-			?.sendMessageToPeer(peerId, messageString, modeName);
+		const messageString = JSON.stringify({
+			type: "default",
+			tag,
+			message,
+		});
+
+		this._postToDOM("sendPeerMessage", {
+			peerId,
+			clientTag,
+			message: messageString,
+			mode: modeName,
+		});
 	},
 };

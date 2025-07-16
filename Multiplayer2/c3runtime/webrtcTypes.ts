@@ -12,3 +12,31 @@ export type OnPeerJoinedCallback = (
 	peerAlias: string,
 	tag: string
 ) => void;
+
+export interface SendQueueEntry {
+	message: string;
+	ready: boolean;
+}
+
+export type ClientSerializable = {
+	tag: string;
+	isLoggedIn: boolean;
+	isConnected: boolean;
+	isHost: boolean;
+	myid: string;
+	myAlias: string;
+	hostId: string;
+	hostAlias: string;
+	game: string;
+	instance: string;
+	room: string;
+	isOnRoom: boolean;
+	ice_servers: {
+		urls: string | string[];
+		username: string | null;
+		credential: string | null;
+	}[];
+	simLatency: number;
+	simPdv: number;
+	simPacketLoss: number;
+};

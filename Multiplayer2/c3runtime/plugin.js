@@ -4,4 +4,5 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin = class SingleGlobalPlugin extends (globa
         super();
     }
 };
+// Necessary for TypeScript to treat this file as a module
 export {};

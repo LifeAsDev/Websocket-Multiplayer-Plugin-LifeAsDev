@@ -1,9 +1,6 @@
-export interface SendQueueEntry {
-	message: string;
-	ready: boolean;
-}
+import type { SendQueueEntry } from "./webrtcTypes";
 
-export class ChannelSendQueue {
+class ChannelSendQueue {
 	private queue: SendQueueEntry[] = [];
 	private sending = false;
 
@@ -48,3 +45,10 @@ export class ChannelSendQueue {
 		this.processNext();
 	}
 }
+
+declare global {
+	interface Window {
+		ChannelSendQueue: typeof ChannelSendQueue;
+	}
+}
+self.ChannelSendQueue = ChannelSendQueue; // Expose the WebRTC class globally

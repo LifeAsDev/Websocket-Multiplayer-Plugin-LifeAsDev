@@ -1,12 +1,17 @@
-export class ChannelSendQueue {
+class ChannelSendQueue {
+    datachannel;
+    peerId;
+    tag;
+    simLatency;
+    simPdv;
+    queue = [];
+    sending = false;
     constructor(datachannel, peerId, tag, simLatency, simPdv) {
         this.datachannel = datachannel;
         this.peerId = peerId;
         this.tag = tag;
         this.simLatency = simLatency;
         this.simPdv = simPdv;
-        this.queue = [];
-        this.sending = false;
     }
     enqueue(message) {
         const entry = { message, ready: false };
@@ -37,3 +42,5 @@ export class ChannelSendQueue {
         this.processNext();
     }
 }
+self.ChannelSendQueue = ChannelSendQueue; // Expose the WebRTC class globally
+export {};

@@ -16,7 +16,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
 		return true;
 	},
 	isHost(this: SDKInstanceClass, tag: string) {
-		return !!this._instanceWebRTC.clients.get(tag)?.isHost;
+		return !!this.clients.get(tag)?.isHost;
 	},
 	onPeerMessage(this: SDKInstanceClass, tag: string) {
 		return tag === this.msgTag;

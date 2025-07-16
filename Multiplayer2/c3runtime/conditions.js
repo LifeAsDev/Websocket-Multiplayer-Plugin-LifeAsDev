@@ -13,7 +13,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
         return true;
     },
     isHost(tag) {
-        return !!this._instanceWebRTC.clients.get(tag)?.isHost;
+        return !!this.clients.get(tag)?.isHost;
     },
     onPeerMessage(tag) {
         return tag === this.msgTag;

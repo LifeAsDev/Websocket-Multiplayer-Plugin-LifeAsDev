@@ -1,5 +1,4 @@
-import { ChannelSendQueue } from "./channelSendQueue.js";
-import { OnPeerMessageCallback, TagCallback } from "./webrtcTypes";
+import type { OnPeerMessageCallback, TagCallback } from "./webrtcTypes";
 
 interface PeerConnectionWrapper {
 	conn: RTCPeerConnection;
@@ -16,6 +15,8 @@ interface PeerConnectionWrapper {
 }
 
 class ClientWebRTC {
+	ChannelSendQueue = self.ChannelSendQueue;
+
 	public tag: string;
 	public ws: WebSocket | null = null;
 	private SUBPROTOCOL: string = "c2multiplayer";
@@ -35,7 +36,8 @@ class ClientWebRTC {
 	public simLatency: number = 0; // in milliseconds
 	public simPdv: number = 0; // in milliseconds
 	public simPacketLoss: number = 0; // percentage
-	public sendQueues: Map<string, ChannelSendQueue> = new Map();
+	public sendQueues: Map<string, InstanceType<typeof window.ChannelSendQueue>> =
+		new Map();
 
 	public onConnectedToSignallingServer: TagCallback;
 	public onLoggedIn: TagCallback;
@@ -259,7 +261,7 @@ class ClientWebRTC {
 
 						this.sendQueues.set(
 							peerId,
-							new ChannelSendQueue(
+							new self.ChannelSendQueue(
 								peerConnection.channels.orderedReliable!,
 								peerId,
 								this.tag,
@@ -277,7 +279,7 @@ class ClientWebRTC {
 		if (this.isHost) {
 			this.sendQueues.set(
 				peerId,
-				new ChannelSendQueue(
+				new self.ChannelSendQueue(
 					peerConnection.channels.orderedReliable!,
 					peerId,
 					this.tag,
@@ -450,7 +452,6 @@ class ClientWebRTC {
 		// Unordered: delay directo
 		const jitter = Math.random() * this.simPdv * 2 - this.simPdv;
 		const delay = Math.max(0, this.simLatency + jitter);
-
 		setTimeout(() => {
 			try {
 				datachannel.send(message);
@@ -482,15 +483,40 @@ class ClientWebRTC {
 			);
 		}
 	};
+
+	toSerializable() {
+		return {
+			tag: this.tag,
+			isLoggedIn: this.isLoggedIn,
+			isConnected: this.isConnected,
+			isHost: this.isHost,
+			myid: this.myid,
+			myAlias: this.myAlias,
+			hostId: this.hostId,
+			hostAlias: this.hostAlias,
+			game: this.game,
+			instance: this.instance,
+			room: this.room,
+			isOnRoom: this.isOnRoom,
+			ice_servers: this.ice_servers.map((s) => ({
+				urls: s.urls,
+				username: s.username ?? null,
+				credential: s.credential ?? null,
+			})),
+			simLatency: this.simLatency,
+			simPdv: this.simPdv,
+			simPacketLoss: this.simPacketLoss,
+		};
+	}
 }
 
-export class WebRTC {
+class WebRTC {
 	public clients: Map<string, ClientWebRTC>;
 	public onConnectedToSgWsCallback: TagCallback = () => {};
 	public onLoggedInCallback: TagCallback = () => {};
 	public onJoinedRoomCallback: TagCallback = () => {};
 	public onPeerMessageCallback: OnPeerMessageCallback = () => {};
-	public onPeerConnected: (
+	public onPeerConnectedCallback: (
 		tag: string,
 		peerId: string,
 		peerAlias: string
@@ -541,6 +567,12 @@ export class WebRTC {
 
 	onPeerJoined = (peerId: string, peerAlias: string, tag: string) => {
 		this.clients.get(tag);
-		this.onPeerConnected(tag, peerId, peerAlias);
+		this.onPeerConnectedCallback(tag, peerId, peerAlias);
 	};
 }
+declare global {
+	interface Window {
+		WebRTC: typeof WebRTC;
+	}
+}
+self.WebRTC = WebRTC; // Expose the WebRTC class globally

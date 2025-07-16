@@ -1,35 +1,38 @@
 const C3 = globalThis.C3;
 C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
-    /* 	LogToConsole(this: SDKInstanceClass) {
-        console.log(
-            "This is the 'Log to console' action. Test property = " +
-                this._getTestProperty()
-        );
-    }, */
     connect(url, tag) {
-        this._instanceWebRTC.connectToSignallingServer(url, tag);
+        this._postToDOM("connect", { url, tag });
     },
     logIn(alias, tag) {
-        this._instanceWebRTC.clients.get(tag)?.loginToSignallingServer(alias);
+        this._postToDOM("login", { alias, tag });
     },
     joinRoom(game, instance, room, tag, maxPeers) {
-        this._instanceWebRTC.clients
-            .get(tag)
-            ?.joinRoom(game, instance, room, maxPeers);
-        // Join a room on the signalling server
+        this._postToDOM("joinRoom", { game, instance, room, tag, maxPeers });
     },
     autoJoinRoom(game, instance, room, tag, maxPeers, locking) {
-        this._instanceWebRTC.clients
-            .get(tag)
-            ?.autoJoinRoom(game, instance, room, maxPeers, locking === 0);
+        this._postToDOM("autoJoinRoom", {
+            game,
+            instance,
+            room,
+            tag,
+            maxPeers,
+            locking: locking === 0,
+        });
     },
     sendPeerMessage(peerId, tag, clientTag, message, mode = 0) {
         const modes = ["unorderedReliable", "orderedReliable", "unreliable"];
         const modeName = modes[mode];
-        const messageString = JSON.stringify({ type: "default", tag, message });
-        this._instanceWebRTC.clients
-            .get(clientTag)
-            ?.sendMessageToPeer(peerId, messageString, modeName);
+        const messageString = JSON.stringify({
+            type: "default",
+            tag,
+            message,
+        });
+        this._postToDOM("sendPeerMessage", {
+            peerId,
+            clientTag,
+            message: messageString,
+            mode: modeName,
+        });
     },
 };
 export {};

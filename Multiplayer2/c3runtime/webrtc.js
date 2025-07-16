@@ -1,31 +1,31 @@
-import { ChannelSendQueue } from "./channelSendQueue.js";
 class ClientWebRTC {
+    ChannelSendQueue = self.ChannelSendQueue;
+    tag;
+    ws = null;
+    SUBPROTOCOL = "c2multiplayer";
+    isLoggedIn = false;
+    isConnected = false;
+    isHost = false;
+    myid = "";
+    myAlias = "";
+    hostId = "";
+    hostAlias = "";
+    game = "";
+    instance = "";
+    room = "";
+    isOnRoom = false;
+    connectionsWebRTC = new Map();
+    ice_servers = [];
+    simLatency = 0; // in milliseconds
+    simPdv = 0; // in milliseconds
+    simPacketLoss = 0; // percentage
+    sendQueues = new Map();
+    onConnectedToSignallingServer;
+    onLoggedIn;
+    onJoinedRoom;
+    onPeerJoined;
+    onPeerMessage;
     constructor(tag, onConnectedToSignallingServer, onLoggedIn, onJoinedRoom, onPeerJoined, onPeerMessage) {
-        this.ws = null;
-        this.SUBPROTOCOL = "c2multiplayer";
-        this.isLoggedIn = false;
-        this.isConnected = false;
-        this.isHost = false;
-        this.myid = "";
-        this.myAlias = "";
-        this.hostId = "";
-        this.hostAlias = "";
-        this.game = "";
-        this.instance = "";
-        this.room = "";
-        this.isOnRoom = false;
-        this.connectionsWebRTC = new Map();
-        this.ice_servers = [];
-        this.simLatency = 0; // in milliseconds
-        this.simPdv = 0; // in milliseconds
-        this.simPacketLoss = 0; // percentage
-        this.sendQueues = new Map();
-        this.onPeerMessageReceived = (peerId, message) => {
-            const parsedMessage = JSON.parse(message);
-            if (parsedMessage.type === "default") {
-                this.onPeerMessage(peerId, parsedMessage.message, parsedMessage.tag, this.tag);
-            }
-        };
         this.onConnectedToSignallingServer = onConnectedToSignallingServer;
         this.tag = tag;
         this.onLoggedIn = onLoggedIn;
@@ -188,14 +188,14 @@ class ClientWebRTC {
                     channelsReady++;
                     if (channelsReady === expectedChannels) {
                         peerConnection.isReady = true;
-                        this.sendQueues.set(peerId, new ChannelSendQueue(peerConnection.channels.orderedReliable, peerId, this.tag, this.simLatency, this.simPdv));
+                        this.sendQueues.set(peerId, new self.ChannelSendQueue(peerConnection.channels.orderedReliable, peerId, this.tag, this.simLatency, this.simPdv));
                         this.onJoinedRoom(this.tag);
                     }
                 };
             };
         }
         if (this.isHost) {
-            this.sendQueues.set(peerId, new ChannelSendQueue(peerConnection.channels.orderedReliable, peerId, this.tag, this.simLatency, this.simPdv));
+            this.sendQueues.set(peerId, new self.ChannelSendQueue(peerConnection.channels.orderedReliable, peerId, this.tag, this.simLatency, this.simPdv));
             peerConnection.conn.createOffer().then(async (offer) => {
                 return peerConnection.conn.setLocalDescription(offer).then(() => {
                     this.sendSgws({
@@ -337,39 +337,72 @@ class ClientWebRTC {
             this.sendMessageToPeer(peerId, message, channel);
         }
     }
-}
-export class WebRTC {
-    constructor() {
-        this.onConnectedToSgWsCallback = () => { };
-        this.onLoggedInCallback = () => { };
-        this.onJoinedRoomCallback = () => { };
-        this.onPeerMessageCallback = () => { };
-        this.onPeerConnected = () => { };
-        this.connectToSignallingServer = async (serverUrl, tag) => {
-            const client = this.clients.get(tag) ||
-                new ClientWebRTC(tag, this.onConnectedToSignallingServer, this.onLoggedIn, this.onJoinedRoom, this.onPeerJoined, this.onPeerMessage);
-            this.clients.set(tag, client);
-            await client.connectToSignallingServer(serverUrl);
+    onPeerMessageReceived = (peerId, message) => {
+        const parsedMessage = JSON.parse(message);
+        if (parsedMessage.type === "default") {
+            this.onPeerMessage(peerId, parsedMessage.message, parsedMessage.tag, this.tag);
+        }
+    };
+    toSerializable() {
+        return {
+            tag: this.tag,
+            isLoggedIn: this.isLoggedIn,
+            isConnected: this.isConnected,
+            isHost: this.isHost,
+            myid: this.myid,
+            myAlias: this.myAlias,
+            hostId: this.hostId,
+            hostAlias: this.hostAlias,
+            game: this.game,
+            instance: this.instance,
+            room: this.room,
+            isOnRoom: this.isOnRoom,
+            ice_servers: this.ice_servers.map((s) => ({
+                urls: s.urls,
+                username: s.username ?? null,
+                credential: s.credential ?? null,
+            })),
+            simLatency: this.simLatency,
+            simPdv: this.simPdv,
+            simPacketLoss: this.simPacketLoss,
         };
-        this.onPeerMessage = (peerId, message, tag, clientTag) => {
-            this.onPeerMessageCallback(peerId, clientTag, message, tag);
-        };
-        this.onConnectedToSignallingServer = (tag) => {
-            this.clients.get(tag);
-            this.onConnectedToSgWsCallback(tag);
-        };
-        this.onLoggedIn = (tag) => {
-            this.clients.get(tag);
-            this.onLoggedInCallback(tag);
-        };
-        this.onJoinedRoom = (tag) => {
-            this.clients.get(tag);
-            this.onJoinedRoomCallback(tag);
-        };
-        this.onPeerJoined = (peerId, peerAlias, tag) => {
-            this.clients.get(tag);
-            this.onPeerConnected(tag, peerId, peerAlias);
-        };
-        this.clients = new Map();
     }
 }
+class WebRTC {
+    clients;
+    onConnectedToSgWsCallback = () => { };
+    onLoggedInCallback = () => { };
+    onJoinedRoomCallback = () => { };
+    onPeerMessageCallback = () => { };
+    onPeerConnectedCallback = () => { };
+    constructor() {
+        this.clients = new Map();
+    }
+    connectToSignallingServer = async (serverUrl, tag) => {
+        const client = this.clients.get(tag) ||
+            new ClientWebRTC(tag, this.onConnectedToSignallingServer, this.onLoggedIn, this.onJoinedRoom, this.onPeerJoined, this.onPeerMessage);
+        this.clients.set(tag, client);
+        await client.connectToSignallingServer(serverUrl);
+    };
+    onPeerMessage = (peerId, message, tag, clientTag) => {
+        this.onPeerMessageCallback(peerId, clientTag, message, tag);
+    };
+    onConnectedToSignallingServer = (tag) => {
+        this.clients.get(tag);
+        this.onConnectedToSgWsCallback(tag);
+    };
+    onLoggedIn = (tag) => {
+        this.clients.get(tag);
+        this.onLoggedInCallback(tag);
+    };
+    onJoinedRoom = (tag) => {
+        this.clients.get(tag);
+        this.onJoinedRoomCallback(tag);
+    };
+    onPeerJoined = (peerId, peerAlias, tag) => {
+        this.clients.get(tag);
+        this.onPeerConnectedCallback(tag, peerId, peerAlias);
+    };
+}
+self.WebRTC = WebRTC; // Expose the WebRTC class globally
+export {};

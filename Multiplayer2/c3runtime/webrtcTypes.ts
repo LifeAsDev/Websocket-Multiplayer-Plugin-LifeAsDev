@@ -4,7 +4,8 @@ export type OnPeerMessageCallback = (
 	peerId: string,
 	clientTag: string,
 	message: string,
-	tag: string
+	tag: string,
+	peerAlias: string
 ) => void;
 
 export type OnPeerJoinedCallback = (

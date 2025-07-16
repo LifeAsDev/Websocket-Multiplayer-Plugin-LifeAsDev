@@ -56,13 +56,15 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 			peerId: string,
 			clientTag: string,
 			message: string,
-			tag: string
+			tag: string,
+			peerAlias: string
 		) => {
 			this.PostToRuntime("onPeerMessage", {
 				peerId,
 				clientTag,
 				message,
 				tag,
+				peerAlias,
 			});
 		};
 	}

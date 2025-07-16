@@ -217,6 +217,10 @@
 								"desc": "Client Tag. return emtpy string if not found."
 							}
 						}
+					},
+					"peerAlias": {
+						"translated-name": "PeerAlias",
+						"description": "Returns the peer alias of the revelant trigger"
 					}
 				}
 			}

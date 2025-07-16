@@ -18,5 +18,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
     MyID(tag) {
         return this.clients.get(tag)?.myid || "";
     },
+    PeerAlias() {
+        return this.peerAlias;
+    },
 };
 export {};

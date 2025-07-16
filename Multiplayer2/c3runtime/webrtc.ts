@@ -47,7 +47,8 @@ class ClientWebRTC {
 		peerId: string,
 		message: string,
 		tag: string,
-		clientTag: string
+		clientTag: string,
+		peerAlias: string
 	) => void;
 
 	constructor(
@@ -60,7 +61,8 @@ class ClientWebRTC {
 			peerId: string,
 			message: string,
 			tag: string,
-			clientTag: string
+			clientTag: string,
+			peerAlias: string
 		) => void
 	) {
 		this.onConnectedToSignallingServer = onConnectedToSignallingServer;
@@ -88,14 +90,10 @@ class ClientWebRTC {
 	sendPeerConnecteds(peerId: string) {
 		const peers: { peerId: string; alias: string }[] = [];
 
-		// Primero los peers conectados (del Map)
+		peers.push({ peerId: this.hostId, alias: this.hostAlias });
+
 		for (const [id, conn] of this.connectionsWebRTC.entries()) {
 			peers.push({ peerId: id, alias: conn.peerAlias });
-		}
-
-		// Luego el host, si no está incluido
-		if (!this.connectionsWebRTC.has(this.hostId!)) {
-			peers.push({ peerId: this.hostId, alias: "Host" });
 		}
 
 		const message = JSON.stringify({
@@ -285,7 +283,11 @@ class ClientWebRTC {
 				}
 
 				dc.onmessage = (e) => {
-					this.onPeerMessageReceived(peerConnection.peerId, e.data);
+					this.onPeerMessageReceived(
+						peerConnection.peerId,
+						e.data,
+						peerConnection.peerAlias
+					);
 				};
 
 				dc.onopen = () => {
@@ -352,7 +354,11 @@ class ClientWebRTC {
 		const assignOnMessage = (dc: RTCDataChannel | null) => {
 			if (!dc) return;
 			dc.onmessage = (e) => {
-				this.onPeerMessageReceived(peerConnection.peerId, e.data);
+				this.onPeerMessageReceived(
+					peerConnection.peerId,
+					e.data,
+					peerConnection.peerAlias
+				);
 			};
 		};
 
@@ -506,7 +512,11 @@ class ClientWebRTC {
 		}
 	}
 
-	onPeerMessageReceived = (peerId: string, message: string) => {
+	onPeerMessageReceived = (
+		peerId: string,
+		message: string,
+		peerAlias: string
+	) => {
 		const parsedMessage = JSON.parse(message);
 
 		switch (parsedMessage.type) {
@@ -515,7 +525,8 @@ class ClientWebRTC {
 					peerId,
 					parsedMessage.message,
 					parsedMessage.tag,
-					this.tag
+					this.tag,
+					peerAlias
 				);
 				break;
 
@@ -597,9 +608,10 @@ class WebRTC {
 		peerId: string,
 		message: string,
 		tag: string,
-		clientTag: string
+		clientTag: string,
+		peerAlias: string
 	): void => {
-		this.onPeerMessageCallback(peerId, clientTag, message, tag);
+		this.onPeerMessageCallback(peerId, clientTag, message, tag, peerAlias);
 	};
 
 	onConnectedToSignallingServer = (tag: string) => {

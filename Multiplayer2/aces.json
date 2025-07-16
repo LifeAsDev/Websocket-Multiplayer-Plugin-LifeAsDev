@@ -147,6 +147,12 @@
 						"type": "string"
 					}
 				]
+			},
+			{
+				"id": "peerAlias",
+				"expressionName": "PeerAlias",
+				"highlight": false,
+				"returnType": "string"
 			}
 		]
 	}

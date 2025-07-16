@@ -41,12 +41,13 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
         this._instanceWebRTC.onPeerConnectedCallback = (tag, peerId, peerAlias) => {
             this.PostToRuntime("onPeerConnected", { tag, peerId, peerAlias });
         };
-        this._instanceWebRTC.onPeerMessageCallback = (peerId, clientTag, message, tag) => {
+        this._instanceWebRTC.onPeerMessageCallback = (peerId, clientTag, message, tag, peerAlias) => {
             this.PostToRuntime("onPeerMessage", {
                 peerId,
                 clientTag,
                 message,
                 tag,
+                peerAlias,
             });
         };
     }

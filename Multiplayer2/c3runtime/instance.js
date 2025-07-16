@@ -53,10 +53,10 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
         this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onPeerConnected);
     }
     _onPeerMessage(msg) {
-        const { peerId, clientTag, message, tag } = msg;
+        const { peerId, clientTag, message, tag, peerAlias } = msg;
         this.clientTag = clientTag;
         this.peerId = peerId;
-        this.msg = message;
+        this.peerAlias = peerAlias;
         this.msgTag = tag;
         this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onPeerMessage);
     }

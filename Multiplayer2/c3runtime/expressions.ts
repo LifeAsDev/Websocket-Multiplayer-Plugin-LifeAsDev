@@ -21,4 +21,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
 	MyID(this: SDKInstanceClass, tag: string) {
 		return this.clients.get(tag)?.myid || "";
 	},
+	PeerAlias(this: SDKInstanceClass) {
+		return this.peerAlias;
+	},
 };

@@ -56,6 +56,14 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
                 peerAlias,
             });
         };
+        this._instanceWebRTC.onDisconnectedFromSignallingCallback = (clientTag) => {
+            const client = this._instanceWebRTC.clients.get(clientTag);
+            if (client)
+                this.PostToRuntime("onDisconnectedFromSignalling", {
+                    clientTag,
+                    client: client.toSerializable(),
+                });
+        };
     }
     _handleConnect(data) {
         const { url, tag } = data;

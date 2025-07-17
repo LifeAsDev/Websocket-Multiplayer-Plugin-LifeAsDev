@@ -57,6 +57,11 @@
 						"list-name": "On Peer Connected",
 						"display-text": "On peer connected",
 						"description": "Triggered on peer connected to host."
+					},
+					"onDisconnectedFromSignalling": {
+						"list-name": "On Disconnected From Signalling",
+						"display-text": "Disconnected From signalling",
+						"description": "Triggered on disconnected from signalling server"
 					}
 				},
 				"actions": {

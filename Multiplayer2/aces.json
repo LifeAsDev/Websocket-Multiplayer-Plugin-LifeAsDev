@@ -80,6 +80,11 @@
 				"id": "isHost",
 				"scriptName": "isHost",
 				"params": [{ "id": "tag", "type": "string" }]
+			},
+			{
+				"id": "onDisconnectedFromSignalling",
+				"scriptName": "onDisconnectedFromSignalling",
+				"isTrigger": true
 			}
 		],
 		"actions": [

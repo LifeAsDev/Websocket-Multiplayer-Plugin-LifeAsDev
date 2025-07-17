@@ -1,17 +1,35 @@
-import type { OnPeerMessageCallback, TagCallback } from "./webrtcTypes";
+import type {
+	OnPeerMessageCallback,
+	TagCallback,
+	PeerConnectionWrapper,
+} from "./webrtcTypes";
 
-interface PeerConnectionWrapper {
-	conn: RTCPeerConnection;
-	channels: {
-		unorderedReliable: RTCDataChannel | null;
-		orderedReliable: RTCDataChannel | null;
-		unreliable: RTCDataChannel | null;
-	};
-	state: RTCIceConnectionState;
-	lastPing: number | null;
-	isReady: boolean;
-	peerId: string;
-	peerAlias: string;
+class EventManager {
+	private events: Map<string, Function[]> = new Map();
+
+	on(event: string, callback: Function): void {
+		if (!this.events.has(event)) {
+			this.events.set(event, []);
+		}
+		this.events.get(event)?.push(callback);
+	}
+
+	emit(event: string, ...args: any[]): void {
+		const callbacks = this.events.get(event);
+		if (callbacks) {
+			callbacks.forEach((callback) => callback(...args));
+		}
+	}
+
+	off(event: string, callback: Function): void {
+		const callbacks = this.events.get(event);
+		if (callbacks) {
+			this.events.set(
+				event,
+				callbacks.filter((cb) => cb !== callback)
+			);
+		}
+	}
 }
 
 class ClientWebRTC {
@@ -50,7 +68,7 @@ class ClientWebRTC {
 		clientTag: string,
 		peerAlias: string
 	) => void;
-
+	public onDisconnectedFromSignalling: (clientTag: string) => void = () => {};
 	constructor(
 		tag: string,
 		onConnectedToSignallingServer: TagCallback,
@@ -63,7 +81,8 @@ class ClientWebRTC {
 			tag: string,
 			clientTag: string,
 			peerAlias: string
-		) => void
+		) => void,
+		onDisconnectedFromSignalling: (clientTag: string) => void
 	) {
 		this.onConnectedToSignallingServer = onConnectedToSignallingServer;
 		this.tag = tag;
@@ -77,6 +96,7 @@ class ClientWebRTC {
 			onPeerJoined(peerId, peerAlias, tag);
 		};
 		this.onPeerMessage = onPeerMessage;
+		this.onDisconnectedFromSignalling = onDisconnectedFromSignalling;
 	}
 	broadcastPeerConnected(peerId: string, peerAlias: string) {
 		const message = JSON.stringify({
@@ -179,6 +199,7 @@ class ClientWebRTC {
 			this.isConnected = false;
 			this.isLoggedIn = false;
 			this.ws = null;
+			this.onDisconnectedFromSignalling(this.tag);
 		};
 	}
 
@@ -601,7 +622,8 @@ class WebRTC {
 		peerId: string,
 		peerAlias: string
 	) => void = () => {};
-
+	public onDisconnectedFromSignallingCallback: (clientTag: string) => void =
+		() => {};
 	constructor() {
 		this.clients = new Map();
 	}
@@ -615,7 +637,8 @@ class WebRTC {
 				this.onLoggedIn,
 				this.onJoinedRoom,
 				this.onPeerJoined,
-				this.onPeerMessage
+				this.onPeerMessage,
+				this.onDisconnectedFromSignalling
 			);
 		this.clients.set(tag, client);
 		await client.connectToSignallingServer(serverUrl);
@@ -629,7 +652,8 @@ class WebRTC {
 				this.onLoggedIn,
 				this.onJoinedRoom,
 				this.onPeerJoined,
-				this.onPeerMessage
+				this.onPeerMessage,
+				this.onDisconnectedFromSignalling
 			);
 		this.clients.set(tag, client);
 		client.disconnectFromSignalling();
@@ -663,6 +687,9 @@ class WebRTC {
 	onPeerJoined = (peerId: string, peerAlias: string, tag: string) => {
 		this.clients.get(tag);
 		this.onPeerConnectedCallback(tag, peerId, peerAlias);
+	};
+	onDisconnectedFromSignalling = (clientTag: string) => {
+		this.onDisconnectedFromSignallingCallback(clientTag);
 	};
 }
 declare global {

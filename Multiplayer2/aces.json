@@ -85,6 +85,11 @@
 				"id": "onDisconnectedFromSignalling",
 				"scriptName": "onDisconnectedFromSignalling",
 				"isTrigger": true
+			},
+			{
+				"id": "onPeerDisconnected",
+				"scriptName": "onPeerDisconnected",
+				"isTrigger": true
 			}
 		],
 		"actions": [

@@ -24,5 +24,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
     onDisconnectedFromSignalling() {
         return true;
     },
+    onPeerDisconnected() {
+        return true;
+    },
 };
 export {};

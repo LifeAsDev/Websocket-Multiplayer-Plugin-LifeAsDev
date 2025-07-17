@@ -66,7 +66,7 @@ class ClientWebRTC {
 			peerId,
 			peerAlias,
 		});
-		this.broadcastMessageToPeers(peerId, message, "unorderedReliable");
+		this.broadcastMessageToPeers(peerId, message, "orderedReliable");
 	}
 
 	sendPeerConnecteds(peerId: string) {
@@ -83,7 +83,7 @@ class ClientWebRTC {
 			peers,
 		});
 
-		this.sendMessageToPeer(peerId, message, "unorderedReliable");
+		this.sendMessageToPeer(peerId, message, "orderedReliable");
 	}
 
 	signallingServerMessageHandler(msg: any) {
@@ -145,7 +145,9 @@ class ClientWebRTC {
 				this.handleIceCandidate(msg.from, msg.icecandidate);
 				break;
 			case "kicked":
-				if (msg.reason === "host-left") this.disconnectFromSignalling();
+				if (msg.reason === "host-left") {
+					this.disconnectFromSignalling();
+				}
 		}
 	}
 	async connectToSignallingServer(serverUrl: string): Promise<void> {
@@ -259,6 +261,18 @@ class ClientWebRTC {
 
 		peerConnection.conn.onconnectionstatechange = () => {};
 		if (this.isHost) {
+			peerConnection.conn.oniceconnectionstatechange = () => {
+				const state = peerConnection.conn.iceConnectionState;
+
+				if (
+					state === "disconnected" ||
+					state === "failed" ||
+					state === "closed"
+				) {
+					this.removePeerConnection(peerId);
+				}
+			};
+
 			this.setupDataChannel(peerConnection);
 		} else {
 			let channelsReady = 0;
@@ -266,6 +280,23 @@ class ClientWebRTC {
 
 			peerConnection.conn.ondatachannel = (event) => {
 				const dc = event.channel;
+
+				peerConnection.conn.oniceconnectionstatechange = () => {
+					const state = peerConnection.conn.iceConnectionState;
+
+					if (
+						state === "disconnected" ||
+						state === "failed" ||
+						state === "closed"
+					) {
+						this.eventManager.emit("onPeerDisconnected", {
+							clientTag: this.tag,
+							peerId: this.myid,
+							peerAlias: this.myAlias,
+						});
+						this.removePeerConnection(peerId, { emit: false });
+					}
+				};
 
 				if (dc.label === "ordered-reliable") {
 					peerConnection.channels.orderedReliable = dc;
@@ -595,39 +626,56 @@ class ClientWebRTC {
 			this.ws.close();
 		}
 	};
-	disconnectFromRoom = (): void => {
-		// Notificar al servidor de señalización que el cliente abandona la sala
+	disconnectFromRoom(): void {
 		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
 			this.sendSgws({
 				message: "leave",
-				room: this.room,
-				clientId: this.myid,
 			});
 		}
 
-		for (const [peerId, peerConnection] of this.connectionsWebRTC.entries()) {
-			for (const channel of Object.values(peerConnection.channels)) {
-				if (channel) {
-					channel.close();
-				}
-			}
-
-			peerConnection.conn.close();
+		for (const peerId of this.connectionsWebRTC.keys()) {
+			this.removePeerConnection(peerId, { emit: this.isHost });
 		}
-
-		this.connectionsWebRTC.clear();
-		this.sendQueues.clear();
-
-		/* 	this.eventManager.emit("leftRoom", {
-			clientTag: this.tag,
-			room: this.room,
-		}); */
+		if (!this.isHost) {
+			this.eventManager.emit("onPeerDisconnected", {
+				clientTag: this.tag,
+				peerId: this.myid,
+				peerAlias: this.myAlias,
+			});
+		}
 
 		this.isOnRoom = false;
 		this.room = "";
 		this.hostId = "";
 		this.hostAlias = "";
-	};
+	}
+
+	removePeerConnection(
+		peerId: string,
+		options: { emit?: boolean } = { emit: true }
+	): void {
+		const peerConnection = this.connectionsWebRTC.get(peerId);
+		if (!peerConnection) return;
+
+		for (const channel of Object.values(peerConnection.channels)) {
+			if (channel) {
+				channel.close();
+			}
+		}
+
+		peerConnection.conn.close();
+
+		this.connectionsWebRTC.delete(peerId);
+		this.sendQueues.delete(peerId);
+
+		if (options.emit) {
+			this.eventManager.emit("onPeerDisconnected", {
+				clientTag: this.tag,
+				peerId,
+				peerAlias: peerConnection.peerAlias,
+			});
+		}
+	}
 }
 
 class WebRTC {

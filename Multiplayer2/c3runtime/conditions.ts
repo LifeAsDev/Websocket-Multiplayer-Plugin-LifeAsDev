@@ -24,7 +24,10 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
 	onPeerConnected(this: SDKInstanceClass) {
 		return true;
 	},
-	onDisconnectedFromSignalling(this) {
+	onDisconnectedFromSignalling(this: SDKInstanceClass) {
+		return true;
+	},
+	onPeerDisconnected(this: SDKInstanceClass) {
 		return true;
 	},
 };

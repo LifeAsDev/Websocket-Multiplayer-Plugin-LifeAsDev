@@ -112,4 +112,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 	disconnectFromSignalling(this: SDKInstanceClass, clientTag: string): void {
 		this._postToDOM("disconnectFromSignalling", { clientTag });
 	},
+	disconnectFromRoom(this: SDKInstanceClass, clientTag: string): void {
+		this._postToDOM("disconnectFromRoom", { clientTag });
+	},
 };

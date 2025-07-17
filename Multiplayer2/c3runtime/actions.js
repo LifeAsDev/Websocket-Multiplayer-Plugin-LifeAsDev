@@ -60,5 +60,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
     disconnectFromSignalling(clientTag) {
         this._postToDOM("disconnectFromSignalling", { clientTag });
     },
+    disconnectFromRoom(clientTag) {
+        this._postToDOM("disconnectFromRoom", { clientTag });
+    },
 };
 export {};

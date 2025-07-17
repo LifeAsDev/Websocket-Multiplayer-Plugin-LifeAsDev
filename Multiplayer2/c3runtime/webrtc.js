@@ -462,6 +462,34 @@ class ClientWebRTC {
             this.ws.close();
         }
     };
+    disconnectFromRoom = () => {
+        // Notificar al servidor de señalización que el cliente abandona la sala
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            this.sendSgws({
+                message: "leave",
+                room: this.room,
+                clientId: this.myid,
+            });
+        }
+        for (const [peerId, peerConnection] of this.connectionsWebRTC.entries()) {
+            for (const channel of Object.values(peerConnection.channels)) {
+                if (channel) {
+                    channel.close();
+                }
+            }
+            peerConnection.conn.close();
+        }
+        this.connectionsWebRTC.clear();
+        this.sendQueues.clear();
+        /* 	this.eventManager.emit("leftRoom", {
+            clientTag: this.tag,
+            room: this.room,
+        }); */
+        this.isOnRoom = false;
+        this.room = "";
+        this.hostId = "";
+        this.hostAlias = "";
+    };
 }
 class WebRTC {
     eventManager;

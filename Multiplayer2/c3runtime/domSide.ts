@@ -18,6 +18,7 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 				"disconnectFromSignalling",
 				(data) => this._handleDisconnectFromSignalling(data),
 			],
+			["disconnectFromRoom", (data) => this._handleDisconnectFromRoom(data)],
 		]);
 		this._instanceWebRTC.eventManager.on(
 			"connected",
@@ -182,6 +183,10 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 	_handleDisconnectFromSignalling(data: JSONValue): void {
 		const { clientTag } = data as { clientTag: string };
 		this._instanceWebRTC.clients.get(clientTag)?.disconnectFromSignalling();
+	}
+	_handleDisconnectFromRoom(data: JSONValue): void {
+		const { clientTag } = data as { clientTag: string };
+		this._instanceWebRTC.clients.get(clientTag)?.disconnectFromRoom();
 	}
 }
 

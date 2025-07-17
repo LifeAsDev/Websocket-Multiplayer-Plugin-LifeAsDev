@@ -238,6 +238,28 @@
 								}
 							}
 						}
+					},
+					"disconnectFromRoom": {
+						"list-name": "Disconnect from room",
+						"display-text": "Disconnect from room Client Tag [i]{0}[/i]",
+						"description": "Disconnect from room",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							}
+						}
+					},
+					"disconnectFromSignalling": {
+						"list-name": "Disconnect from signalling",
+						"display-text": "Disconnect from signalling server Client Tag [i]{0}[/i]",
+						"description": "Disconnect from signalling server",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							}
+						}
 					}
 				},
 				"expressions": {

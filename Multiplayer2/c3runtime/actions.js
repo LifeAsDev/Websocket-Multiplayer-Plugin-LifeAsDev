@@ -57,5 +57,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
             mode: modeName,
         });
     },
+    disconnectFromSignalling(clientTag) {
+        this._postToDOM("disconnectFromSignalling", { clientTag });
+    },
 };
 export {};

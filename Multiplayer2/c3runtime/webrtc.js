@@ -102,6 +102,9 @@ class ClientWebRTC {
             case "icecandidate":
                 this.handleIceCandidate(msg.from, msg.icecandidate);
                 break;
+            case "kicked":
+                if (msg.reason === "host-left")
+                    this.disconnectFromSignalling();
         }
     }
     async connectToSignallingServer(serverUrl) {
@@ -117,8 +120,9 @@ class ClientWebRTC {
             console.error(`WebSocket error for tag ${this.tag}:`, error);
         };
         this.ws.onclose = () => {
-            console.log(`WebSocket connection closed for tag ${this.tag}`);
-            this.ws = null; // Reset the WebSocket instance
+            this.isConnected = false;
+            this.isLoggedIn = false;
+            this.ws = null;
         };
     }
     async loginToSignallingServer(alias) {
@@ -410,6 +414,13 @@ class ClientWebRTC {
             simPacketLoss: this.simPacketLoss,
         };
     }
+    disconnectFromSignalling = () => {
+        if (this.ws) {
+            this.isConnected = false;
+            this.isLoggedIn = false;
+            this.ws.close();
+        }
+    };
 }
 class WebRTC {
     clients;
@@ -426,6 +437,12 @@ class WebRTC {
             new ClientWebRTC(tag, this.onConnectedToSignallingServer, this.onLoggedIn, this.onJoinedRoom, this.onPeerJoined, this.onPeerMessage);
         this.clients.set(tag, client);
         await client.connectToSignallingServer(serverUrl);
+    };
+    disconnectFromSignalling = async (tag) => {
+        const client = this.clients.get(tag) ||
+            new ClientWebRTC(tag, this.onConnectedToSignallingServer, this.onLoggedIn, this.onJoinedRoom, this.onPeerJoined, this.onPeerMessage);
+        this.clients.set(tag, client);
+        client.disconnectFromSignalling();
     };
     onPeerMessage = (peerId, message, tag, clientTag, peerAlias) => {
         this.onPeerMessageCallback(peerId, clientTag, message, tag, peerAlias);

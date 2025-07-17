@@ -14,6 +14,10 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 			["sendPeerMessage", (data) => this._handleSendPeerMessage(data)],
 			["simulate-latency", (data) => this._handleSimulateLatency(data)],
 			["broadcastMessage", (data) => this._handleBroadcastMessage(data)],
+			[
+				"disconnectFromSignalling",
+				(data) => this._handleDisconnectFromSignalling(data),
+			],
 		]);
 
 		this._instanceWebRTC.onConnectedToSgWsCallback = (tag: string) => {
@@ -146,6 +150,10 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 		this._instanceWebRTC.clients
 			.get(clientTag)
 			?.broadcastMessageToPeers(peerId, message, mode);
+	}
+	_handleDisconnectFromSignalling(data: JSONValue): void {
+		const { clientTag } = data as { clientTag: string };
+		this._instanceWebRTC.disconnectFromSignalling(clientTag);
 	}
 }
 

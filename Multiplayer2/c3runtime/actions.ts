@@ -109,4 +109,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 			mode: modeName,
 		});
 	},
+	disconnectFromSignalling(this: SDKInstanceClass, clientTag: string): void {
+		this._postToDOM("disconnectFromSignalling", { clientTag });
+	},
 };

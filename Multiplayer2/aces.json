@@ -44,6 +44,16 @@
 					{ "id": "lossPercent", "type": "number", "initialValue": "5" },
 					{ "id": "clientTag", "type": "string" }
 				]
+			},
+			{
+				"id": "disconnectFromRoom",
+				"scriptName": "disconnectFromRoom",
+				"params": [{ "id": "clientTag", "type": "string" }]
+			},
+			{
+				"id": "disconnectFromSignalling",
+				"scriptName": "disconnectFromSignalling",
+				"params": [{ "id": "clientTag", "type": "string" }]
 			}
 		]
 	},

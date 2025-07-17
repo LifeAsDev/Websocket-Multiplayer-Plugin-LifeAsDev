@@ -32,26 +32,27 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
         }
     }
     _onConnectedToSgWs(msg) {
-        const { tag, client } = msg;
-        this.clientTag = tag;
-        this.clients.set(tag, client);
+        const { clientTag, client } = msg;
+        this.clientTag = clientTag;
+        this.clients.set(clientTag, client);
         this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onConnectedToSgWs);
     }
     _onLoggedIn(msg) {
-        const { tag, client } = msg;
-        this.clientTag = tag;
-        this.clients.set(tag, client);
+        const { clientTag, client, alias } = msg;
+        this.clientTag = clientTag;
+        this.clients.set(clientTag, client);
+        this.peerAlias = alias;
         this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onLoggedInToSgWs);
     }
     _onJoinedRoom(msg) {
-        const { tag, client } = msg;
-        this.clientTag = tag;
-        this.clients.set(tag, client);
+        const { clientTag, client } = msg;
+        this.clientTag = clientTag;
+        this.clients.set(clientTag, client);
         this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onJoinedRoom);
     }
     _onPeerConnected(msg) {
-        const { tag, peerId, peerAlias } = msg;
-        this.clientTag = tag;
+        const { clientTag, peerId, peerAlias } = msg;
+        this.clientTag = clientTag;
         this.peerId = peerId;
         this.peerAlias = peerAlias;
         this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onPeerConnected);
@@ -62,6 +63,7 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
         this.peerId = peerId;
         this.peerAlias = peerAlias;
         this.msgTag = tag;
+        this.msg = message;
         this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onPeerMessage);
     }
     _onDisconnectedFromSignalling(msg) {

@@ -21,6 +21,7 @@ class EventManager {
 }
 class ClientWebRTC {
     ChannelSendQueue = self.ChannelSendQueue;
+    eventManager;
     tag;
     ws = null;
     SUBPROTOCOL = "c2multiplayer";
@@ -37,30 +38,13 @@ class ClientWebRTC {
     isOnRoom = false;
     connectionsWebRTC = new Map();
     ice_servers = [];
-    simLatency = 0; // in milliseconds
-    simPdv = 0; // in milliseconds
-    simPacketLoss = 0; // percentage
+    simLatency = 0;
+    simPdv = 0;
+    simPacketLoss = 0;
     sendQueues = new Map();
-    onConnectedToSignallingServer;
-    onLoggedIn;
-    onJoinedRoom;
-    onPeerJoined;
-    onPeerMessage;
-    onDisconnectedFromSignalling = () => { };
-    constructor(tag, onConnectedToSignallingServer, onLoggedIn, onJoinedRoom, onPeerJoined, onPeerMessage, onDisconnectedFromSignalling) {
-        this.onConnectedToSignallingServer = onConnectedToSignallingServer;
+    constructor(tag, eventManager) {
         this.tag = tag;
-        this.onLoggedIn = onLoggedIn;
-        this.onJoinedRoom = onJoinedRoom;
-        this.onPeerJoined = (peerId, peerAlias, tag) => {
-            if (this.isHost) {
-                this.sendPeerConnecteds(peerId);
-                this.broadcastPeerConnected(peerId, peerAlias);
-            }
-            onPeerJoined(peerId, peerAlias, tag);
-        };
-        this.onPeerMessage = onPeerMessage;
-        this.onDisconnectedFromSignalling = onDisconnectedFromSignalling;
+        this.eventManager = eventManager;
     }
     broadcastPeerConnected(peerId, peerAlias) {
         const message = JSON.stringify({
@@ -93,13 +77,18 @@ class ClientWebRTC {
                     }
                     return server;
                 });
-                this.onConnectedToSignallingServer(this.tag);
+                this.eventManager.emit("connected", {
+                    clientTag: this.tag,
+                });
                 this.isConnected = true;
                 break;
             case "login-ok":
                 this.isLoggedIn = true;
                 this.myAlias = msg.alias;
-                this.onLoggedIn(this.tag);
+                this.eventManager.emit("loggedIn", {
+                    clientTag: this.tag,
+                    alias: msg.alias,
+                });
                 break;
             case "join-ok":
                 this.isHost = msg.host;
@@ -109,7 +98,9 @@ class ClientWebRTC {
                 if (this.isHost) {
                     this.hostId = this.myid;
                     this.hostAlias = this.myAlias;
-                    this.onJoinedRoom(this.tag);
+                    this.eventManager.emit("joinedRoom", {
+                        clientTag: this.tag,
+                    });
                 }
                 break;
             case "peer-joined":
@@ -146,7 +137,9 @@ class ClientWebRTC {
             this.isConnected = false;
             this.isLoggedIn = false;
             this.ws = null;
-            this.onDisconnectedFromSignalling(this.tag);
+            this.eventManager.emit("disconnected", {
+                clientTag: this.tag,
+            });
         };
     }
     async loginToSignallingServer(alias) {
@@ -243,7 +236,9 @@ class ClientWebRTC {
                     if (channelsReady === expectedChannels) {
                         peerConnection.isReady = true;
                         this.sendQueues.set(peerId, new self.ChannelSendQueue(peerConnection.channels.orderedReliable, peerId, this.tag));
-                        this.onJoinedRoom(this.tag);
+                        this.eventManager.emit("joinedRoom", {
+                            clientTag: this.tag,
+                        });
                     }
                 };
             };
@@ -261,7 +256,15 @@ class ClientWebRTC {
             });
             this.waitForReady(peerConnection).then(() => {
                 peerConnection.isReady = true;
-                this.onPeerJoined(peerConnection.peerId, peerConnection.peerAlias, this.tag);
+                this.eventManager.emit("peerJoined", {
+                    peerId: peerConnection.peerId,
+                    clientTag: this.tag,
+                    peerAlias: peerConnection.peerAlias,
+                });
+                if (this.isHost) {
+                    this.sendPeerConnecteds(peerConnection.peerId);
+                    this.broadcastPeerConnected(peerConnection.peerId, peerConnection.peerAlias);
+                }
                 this.sendSgws({
                     message: "confirm-peer",
                     id: peerConnection.peerId,
@@ -400,16 +403,30 @@ class ClientWebRTC {
         const parsedMessage = JSON.parse(message);
         switch (parsedMessage.type) {
             case "default":
-                this.onPeerMessage(peerId, parsedMessage.message, parsedMessage.tag, this.tag, peerAlias);
+                this.eventManager.emit("peerMessage", {
+                    peerId: peerId,
+                    message: parsedMessage.message,
+                    clientTag: this.tag,
+                    peerAlias,
+                    tag: parsedMessage.tag,
+                });
                 break;
             case "peer-connected":
-                this.onPeerJoined(parsedMessage.peerId, parsedMessage.peerAlias, this.tag);
+                this.eventManager.emit("peerJoined", {
+                    peerId: parsedMessage.peerId,
+                    clientTag: this.tag,
+                    peerAlias: parsedMessage.peerAlias,
+                });
                 break;
             case "peer-connecteds-list":
                 for (const p of parsedMessage.peers) {
                     if (p.peerId === this.myid)
                         continue;
-                    this.onPeerJoined(p.peerId, p.alias, this.tag);
+                    this.eventManager.emit("peerJoined", {
+                        peerId: p.peerId,
+                        clientTag: this.tag,
+                        peerAlias: p.peerAlias,
+                    });
                 }
                 break;
         }
@@ -447,50 +464,21 @@ class ClientWebRTC {
     };
 }
 class WebRTC {
+    eventManager;
     clients;
-    onConnectedToSgWsCallback = () => { };
-    onLoggedInCallback = () => { };
-    onJoinedRoomCallback = () => { };
-    onPeerMessageCallback = () => { };
-    onPeerConnectedCallback = () => { };
-    onDisconnectedFromSignallingCallback = () => { };
     constructor() {
+        this.eventManager = new EventManager();
         this.clients = new Map();
     }
-    connectToSignallingServer = async (serverUrl, tag) => {
-        const client = this.clients.get(tag) ||
-            new ClientWebRTC(tag, this.onConnectedToSignallingServer, this.onLoggedIn, this.onJoinedRoom, this.onPeerJoined, this.onPeerMessage, this.onDisconnectedFromSignalling);
-        this.clients.set(tag, client);
-        await client.connectToSignallingServer(serverUrl);
-    };
-    disconnectFromSignalling = async (tag) => {
-        const client = this.clients.get(tag) ||
-            new ClientWebRTC(tag, this.onConnectedToSignallingServer, this.onLoggedIn, this.onJoinedRoom, this.onPeerJoined, this.onPeerMessage, this.onDisconnectedFromSignalling);
-        this.clients.set(tag, client);
-        client.disconnectFromSignalling();
-    };
-    onPeerMessage = (peerId, message, tag, clientTag, peerAlias) => {
-        this.onPeerMessageCallback(peerId, clientTag, message, tag, peerAlias);
-    };
-    onConnectedToSignallingServer = (tag) => {
-        this.clients.get(tag);
-        this.onConnectedToSgWsCallback(tag);
-    };
-    onLoggedIn = (tag) => {
-        this.clients.get(tag);
-        this.onLoggedInCallback(tag);
-    };
-    onJoinedRoom = (tag) => {
-        this.clients.get(tag);
-        this.onJoinedRoomCallback(tag);
-    };
-    onPeerJoined = (peerId, peerAlias, tag) => {
-        this.clients.get(tag);
-        this.onPeerConnectedCallback(tag, peerId, peerAlias);
-    };
-    onDisconnectedFromSignalling = (clientTag) => {
-        this.onDisconnectedFromSignallingCallback(clientTag);
-    };
+    connectToSignallingServer(serverUrl, tag) {
+        let client = this.clients.get(tag);
+        if (!client) {
+            client = new ClientWebRTC(tag, this.eventManager);
+            this.clients.set(tag, client);
+        }
+        client.connectToSignallingServer(serverUrl);
+    }
 }
-self.WebRTC = WebRTC; // Expose the WebRTC class globally
+self.WebRTC = WebRTC;
+self.WebRTC = WebRTC;
 export {};

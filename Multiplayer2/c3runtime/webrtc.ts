@@ -34,7 +34,7 @@ class EventManager {
 
 class ClientWebRTC {
 	ChannelSendQueue = self.ChannelSendQueue;
-
+	private eventManager: EventManager;
 	public tag: string;
 	public ws: WebSocket | null = null;
 	private SUBPROTOCOL: string = "c2multiplayer";
@@ -51,52 +51,14 @@ class ClientWebRTC {
 	public isOnRoom: boolean = false;
 	public connectionsWebRTC: Map<string, PeerConnectionWrapper> = new Map();
 	public ice_servers: RTCIceServer[] = [];
-	public simLatency: number = 0; // in milliseconds
-	public simPdv: number = 0; // in milliseconds
-	public simPacketLoss: number = 0; // percentage
-	public sendQueues: Map<string, InstanceType<typeof window.ChannelSendQueue>> =
-		new Map();
+	public simLatency: number = 0;
+	public simPdv: number = 0;
+	public simPacketLoss: number = 0;
+	public sendQueues: Map<string, any> = new Map();
 
-	public onConnectedToSignallingServer: TagCallback;
-	public onLoggedIn: TagCallback;
-	public onJoinedRoom: TagCallback;
-	public onPeerJoined: (peerId: string, peerAlias: string, tag: string) => void;
-	public onPeerMessage: (
-		peerId: string,
-		message: string,
-		tag: string,
-		clientTag: string,
-		peerAlias: string
-	) => void;
-	public onDisconnectedFromSignalling: (clientTag: string) => void = () => {};
-	constructor(
-		tag: string,
-		onConnectedToSignallingServer: TagCallback,
-		onLoggedIn: TagCallback,
-		onJoinedRoom: TagCallback,
-		onPeerJoined: (peerId: string, peerAlias: string, tag: string) => void,
-		onPeerMessage: (
-			peerId: string,
-			message: string,
-			tag: string,
-			clientTag: string,
-			peerAlias: string
-		) => void,
-		onDisconnectedFromSignalling: (clientTag: string) => void
-	) {
-		this.onConnectedToSignallingServer = onConnectedToSignallingServer;
+	constructor(tag: string, eventManager: EventManager) {
 		this.tag = tag;
-		this.onLoggedIn = onLoggedIn;
-		this.onJoinedRoom = onJoinedRoom;
-		this.onPeerJoined = (peerId: string, peerAlias: string, tag: string) => {
-			if (this.isHost) {
-				this.sendPeerConnecteds(peerId);
-				this.broadcastPeerConnected(peerId, peerAlias);
-			}
-			onPeerJoined(peerId, peerAlias, tag);
-		};
-		this.onPeerMessage = onPeerMessage;
-		this.onDisconnectedFromSignalling = onDisconnectedFromSignalling;
+		this.eventManager = eventManager;
 	}
 	broadcastPeerConnected(peerId: string, peerAlias: string) {
 		const message = JSON.stringify({
@@ -136,13 +98,19 @@ class ClientWebRTC {
 					}
 					return server as RTCIceServer;
 				});
-				this.onConnectedToSignallingServer(this.tag);
+				this.eventManager.emit("connected", {
+					clientTag: this.tag,
+				});
 				this.isConnected = true;
 				break;
 			case "login-ok":
 				this.isLoggedIn = true;
 				this.myAlias = msg.alias;
-				this.onLoggedIn(this.tag);
+
+				this.eventManager.emit("loggedIn", {
+					clientTag: this.tag,
+					alias: msg.alias,
+				});
 				break;
 
 			case "join-ok":
@@ -153,7 +121,9 @@ class ClientWebRTC {
 				if (this.isHost) {
 					this.hostId = this.myid;
 					this.hostAlias = this.myAlias;
-					this.onJoinedRoom(this.tag);
+					this.eventManager.emit("joinedRoom", {
+						clientTag: this.tag,
+					});
 				}
 				break;
 
@@ -199,7 +169,9 @@ class ClientWebRTC {
 			this.isConnected = false;
 			this.isLoggedIn = false;
 			this.ws = null;
-			this.onDisconnectedFromSignalling(this.tag);
+			this.eventManager.emit("disconnected", {
+				clientTag: this.tag,
+			});
 		};
 	}
 
@@ -328,7 +300,9 @@ class ClientWebRTC {
 							)
 						);
 
-						this.onJoinedRoom(this.tag);
+						this.eventManager.emit("joinedRoom", {
+							clientTag: this.tag,
+						});
 					}
 				};
 			};
@@ -354,11 +328,19 @@ class ClientWebRTC {
 			});
 			this.waitForReady(peerConnection).then(() => {
 				peerConnection.isReady = true;
-				this.onPeerJoined(
-					peerConnection.peerId,
-					peerConnection.peerAlias,
-					this.tag
-				);
+
+				this.eventManager.emit("peerJoined", {
+					peerId: peerConnection.peerId,
+					clientTag: this.tag,
+					peerAlias: peerConnection.peerAlias,
+				});
+				if (this.isHost) {
+					this.sendPeerConnecteds(peerConnection.peerId);
+					this.broadcastPeerConnected(
+						peerConnection.peerId,
+						peerConnection.peerAlias
+					);
+				}
 				this.sendSgws({
 					message: "confirm-peer",
 					id: peerConnection.peerId,
@@ -549,30 +531,34 @@ class ClientWebRTC {
 		peerAlias: string
 	) => {
 		const parsedMessage = JSON.parse(message);
-
 		switch (parsedMessage.type) {
 			case "default":
-				this.onPeerMessage(
-					peerId,
-					parsedMessage.message,
-					parsedMessage.tag,
-					this.tag,
-					peerAlias
-				);
+				this.eventManager.emit("peerMessage", {
+					peerId: peerId,
+					message: parsedMessage.message,
+					clientTag: this.tag,
+					peerAlias,
+					tag: parsedMessage.tag,
+				});
+
 				break;
 
 			case "peer-connected":
-				this.onPeerJoined(
-					parsedMessage.peerId,
-					parsedMessage.peerAlias,
-					this.tag
-				);
+				this.eventManager.emit("peerJoined", {
+					peerId: parsedMessage.peerId,
+					clientTag: this.tag,
+					peerAlias: parsedMessage.peerAlias,
+				});
 				break;
 
 			case "peer-connecteds-list":
 				for (const p of parsedMessage.peers) {
 					if (p.peerId === this.myid) continue;
-					this.onPeerJoined(p.peerId, p.alias, this.tag);
+					this.eventManager.emit("peerJoined", {
+						peerId: p.peerId,
+						clientTag: this.tag,
+						peerAlias: p.peerAlias,
+					});
 				}
 				break;
 		}
@@ -612,89 +598,28 @@ class ClientWebRTC {
 }
 
 class WebRTC {
+	public eventManager: EventManager;
 	public clients: Map<string, ClientWebRTC>;
-	public onConnectedToSgWsCallback: TagCallback = () => {};
-	public onLoggedInCallback: TagCallback = () => {};
-	public onJoinedRoomCallback: TagCallback = () => {};
-	public onPeerMessageCallback: OnPeerMessageCallback = () => {};
-	public onPeerConnectedCallback: (
-		tag: string,
-		peerId: string,
-		peerAlias: string
-	) => void = () => {};
-	public onDisconnectedFromSignallingCallback: (clientTag: string) => void =
-		() => {};
+
 	constructor() {
+		this.eventManager = new EventManager();
 		this.clients = new Map();
 	}
 
-	connectToSignallingServer = async (serverUrl: string, tag: string) => {
-		const client =
-			this.clients.get(tag) ||
-			new ClientWebRTC(
-				tag,
-				this.onConnectedToSignallingServer,
-				this.onLoggedIn,
-				this.onJoinedRoom,
-				this.onPeerJoined,
-				this.onPeerMessage,
-				this.onDisconnectedFromSignalling
-			);
-		this.clients.set(tag, client);
-		await client.connectToSignallingServer(serverUrl);
-	};
-	disconnectFromSignalling = async (tag: string) => {
-		const client =
-			this.clients.get(tag) ||
-			new ClientWebRTC(
-				tag,
-				this.onConnectedToSignallingServer,
-				this.onLoggedIn,
-				this.onJoinedRoom,
-				this.onPeerJoined,
-				this.onPeerMessage,
-				this.onDisconnectedFromSignalling
-			);
-		this.clients.set(tag, client);
-		client.disconnectFromSignalling();
-	};
-
-	onPeerMessage = (
-		peerId: string,
-		message: string,
-		tag: string,
-		clientTag: string,
-		peerAlias: string
-	): void => {
-		this.onPeerMessageCallback(peerId, clientTag, message, tag, peerAlias);
-	};
-
-	onConnectedToSignallingServer = (tag: string) => {
-		this.clients.get(tag);
-		this.onConnectedToSgWsCallback(tag);
-	};
-
-	onLoggedIn = (tag: string) => {
-		this.clients.get(tag);
-		this.onLoggedInCallback(tag);
-	};
-
-	onJoinedRoom = (tag: string) => {
-		this.clients.get(tag);
-		this.onJoinedRoomCallback(tag);
-	};
-
-	onPeerJoined = (peerId: string, peerAlias: string, tag: string) => {
-		this.clients.get(tag);
-		this.onPeerConnectedCallback(tag, peerId, peerAlias);
-	};
-	onDisconnectedFromSignalling = (clientTag: string) => {
-		this.onDisconnectedFromSignallingCallback(clientTag);
-	};
+	connectToSignallingServer(serverUrl: string, tag: string): void {
+		let client = this.clients.get(tag);
+		if (!client) {
+			client = new ClientWebRTC(tag, this.eventManager);
+			this.clients.set(tag, client);
+		}
+		client.connectToSignallingServer(serverUrl);
+	}
 }
+
+self.WebRTC = WebRTC;
 declare global {
 	interface Window {
 		WebRTC: typeof WebRTC;
 	}
 }
-self.WebRTC = WebRTC; // Expose the WebRTC class globally
+self.WebRTC = WebRTC;

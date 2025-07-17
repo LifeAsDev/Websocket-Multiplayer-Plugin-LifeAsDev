@@ -19,68 +19,88 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 				(data) => this._handleDisconnectFromSignalling(data),
 			],
 		]);
+		this._instanceWebRTC.eventManager.on(
+			"connected",
+			(data: { clientTag: string }) => {
+				const client = this._instanceWebRTC.clients.get(data.clientTag);
+				if (client) {
+					this.PostToRuntime("onConnectedToSgWs", {
+						clientTag: data.clientTag,
+						client: client.toSerializable(),
+					});
+				}
+			}
+		);
 
-		this._instanceWebRTC.onConnectedToSgWsCallback = (tag: string) => {
-			const client = this._instanceWebRTC.clients.get(tag);
-			if (client) {
-				this.PostToRuntime("onConnectedToSgWs", {
-					tag,
-					client: client.toSerializable(),
+		this._instanceWebRTC.eventManager.on(
+			"loggedIn",
+			(data: { clientTag: string; alias: string }) => {
+				const client = this._instanceWebRTC.clients.get(data.clientTag);
+				if (client) {
+					this.PostToRuntime("onLoggedIn", {
+						clientTag: data.clientTag,
+						client: client.toSerializable(),
+						alias: data.alias,
+					});
+				}
+			}
+		);
+
+		this._instanceWebRTC.eventManager.on(
+			"joinedRoom",
+			(data: { clientTag: string }) => {
+				const client = this._instanceWebRTC.clients.get(data.clientTag);
+				if (client) {
+					this.PostToRuntime("onJoinedRoom", {
+						clientTag: data.clientTag,
+						client: client.toSerializable(),
+					});
+				}
+			}
+		);
+
+		this._instanceWebRTC.eventManager.on(
+			"peerJoined",
+			(data: { clientTag: string; peerId: string; peerAlias: string }) => {
+				this.PostToRuntime("onPeerConnected", {
+					clientTag: data.clientTag,
+					peerId: data.peerId,
+					peerAlias: data.peerAlias,
 				});
 			}
-		};
+		);
 
-		this._instanceWebRTC.onLoggedInCallback = (tag: string) => {
-			const client = this._instanceWebRTC.clients.get(tag);
-			if (client) {
-				this.PostToRuntime("onLoggedIn", {
-					tag,
-					client: client.toSerializable(),
+		this._instanceWebRTC.eventManager.on(
+			"peerMessage",
+			(data: {
+				peerId: string;
+				clientTag: string;
+				message: string;
+				tag: string;
+				peerAlias: string;
+			}) => {
+				this.PostToRuntime("onPeerMessage", {
+					peerId: data.peerId,
+					clientTag: data.clientTag,
+					message: data.message,
+					tag: data.tag,
+					peerAlias: data.peerAlias,
 				});
 			}
-		};
+		);
 
-		this._instanceWebRTC.onJoinedRoomCallback = (tag: string) => {
-			const client = this._instanceWebRTC.clients.get(tag);
-			if (client) {
-				this.PostToRuntime("onJoinedRoom", {
-					tag,
-					client: client.toSerializable(),
-				});
+		this._instanceWebRTC.eventManager.on(
+			"disconnected",
+			(data: { clientTag: string }) => {
+				const client = this._instanceWebRTC.clients.get(data.clientTag);
+				if (client) {
+					this.PostToRuntime("onDisconnectedFromSignalling", {
+						clientTag: data.clientTag,
+						client: client.toSerializable(),
+					});
+				}
 			}
-		};
-
-		this._instanceWebRTC.onPeerConnectedCallback = (
-			tag: string,
-			peerId: string,
-			peerAlias: string
-		) => {
-			this.PostToRuntime("onPeerConnected", { tag, peerId, peerAlias });
-		};
-
-		this._instanceWebRTC.onPeerMessageCallback = (
-			peerId: string,
-			clientTag: string,
-			message: string,
-			tag: string,
-			peerAlias: string
-		) => {
-			this.PostToRuntime("onPeerMessage", {
-				peerId,
-				clientTag,
-				message,
-				tag,
-				peerAlias,
-			});
-		};
-		this._instanceWebRTC.onDisconnectedFromSignallingCallback = (clientTag: string) => {
-			const client = this._instanceWebRTC.clients.get(clientTag);
-			if (client)
-				this.PostToRuntime("onDisconnectedFromSignalling", {
-					clientTag,
-					client: client.toSerializable(),
-				});
-		};
+		);
 	}
 
 	_handleConnect(data: JSONValue): void {
@@ -161,7 +181,7 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 	}
 	_handleDisconnectFromSignalling(data: JSONValue): void {
 		const { clientTag } = data as { clientTag: string };
-		this._instanceWebRTC.disconnectFromSignalling(clientTag);
+		this._instanceWebRTC.clients.get(clientTag)?.disconnectFromSignalling();
 	}
 }
 

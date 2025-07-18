@@ -24,5 +24,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
     LeaveReason(clienTag) {
         return this.clients.get(clienTag)?.leaveReason;
     },
+    messageTag() {
+        return this.msgTag;
+    },
 };
 export {};

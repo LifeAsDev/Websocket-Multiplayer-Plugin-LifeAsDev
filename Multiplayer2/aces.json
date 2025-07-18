@@ -170,6 +170,12 @@
 				"returnType": "string"
 			},
 			{
+				"id": "messageTag",
+				"expressionName": "messageTag",
+				"highlight": false,
+				"returnType": "string"
+			},
+			{
 				"id": "peerId",
 				"expressionName": "PeerID",
 				"highlight": false,

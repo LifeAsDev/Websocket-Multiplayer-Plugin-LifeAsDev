@@ -350,6 +350,10 @@
 						"translated-name": "Message",
 						"description": "Returns the message of the revelant trigger."
 					},
+					"messageTag": {
+						"translated-name": "Message Tag",
+						"description": "Returns the message tag of the revelant trigger."
+					},
 					"peerId": {
 						"translated-name": "PeerID",
 						"description": "Returns the peer ID of the revelant trigger."

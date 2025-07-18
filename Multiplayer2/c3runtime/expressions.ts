@@ -27,4 +27,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
 	LeaveReason(this: SDKInstanceClass, clienTag: string) {
 		return this.clients.get(clienTag)?.leaveReason;
 	},
+	messageTag(this: SDKInstanceClass) {
+		return this.msgTag;
+	},
 };

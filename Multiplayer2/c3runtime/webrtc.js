@@ -207,8 +207,15 @@ class ClientWebRTC {
                 });
             }
         };
-        peerConnection.conn.onconnectionstatechange = () => { };
         if (this.isHost) {
+            peerConnection.conn.onconnectionstatechange = () => {
+                const state = peerConnection.conn.connectionState;
+                if (state === "disconnected" ||
+                    state === "failed" ||
+                    state === "closed") {
+                    this.removePeerConnection(peerId);
+                }
+            };
             peerConnection.conn.oniceconnectionstatechange = () => {
                 const state = peerConnection.conn.iceConnectionState;
                 if (state === "disconnected" ||
@@ -224,6 +231,19 @@ class ClientWebRTC {
             const expectedChannels = 3;
             peerConnection.conn.ondatachannel = (event) => {
                 const dc = event.channel;
+                peerConnection.conn.onconnectionstatechange = () => {
+                    const state = peerConnection.conn.connectionState;
+                    if (state === "disconnected" ||
+                        state === "failed" ||
+                        state === "closed") {
+                        this.eventManager.emit("onPeerDisconnected", {
+                            clientTag: this.tag,
+                            peerId: this.myid,
+                            peerAlias: this.myAlias,
+                        });
+                        this.removePeerConnection(peerId, { emit: false });
+                    }
+                };
                 peerConnection.conn.oniceconnectionstatechange = () => {
                     const state = peerConnection.conn.iceConnectionState;
                     if (state === "disconnected" ||
@@ -261,6 +281,16 @@ class ClientWebRTC {
                         this.eventManager.emit("joinedRoom", {
                             clientTag: this.tag,
                         });
+                    }
+                };
+                dc.onclose = () => {
+                    if (this.connectionsWebRTC.has(peerId)) {
+                        this.eventManager.emit("onPeerDisconnected", {
+                            clientTag: this.tag,
+                            peerId: this.myid,
+                            peerAlias: this.myAlias,
+                        });
+                        this.removePeerConnection(peerId, { emit: false });
                     }
                 };
             };
@@ -301,6 +331,9 @@ class ClientWebRTC {
                 return;
             dc.onmessage = (e) => {
                 this.onPeerMessageReceived(peerConnection.peerId, e.data, peerConnection.peerAlias);
+            };
+            dc.onclose = () => {
+                this.removePeerConnection(peerConnection.peerId);
             };
         };
         peerConnection.channels.orderedReliable =

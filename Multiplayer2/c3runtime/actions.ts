@@ -115,4 +115,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 	disconnectFromRoom(this: SDKInstanceClass, clientTag: string): void {
 		this._postToDOM("disconnectFromRoom", { clientTag });
 	},
+	leaveRoomOnSignalling(this: SDKInstanceClass, clientTag: string): void {
+		this._postToDOM("leaveRoomOnSignalling", { clientTag });
+	},
 };

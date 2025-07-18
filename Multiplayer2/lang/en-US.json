@@ -292,6 +292,17 @@
 								"desc": "Client Tag. Ignored if not found."
 							}
 						}
+					},
+					"leaveRoomOnSignalling": {
+						"list-name": "Leave room on signalling",
+						"display-text": "Leave room on signalling Client Tag [i]{0}[/i]",
+						"description": "Leave room on signalling server (room connection remain)",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							}
+						}
 					}
 				},
 				"expressions": {

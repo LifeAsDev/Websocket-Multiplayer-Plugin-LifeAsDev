@@ -558,6 +558,13 @@ class ClientWebRTC {
             });
         }
     }
+    leaveRoomOnSignalling() {
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            this.sendSgws({
+                message: "leave",
+            });
+        }
+    }
 }
 class WebRTC {
     eventManager;

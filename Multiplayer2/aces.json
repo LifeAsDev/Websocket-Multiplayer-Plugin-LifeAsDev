@@ -64,6 +64,11 @@
 				"id": "disconnectFromSignalling",
 				"scriptName": "disconnectFromSignalling",
 				"params": [{ "id": "clientTag", "type": "string" }]
+			},
+			{
+				"id": "leaveRoomOnSignalling",
+				"scriptName": "leaveRoomOnSignalling",
+				"params": [{ "id": "clientTag", "type": "string" }]
 			}
 		]
 	},

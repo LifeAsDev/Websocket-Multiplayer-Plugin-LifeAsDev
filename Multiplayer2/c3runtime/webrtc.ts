@@ -665,6 +665,7 @@ class ClientWebRTC {
 			this.ws.close();
 		}
 	};
+
 	disconnectFromRoom(): void {
 		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
 			this.sendSgws({
@@ -712,6 +713,14 @@ class ClientWebRTC {
 				clientTag: this.tag,
 				peerId,
 				peerAlias: peerConnection.peerAlias,
+			});
+		}
+	}
+
+	leaveRoomOnSignalling(): void {
+		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+			this.sendSgws({
+				message: "leave",
 			});
 		}
 	}

@@ -12,6 +12,16 @@
 				"id": "onLoggedInToSgWs",
 				"scriptName": "onLoggedInToSgWs",
 				"isTrigger": true
+			},
+			{
+				"id": "isConnected",
+				"scriptName": "isConnected",
+				"params": [{ "id": "clientTag", "type": "string" }]
+			},
+			{
+				"id": "isLoggedIn",
+				"scriptName": "isLoggedIn",
+				"params": [{ "id": "clientTag", "type": "string" }]
 			}
 		],
 		"actions": [
@@ -179,6 +189,7 @@
 				"highlight": false,
 				"returnType": "string"
 			},
+
 			{
 				"id": "hostId",
 				"expressionName": "HostID",

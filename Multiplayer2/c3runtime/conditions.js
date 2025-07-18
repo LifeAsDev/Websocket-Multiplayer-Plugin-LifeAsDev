@@ -27,5 +27,11 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
     onPeerDisconnected() {
         return true;
     },
+    isLoggedIn(clientTag) {
+        return !!this.clients.get(clientTag)?.isLoggedIn;
+    },
+    isConnected(clientTag) {
+        return !!this.clients.get(clientTag)?.isConnected;
+    },
 };
 export {};

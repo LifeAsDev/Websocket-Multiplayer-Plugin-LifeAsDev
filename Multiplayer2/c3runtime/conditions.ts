@@ -30,4 +30,10 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
 	onPeerDisconnected(this: SDKInstanceClass) {
 		return true;
 	},
+	isLoggedIn(this: SDKInstanceClass, clientTag: string) {
+		return !!this.clients.get(clientTag)?.isLoggedIn;
+	},
+	isConnected(this: SDKInstanceClass, clientTag: string) {
+		return !!this.clients.get(clientTag)?.isConnected;
+	},
 };

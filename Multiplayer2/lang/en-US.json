@@ -66,7 +66,29 @@
 					"onPeerDisconnected": {
 						"list-name": "On Peer Disconnected",
 						"display-text": "On Peer Disconnected",
-						"description": "Triggered when disconnected from a peer (either from host or a peer leaving the host)."
+						"description": "Triggered when peer disconnect (either from host or a peer leaving the host)."
+					},
+					"isConnected": {
+						"list-name": "Is Connected",
+						"display-text": "Is Connected (Client Tag [i]{0}[/i])",
+						"description": "True if connected to a signalling server",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							}
+						}
+					},
+					"isLoggedIn": {
+						"list-name": "Is logged in",
+						"display-text": "Is logged in (Client Tag [i]{0}[/i])",
+						"description": "True if logged in to a signalling server",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							}
+						}
 					}
 				},
 				"actions": {

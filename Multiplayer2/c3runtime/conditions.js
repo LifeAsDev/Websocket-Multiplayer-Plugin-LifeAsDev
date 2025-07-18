@@ -36,5 +36,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
     onLeftRoom() {
         return true;
     },
+    onKicked() {
+        return true;
+    },
 };
 export {};

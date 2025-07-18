@@ -39,4 +39,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
 	onLeftRoom(this: SDKInstanceClass) {
 		return true;
 	},
+	onKicked(this: SDKInstanceClass) {
+		return true;
+	},
 };

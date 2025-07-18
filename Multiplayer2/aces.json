@@ -110,6 +110,11 @@
 				"id": "onPeerDisconnected",
 				"scriptName": "onPeerDisconnected",
 				"isTrigger": true
+			},
+			{
+				"id": "onKicked",
+				"scriptName": "onKicked",
+				"isTrigger": true
 			}
 		],
 		"actions": [
@@ -139,21 +144,6 @@
 			{
 				"id": "sendMessage",
 				"scriptName": "sendPeerMessage",
-				"params": [
-					{ "id": "peerId", "type": "string" },
-					{ "id": "tag", "type": "string" },
-					{ "id": "clientTag", "type": "string" },
-					{ "id": "message", "type": "string" },
-					{
-						"id": "mode",
-						"type": "combo",
-						"items": ["unorderedReliable", "orderedReliable", "unreliable"]
-					}
-				]
-			},
-			{
-				"id": "broadcastMessage",
-				"scriptName": "broadcastMessage",
 				"params": [
 					{ "id": "peerId", "type": "string" },
 					{ "id": "tag", "type": "string" },
@@ -206,11 +196,43 @@
 				"highlight": false,
 				"returnType": "string",
 				"params": [{ "id": "tag", "type": "string" }]
+			},
+			{
+				"id": "leaveReason",
+				"expressionName": "LeaveReason",
+				"returnType": "string",
+				"params": [{ "id": "clientTag", "type": "string" }]
 			}
 		]
 	},
 
 	"roomHost": {
+		"actions": [
+			{
+				"id": "broadcastMessage",
+				"scriptName": "broadcastMessage",
+				"params": [
+					{ "id": "peerId", "type": "string" },
+					{ "id": "tag", "type": "string" },
+					{ "id": "clientTag", "type": "string" },
+					{ "id": "message", "type": "string" },
+					{
+						"id": "mode",
+						"type": "combo",
+						"items": ["unorderedReliable", "orderedReliable", "unreliable"]
+					}
+				]
+			},
+			{
+				"id": "kickPeer",
+				"scriptName": "kickPeer",
+				"params": [
+					{ "id": "peerId", "type": "string" },
+					{ "id": "reason", "type": "string" },
+					{ "id": "clientTag", "type": "string" }
+				]
+			}
+		],
 		"conditions": [],
 		"expressions": []
 	}

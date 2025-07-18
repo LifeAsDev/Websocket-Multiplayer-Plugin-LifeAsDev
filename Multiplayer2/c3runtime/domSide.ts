@@ -23,6 +23,7 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 				"leaveRoomOnSignalling",
 				(data) => this._handleLeaveRoomOnSignalling(data),
 			],
+			["kickPeer", (data) => this._handleKickPeer(data)],
 		]);
 		this._instanceWebRTC.eventManager.on(
 			"connected",
@@ -132,6 +133,19 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 				}
 			}
 		);
+		this._instanceWebRTC.eventManager.on(
+			"onKicked",
+			(data: { clientTag: string }) => {
+				const client = this._instanceWebRTC.clients.get(data.clientTag);
+
+				if (client) {
+					this.PostToRuntime("onKicked", {
+						clientTag: data.clientTag,
+						client: client.toSerializable(),
+					});
+				}
+			}
+		);
 	}
 
 	_handleConnect(data: JSONValue): void {
@@ -221,6 +235,14 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 	_handleLeaveRoomOnSignalling(data: JSONValue): void {
 		const { clientTag } = data as { clientTag: string };
 		this._instanceWebRTC.clients.get(clientTag)?.leaveRoomOnSignalling();
+	}
+	_handleKickPeer(data: JSONValue): void {
+		const { clientTag, peerId, reason } = data as {
+			clientTag: string;
+			peerId: string;
+			reason: string;
+		};
+		this._instanceWebRTC.clients.get(clientTag)?.kickPeer(peerId, reason);
 	}
 }
 

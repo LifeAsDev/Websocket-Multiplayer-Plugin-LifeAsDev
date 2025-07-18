@@ -24,4 +24,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
 	PeerAlias(this: SDKInstanceClass) {
 		return this.peerAlias;
 	},
+	LeaveReason(this: SDKInstanceClass, clienTag: string) {
+		return this.clients.get(clienTag)?.leaveReason;
+	},
 };

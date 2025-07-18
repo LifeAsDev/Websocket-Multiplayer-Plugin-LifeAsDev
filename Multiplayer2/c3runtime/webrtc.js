@@ -42,6 +42,7 @@ class ClientWebRTC {
     simPdv = 0;
     simPacketLoss = 0;
     sendQueues = new Map();
+    leaveReason = "";
     constructor(tag, eventManager) {
         this.tag = tag;
         this.eventManager = eventManager;
@@ -119,6 +120,12 @@ class ClientWebRTC {
             case "kicked":
                 if (msg.reason === "host-left") {
                     this.disconnectFromSignalling();
+                }
+                else {
+                    this.eventManager.emit("onKicked", {
+                        clientTag: this.tag,
+                    });
+                    this.disconnectFromRoom();
                 }
                 break;
             case "leave-ok":
@@ -489,6 +496,15 @@ class ClientWebRTC {
                     });
                 }
                 break;
+            case "kick":
+                if (!this.isHost) {
+                    this.leaveReason = parsedMessage.reason || "";
+                    this.disconnectFromRoom();
+                    this.eventManager.emit("onKicked", {
+                        clientTag: this.tag,
+                    });
+                }
+                break;
         }
     };
     toSerializable() {
@@ -513,6 +529,7 @@ class ClientWebRTC {
             simLatency: this.simLatency,
             simPdv: this.simPdv,
             simPacketLoss: this.simPacketLoss,
+            leaveReason: this.leaveReason,
         };
     }
     disconnectFromSignalling = () => {
@@ -569,6 +586,15 @@ class ClientWebRTC {
                 message: "leave",
             });
         }
+    }
+    kickPeer(peerId, reason) {
+        const peerConnection = this.connectionsWebRTC.get(peerId);
+        if (!this.isHost && !this.isOnRoom && !peerConnection)
+            return;
+        this.sendMessageToPeer(peerId, JSON.stringify({
+            type: "kick",
+            reason,
+        }), "unorderedReliable");
     }
 }
 class WebRTC {

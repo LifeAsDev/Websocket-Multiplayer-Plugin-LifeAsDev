@@ -66,5 +66,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
     leaveRoomOnSignalling(clientTag) {
         this._postToDOM("leaveRoomOnSignalling", { clientTag });
     },
+    kickPeer(peerId, reason, clientTag) {
+        this._postToDOM("kickPeer", { clientTag, peerId, reason });
+    },
 };
 export {};

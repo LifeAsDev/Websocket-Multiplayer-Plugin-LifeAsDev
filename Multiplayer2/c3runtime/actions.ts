@@ -118,4 +118,12 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 	leaveRoomOnSignalling(this: SDKInstanceClass, clientTag: string): void {
 		this._postToDOM("leaveRoomOnSignalling", { clientTag });
 	},
+	kickPeer(
+		this: SDKInstanceClass,
+		peerId: string,
+		reason: string,
+		clientTag: string
+	) {
+		this._postToDOM("kickPeer", { clientTag, peerId, reason });
+	},
 };

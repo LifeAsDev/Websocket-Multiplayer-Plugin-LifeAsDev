@@ -94,6 +94,11 @@
 						"list-name": "On Left Room",
 						"display-text": "On Left Room",
 						"description": "On left room on signalling server"
+					},
+					"onKicked": {
+						"list-name": "On Kicked",
+						"display-text": "On Kicked",
+						"description": "Triggered when kicked from a room"
 					}
 				},
 				"actions": {
@@ -308,6 +313,25 @@
 								"desc": "Client Tag. Ignored if not found."
 							}
 						}
+					},
+					"kickPeer": {
+						"list-name": "Kick peer from room",
+						"display-text": "Kick peer [i]{0}[/i] Client Tag [i]{2}[/i](reason: [i]{1}[/i]",
+						"description": "Leave room on signalling server (room connection remain)",
+						"params": {
+							"peerId": {
+								"name": "PeerID",
+								"desc": "ID to identify peer."
+							},
+							"reason": {
+								"name": "Reason",
+								"desc": "Reason message for peer"
+							},
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							}
+						}
 					}
 				},
 				"expressions": {
@@ -346,6 +370,16 @@
 					"peerAlias": {
 						"translated-name": "PeerAlias",
 						"description": "Returns the peer alias of the revelant trigger"
+					},
+					"leaveReason": {
+						"translated-name": "LeaveReason",
+						"description": "Returns in 'On Peer Disconnected', the leave reason if known",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. return emtpy string if not found."
+							}
+						}
 					}
 				}
 			}

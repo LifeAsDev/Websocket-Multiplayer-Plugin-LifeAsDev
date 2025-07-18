@@ -99,6 +99,17 @@
 						"list-name": "On Kicked",
 						"display-text": "On Kicked",
 						"description": "Triggered when kicked from a room"
+					},
+					"isInRoom": {
+						"list-name": "Is in room",
+						"display-text": "Is in room clientTag [i]{0}[/i]",
+						"description": "Returns true if the client tag is in a room.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag."
+							}
+						}
 					}
 				},
 				"actions": {

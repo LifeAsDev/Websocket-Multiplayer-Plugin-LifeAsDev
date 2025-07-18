@@ -39,5 +39,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
     onKicked() {
         return true;
     },
+    isInRoom(clientTag) {
+        return !!this.clients.get(clientTag)?.isOnRoom;
+    },
 };
 export {};

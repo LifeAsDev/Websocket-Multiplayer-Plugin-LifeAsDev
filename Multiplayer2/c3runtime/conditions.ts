@@ -42,4 +42,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
 	onKicked(this: SDKInstanceClass) {
 		return true;
 	},
+	isInRoom(this: SDKInstanceClass, clientTag: string) {
+		return !!this.clients.get(clientTag)?.isOnRoom;
+	},
 };

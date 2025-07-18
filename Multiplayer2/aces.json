@@ -27,6 +27,11 @@
 				"id": "onLeftRoom",
 				"scriptName": "onLeftRoom",
 				"isTrigger": true
+			},
+			{
+				"id": "isInRoom",
+				"scriptName": "isInRoom",
+				"params": [{ "id": "clientTag", "type": "string" }]
 			}
 		],
 		"actions": [

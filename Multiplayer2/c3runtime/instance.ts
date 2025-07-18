@@ -30,6 +30,7 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 				(msg) => this._onDisconnectedFromSignalling(msg),
 			],
 			["onPeerDisconnected", (msg) => this._onPeerDisconnected(msg)],
+			["leftRoom", (msg) => this._onLeftRoom(msg)],
 		]);
 
 		const properties = this._getInitProperties();
@@ -96,6 +97,12 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 		this._trigger(
 			C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onPeerDisconnected
 		);
+	}
+	_onLeftRoom(msg: any): void {
+		const { clientTag, client } = msg;
+		this.clientTag = clientTag;
+		this.clients.set(clientTag, client);
+		this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onLeftRoom);
 	}
 	_release() {
 		super._release();

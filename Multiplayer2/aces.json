@@ -22,6 +22,11 @@
 				"id": "isLoggedIn",
 				"scriptName": "isLoggedIn",
 				"params": [{ "id": "clientTag", "type": "string" }]
+			},
+			{
+				"id": "onLeftRoom",
+				"scriptName": "onLeftRoom",
+				"isTrigger": true
 			}
 		],
 		"actions": [

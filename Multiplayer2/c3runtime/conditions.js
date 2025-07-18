@@ -33,5 +33,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
     isConnected(clientTag) {
         return !!this.clients.get(clientTag)?.isConnected;
     },
+    onLeftRoom() {
+        return true;
+    },
 };
 export {};

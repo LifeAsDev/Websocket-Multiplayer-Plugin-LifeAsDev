@@ -36,4 +36,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
 	isConnected(this: SDKInstanceClass, clientTag: string) {
 		return !!this.clients.get(clientTag)?.isConnected;
 	},
+	onLeftRoom(this: SDKInstanceClass) {
+		return true;
+	},
 };

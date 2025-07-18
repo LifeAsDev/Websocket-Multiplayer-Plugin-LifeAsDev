@@ -148,6 +148,11 @@ class ClientWebRTC {
 				if (msg.reason === "host-left") {
 					this.disconnectFromSignalling();
 				}
+				break;
+			case "leave-ok":
+				this.eventManager.emit("leftRoom", {
+					clientTag: this.tag,
+				});
 		}
 	}
 

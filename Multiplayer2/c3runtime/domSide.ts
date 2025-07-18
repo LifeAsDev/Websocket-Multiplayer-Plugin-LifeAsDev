@@ -120,6 +120,18 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 				}
 			}
 		);
+		this._instanceWebRTC.eventManager.on(
+			"leftRoom",
+			(data: { clientTag: string }) => {
+				const client = this._instanceWebRTC.clients.get(data.clientTag);
+
+				if (client) {
+					this.PostToRuntime("leftRoom", {
+						clientTag: data.clientTag,
+					});
+				}
+			}
+		);
 	}
 
 	_handleConnect(data: JSONValue): void {

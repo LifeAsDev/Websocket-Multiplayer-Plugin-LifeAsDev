@@ -89,6 +89,11 @@
 								"desc": "Client Tag. Ignored if not found."
 							}
 						}
+					},
+					"onLeftRoom": {
+						"list-name": "On Left Room",
+						"display-text": "On Left Room",
+						"description": "On left room on signalling server"
 					}
 				},
 				"actions": {

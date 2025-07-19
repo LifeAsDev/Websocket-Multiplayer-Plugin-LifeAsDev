@@ -460,6 +460,8 @@ class ClientWebRTC {
         }, delay);
     }
     broadcastMessageToPeers(fromId, message, channel) {
+        if (!this.isHost)
+            return;
         for (const [peerId, _] of this.connectionsWebRTC.entries()) {
             if (peerId === fromId)
                 continue;
@@ -468,10 +470,11 @@ class ClientWebRTC {
     }
     onPeerMessageReceived = (peerId, message, peerAlias) => {
         const parsedMessage = JSON.parse(message);
+        const senderId = parsedMessage.fromId || peerId;
         switch (parsedMessage.type) {
             case "default":
                 this.eventManager.emit("peerMessage", {
-                    peerId: peerId,
+                    peerId: senderId,
                     message: parsedMessage.message,
                     clientTag: this.tag,
                     peerAlias,

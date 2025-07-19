@@ -599,6 +599,7 @@ class ClientWebRTC {
 		message: string,
 		channel: "unorderedReliable" | "orderedReliable" | "unreliable"
 	): void {
+		if (!this.isHost) return;
 		for (const [peerId, _] of this.connectionsWebRTC.entries()) {
 			if (peerId === fromId) continue;
 			this.sendMessageToPeer(peerId, message, channel);
@@ -611,10 +612,11 @@ class ClientWebRTC {
 		peerAlias: string
 	) => {
 		const parsedMessage = JSON.parse(message);
+		const senderId = parsedMessage.fromId || peerId;
 		switch (parsedMessage.type) {
 			case "default":
 				this.eventManager.emit("peerMessage", {
-					peerId: peerId,
+					peerId: senderId,
 					message: parsedMessage.message,
 					clientTag: this.tag,
 					peerAlias,

@@ -49,6 +49,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
             type: "default",
             tag,
             message,
+            fromId: peerId,
         });
         this._postToDOM("broadcastMessage", {
             fromId: peerId,

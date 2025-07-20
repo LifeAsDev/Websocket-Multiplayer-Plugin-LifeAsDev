@@ -404,6 +404,36 @@
 					"errorMessage": {
 						"translated-name": "ErrorMessage",
 						"description": "In On signalling error, the error message if available."
+					},
+					"currentGame": {
+						"translated-name": "CurrentGame",
+						"description": "Returns the Game of the client tag.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. return emtpy string if not found."
+							}
+						}
+					},
+					"currentInstance": {
+						"translated-name": "CurrentInstance",
+						"description": "Returns the Instance of the client tag.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. return emtpy string if not found."
+							}
+						}
+					},
+					"currentRoom": {
+						"translated-name": "CurrentRoom",
+						"description": "Returns the Room name of the client tag.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. return emtpy string if not found."
+							}
+						}
 					}
 				}
 			}

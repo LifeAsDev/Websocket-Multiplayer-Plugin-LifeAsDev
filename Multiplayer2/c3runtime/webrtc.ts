@@ -118,6 +118,9 @@ class ClientWebRTC {
 				this.hostId = msg.hostid;
 				this.hostAlias = msg.hostalias;
 				this.isOnRoom = true;
+				this.game = msg.game || this.game;
+				this.instance = msg.instance || this.instance;
+				this.room = msg.room || this.room;
 				if (this.isHost) {
 					this.hostId = this.myid;
 					this.hostAlias = this.myAlias;

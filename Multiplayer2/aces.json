@@ -92,6 +92,27 @@
 				"expressionName": "ErrorMessage",
 				"highlight": false,
 				"returnType": "string"
+			},
+			{
+				"id": "currentGame",
+				"expressionName": "CurrentGame",
+				"highlight": false,
+				"returnType": "string",
+				"params": [{ "id": "clientTag", "type": "string" }]
+			},
+			{
+				"id": "currentInstance",
+				"expressionName": "CurrentInstance",
+				"highlight": false,
+				"returnType": "string",
+				"params": [{ "id": "clientTag", "type": "string" }]
+			},
+			{
+				"id": "currentRoom",
+				"expressionName": "CurrentRoom",
+				"highlight": false,
+				"returnType": "string",
+				"params": [{ "id": "clientTag", "type": "string" }]
 			}
 		]
 	},

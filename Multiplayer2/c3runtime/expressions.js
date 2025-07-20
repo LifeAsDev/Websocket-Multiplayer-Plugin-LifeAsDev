@@ -30,5 +30,14 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
     ErrorMessage() {
         return this.errorMessage;
     },
+    CurrentGame(clientTag) {
+        return this.clients.get(clientTag)?.game || "";
+    },
+    CurrentInstance(clientTag) {
+        return this.clients.get(clientTag)?.instance || "";
+    },
+    CurrentRoom(clientTag) {
+        return this.clients.get(clientTag)?.room || "";
+    },
 };
 export {};

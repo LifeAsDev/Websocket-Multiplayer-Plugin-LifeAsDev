@@ -33,4 +33,13 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
 	ErrorMessage(this: SDKInstanceClass) {
 		return this.errorMessage;
 	},
+	CurrentGame(this: SDKInstanceClass, clientTag: string) {
+		return this.clients.get(clientTag)?.game || "";
+	},
+	CurrentInstance(this: SDKInstanceClass, clientTag: string) {
+		return this.clients.get(clientTag)?.instance || "";
+	},
+	CurrentRoom(this: SDKInstanceClass, clientTag: string) {
+		return this.clients.get(clientTag)?.room || "";
+	},
 };

@@ -27,5 +27,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
     messageTag() {
         return this.msgTag;
     },
+    ErrorMessage() {
+        return this.errorMessage;
+    },
 };
 export {};

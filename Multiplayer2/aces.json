@@ -32,6 +32,11 @@
 				"id": "isInRoom",
 				"scriptName": "isInRoom",
 				"params": [{ "id": "clientTag", "type": "string" }]
+			},
+			{
+				"id": "onError",
+				"scriptName": "onError",
+				"isTrigger": true
 			}
 		],
 		"actions": [
@@ -79,6 +84,14 @@
 				"id": "leaveRoomOnSignalling",
 				"scriptName": "leaveRoomOnSignalling",
 				"params": [{ "id": "clientTag", "type": "string" }]
+			}
+		],
+		"expressions": [
+			{
+				"id": "errorMessage",
+				"expressionName": "ErrorMessage",
+				"highlight": false,
+				"returnType": "string"
 			}
 		]
 	},

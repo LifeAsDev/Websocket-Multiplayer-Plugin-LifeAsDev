@@ -13,7 +13,7 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 	msg: string = "";
 	peerId: string = "";
 	peerAlias: string = "";
-
+	errorMessage: string = "";
 	constructor() {
 		super({ domComponentId: DOM_COMPONENT_ID });
 
@@ -32,6 +32,7 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 			["onPeerDisconnected", (msg) => this._onPeerDisconnected(msg)],
 			["leftRoom", (msg) => this._onLeftRoom(msg)],
 			["onKicked", (msg) => this._onKickedRoom(msg)],
+			["onError", (msg) => this._onErrorSignalling(msg)],
 		]);
 
 		const properties = this._getInitProperties();
@@ -110,6 +111,14 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 		this.clientTag = clientTag;
 		this.clients.set(clientTag, client);
 		this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onKicked);
+	}
+	_onErrorSignalling(msg: any): void {
+		const { clientTag, client, errorMessage } = msg;
+		this.clientTag = clientTag;
+		this.clients.set(clientTag, client);
+		this.errorMessage = errorMessage;
+
+		this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onError);
 	}
 	_release() {
 		super._release();

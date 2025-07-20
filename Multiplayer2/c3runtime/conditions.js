@@ -42,5 +42,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
     isInRoom(clientTag) {
         return !!this.clients.get(clientTag)?.isOnRoom;
     },
+    onError() {
+        return true;
+    },
 };
 export {};

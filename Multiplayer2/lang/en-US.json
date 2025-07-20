@@ -110,6 +110,11 @@
 								"desc": "Client Tag."
 							}
 						}
+					},
+					"onError": {
+						"list-name": "On error",
+						"display-text": "On signalling error",
+						"description": "Triggered if an error occurs with the signalling server. The ErrorMessage expression indicates the type of error that occurred."
 					}
 				},
 				"actions": {
@@ -395,6 +400,10 @@
 								"desc": "Client Tag. return emtpy string if not found."
 							}
 						}
+					},
+					"errorMessage": {
+						"translated-name": "ErrorMessage",
+						"description": "In On signalling error, the error message if available."
 					}
 				}
 			}

@@ -132,6 +132,12 @@ class ClientWebRTC {
                 this.eventManager.emit("leftRoom", {
                     clientTag: this.tag,
                 });
+            case "error":
+                console.log("bro");
+                this.eventManager.emit("onError", {
+                    clientTag: this.tag,
+                    errorMessage: msg.details,
+                });
         }
     }
     async connectToSignallingServer(serverUrl) {
@@ -144,15 +150,22 @@ class ClientWebRTC {
             this.signallingServerMessageHandler(JSON.parse(event.data));
         };
         this.ws.onerror = (error) => {
-            console.error(`WebSocket error for tag ${this.tag}:`, error);
+            this.eventManager.emit("onError", {
+                clientTag: this.tag,
+                errorMessage: `Failed to connect to signalling server for client tag ${this.tag}`,
+            });
         };
-        this.ws.onclose = () => {
+        this.ws.onclose = (event) => {
             this.isConnected = false;
             this.isLoggedIn = false;
             this.ws = null;
             this.eventManager.emit("disconnected", {
                 clientTag: this.tag,
             });
+            /* 	this.eventManager.emit("onError", {
+                clientTag: this.tag,
+                errorMessage: `WebSocket closed unexpectedly for tag ${this.tag}. Code: ${event.code}, Reason: ${event.reason}`,
+            }); */
         };
     }
     async loginToSignallingServer(alias) {

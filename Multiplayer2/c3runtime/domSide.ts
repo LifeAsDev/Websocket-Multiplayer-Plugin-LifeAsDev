@@ -146,6 +146,19 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 				}
 			}
 		);
+		this._instanceWebRTC.eventManager.on(
+			"onError",
+			(data: { clientTag: string; errorMessage: string }) => {
+				const client = this._instanceWebRTC.clients.get(data.clientTag);
+				if (client) {
+					this.PostToRuntime("onError", {
+						clientTag: data.clientTag,
+						client: client.toSerializable(),
+						errorMessage: data.errorMessage,
+					});
+				}
+			}
+		);
 	}
 
 	_handleConnect(data: JSONValue): void {

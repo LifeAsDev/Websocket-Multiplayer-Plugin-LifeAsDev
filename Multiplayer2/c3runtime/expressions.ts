@@ -30,4 +30,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
 	messageTag(this: SDKInstanceClass) {
 		return this.msgTag;
 	},
+	ErrorMessage(this: SDKInstanceClass) {
+		return this.errorMessage;
+	},
 };

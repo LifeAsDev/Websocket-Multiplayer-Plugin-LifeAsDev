@@ -45,4 +45,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
 	isInRoom(this: SDKInstanceClass, clientTag: string) {
 		return !!this.clients.get(clientTag)?.isOnRoom;
 	},
+	onError(this: SDKInstanceClass) {
+		return true;
+	},
 };

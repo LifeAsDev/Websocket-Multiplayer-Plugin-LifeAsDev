@@ -45,5 +45,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
     onError() {
         return true;
     },
+    onRoomList() {
+        return true;
+    },
 };
 export {};

@@ -22,6 +22,7 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
                 (data) => this._handleLeaveRoomOnSignalling(data),
             ],
             ["kickPeer", (data) => this._handleKickPeer(data)],
+            ["requestListRoom", (data) => this._handleRequestListRoom(data)],
         ]);
         this._instanceWebRTC.eventManager.on("connected", (data) => {
             const client = this._instanceWebRTC.clients.get(data.clientTag);
@@ -114,6 +115,12 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
                 });
             }
         });
+        this._instanceWebRTC.eventManager.on("room-list", (data) => {
+            this.PostToRuntime("onRoomList", {
+                clientTag: data.clientTag,
+                roomListData: data.roomListData,
+            });
+        });
     }
     _handleConnect(data) {
         const { url, tag } = data;
@@ -172,6 +179,12 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
     _handleKickPeer(data) {
         const { clientTag, peerId, reason } = data;
         this._instanceWebRTC.clients.get(clientTag)?.kickPeer(peerId, reason);
+    }
+    _handleRequestListRoom(data) {
+        const { clientTag, game, instance, which } = data;
+        this._instanceWebRTC.clients
+            .get(clientTag)
+            ?.requestRoomList(game, instance, which);
     }
 }
 globalThis.RuntimeInterface.AddDOMHandlerClass(WebRTCDOMHandler);

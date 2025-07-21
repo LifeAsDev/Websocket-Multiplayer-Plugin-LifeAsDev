@@ -127,4 +127,18 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 	) {
 		this._postToDOM("kickPeer", { clientTag, peerId, reason });
 	},
+	requestRoomList(
+		this: SDKInstanceClass,
+		clientTag: string,
+		game: string,
+		instance: string,
+		which: number
+	): void {
+		this._postToDOM("requestListRoom", {
+			clientTag,
+			game,
+			instance,
+			which,
+		});
+	},
 };

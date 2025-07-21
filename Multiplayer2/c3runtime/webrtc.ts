@@ -162,10 +162,14 @@ class ClientWebRTC {
 					clientTag: this.tag,
 				});
 			case "error":
-				console.log("bro");
 				this.eventManager.emit("onError", {
 					clientTag: this.tag,
 					errorMessage: msg.details,
+				});
+			case "room-list":
+				this.eventManager.emit("room-list", {
+					clientTag: this.tag,
+					roomListData: msg.list,
 				});
 		}
 	}
@@ -775,6 +779,15 @@ class ClientWebRTC {
 			}),
 			"unorderedReliable"
 		);
+	}
+
+	requestRoomList(game: string, instance: string, which: number): void {
+		this.sendSgws({
+			message: "list-rooms",
+			game,
+			instance,
+			which,
+		});
 	}
 }
 

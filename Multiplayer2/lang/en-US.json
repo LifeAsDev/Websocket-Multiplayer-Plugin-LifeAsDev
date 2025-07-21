@@ -115,6 +115,11 @@
 						"list-name": "On error",
 						"display-text": "On signalling error",
 						"description": "Triggered if an error occurs with the signalling server. The ErrorMessage expression indicates the type of error that occurred."
+					},
+					"onRoomList": {
+						"list-name": "On Room List",
+						"display-text": "On Room List",
+						"description": "Triggered when the room list is received from the signalling server. The RoomList expression contains the list of rooms."
 					}
 				},
 				"actions": {
@@ -346,6 +351,34 @@
 							"clientTag": {
 								"name": "Client Tag",
 								"desc": "Client Tag. Ignored if not found."
+							}
+						}
+					},
+					"requestRoomList": {
+						"list-name": "Request Room List",
+						"display-text": "Request room list from signalling server Client Tag [i]{0}[/i] game [i]{1}[/i] instance [i]{2}[/i] which [i]{3}[/i]",
+						"description": "Request the room list from the signalling server.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							},
+							"game": {
+								"name": "Game",
+								"desc": "The name of the game to filter rooms by."
+							},
+							"instance": {
+								"name": "Instance",
+								"desc": "The name of the instance to filter rooms by."
+							},
+							"which": {
+								"name": "Which",
+								"desc": "return rooms by state",
+								"items": {
+									"all": "all",
+									"unlocked": "unlocked",
+									"available": "available"
+								}
 							}
 						}
 					}

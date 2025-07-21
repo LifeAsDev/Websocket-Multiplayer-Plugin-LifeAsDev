@@ -33,6 +33,7 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 			["leftRoom", (msg) => this._onLeftRoom(msg)],
 			["onKicked", (msg) => this._onKickedRoom(msg)],
 			["onError", (msg) => this._onErrorSignalling(msg)],
+			["onRoomList", (msg) => this._onRoomList(msg)],
 		]);
 
 		const properties = this._getInitProperties();
@@ -120,6 +121,13 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 
 		this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onError);
 	}
+	_onRoomList(msg: any): void {
+		const { clientTag, roomListData } = msg;
+		this.clientTag = clientTag;
+		console.log("Room List: ", roomListData);
+		this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onRoomList);
+	}
+
 	_release() {
 		super._release();
 	}

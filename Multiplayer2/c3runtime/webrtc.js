@@ -136,10 +136,14 @@ class ClientWebRTC {
                     clientTag: this.tag,
                 });
             case "error":
-                console.log("bro");
                 this.eventManager.emit("onError", {
                     clientTag: this.tag,
                     errorMessage: msg.details,
+                });
+            case "room-list":
+                this.eventManager.emit("room-list", {
+                    clientTag: this.tag,
+                    roomListData: msg.list,
                 });
         }
     }
@@ -614,6 +618,14 @@ class ClientWebRTC {
             type: "kick",
             reason,
         }), "unorderedReliable");
+    }
+    requestRoomList(game, instance, which) {
+        this.sendSgws({
+            message: "list-rooms",
+            game,
+            instance,
+            which,
+        });
     }
 }
 class WebRTC {

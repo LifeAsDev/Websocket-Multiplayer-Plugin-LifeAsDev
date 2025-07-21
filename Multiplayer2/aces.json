@@ -37,6 +37,12 @@
 				"id": "onError",
 				"scriptName": "onError",
 				"isTrigger": true
+			},
+
+			{
+				"id": "onRoomList",
+				"scriptName": "onRoomList",
+				"isTrigger": true
 			}
 		],
 		"actions": [
@@ -84,6 +90,20 @@
 				"id": "leaveRoomOnSignalling",
 				"scriptName": "leaveRoomOnSignalling",
 				"params": [{ "id": "clientTag", "type": "string" }]
+			},
+			{
+				"id": "requestRoomList",
+				"scriptName": "requestRoomList",
+				"params": [
+					{ "id": "clientTag", "type": "string" },
+					{ "id": "game", "type": "string" },
+					{ "id": "instance", "type": "string" },
+					{
+						"id": "which",
+						"type": "combo",
+						"items": ["all", "unlocked", "available"]
+					}
+				]
 			}
 		],
 		"expressions": [

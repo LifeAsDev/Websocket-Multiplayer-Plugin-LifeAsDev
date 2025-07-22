@@ -1,7 +1,8 @@
 "use strict";
 const DOM_COMPONENT_ID = "LifeAsDevWebRTC_DOMMessaging";
 class WebRTCDOMHandler extends globalThis.DOMHandler {
-    _instanceWebRTC = new self.WebRTC(); // Instancia de WebRTC para manejar la lógica de WebRTC
+    _instanceWebRTC = new self.WebRTC();
+    /*  */
     constructor(iRuntime) {
         super(iRuntime, DOM_COMPONENT_ID);
         this.AddRuntimeMessageHandlers([

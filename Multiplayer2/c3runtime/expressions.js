@@ -39,5 +39,20 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
     CurrentRoom(clientTag) {
         return this.clients.get(clientTag)?.room || "";
     },
+    ListRoomCount() {
+        return this.roomListData.length;
+    },
+    ListRoomName(index) {
+        return this.roomListData[index]?.name || "";
+    },
+    ListRoomPeerCount(index) {
+        return this.roomListData[index]?.peercount || 0;
+    },
+    ListRoomMaxPeerCount(index) {
+        return this.roomListData[index]?.maxpeercount || 0;
+    },
+    ListRoomState(index) {
+        return this.roomListData[index]?.state || "";
+    },
 };
 export {};

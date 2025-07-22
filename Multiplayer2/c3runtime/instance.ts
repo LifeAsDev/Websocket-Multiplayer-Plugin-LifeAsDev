@@ -14,6 +14,12 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 	peerId: string = "";
 	peerAlias: string = "";
 	errorMessage: string = "";
+	roomListData: Array<{
+		maxpeercount: number;
+		name: string;
+		peercount: number;
+		state: string;
+	}> = [];
 	constructor() {
 		super({ domComponentId: DOM_COMPONENT_ID });
 
@@ -124,7 +130,7 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 	_onRoomList(msg: any): void {
 		const { clientTag, roomListData } = msg;
 		this.clientTag = clientTag;
-		console.log("Room List: ", roomListData);
+		this.roomListData = roomListData;
 		this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onRoomList);
 	}
 

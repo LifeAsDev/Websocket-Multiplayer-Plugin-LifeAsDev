@@ -133,6 +133,64 @@
 				"highlight": false,
 				"returnType": "string",
 				"params": [{ "id": "clientTag", "type": "string" }]
+			},
+			{
+				"id": "listRoomCount",
+				"expressionName": "ListRoomCount",
+				"highlight": false,
+				"returnType": "number"
+			},
+			{
+				"id": "listRoomName",
+				"expressionName": "ListRoomName",
+				"highlight": false,
+				"returnType": "string",
+				"params": [
+					{
+						"id": "index",
+						"type": "number",
+						"description": "The index of the room in the list."
+					}
+				]
+			},
+			{
+				"id": "listRoomPeerCount",
+				"expressionName": "ListRoomPeerCount",
+				"highlight": false,
+				"returnType": "number",
+				"params": [
+					{
+						"id": "index",
+						"type": "number",
+						"description": "The index of the room in the list."
+					}
+				]
+			},
+			{
+				"id": "listRoomMaxPeerCount",
+				"expressionName": "ListRoomMaxPeerCount",
+				"highlight": false,
+				"returnType": "number",
+				"params": [
+					{
+						"id": "index",
+						"type": "number",
+						"description": "The index of the room in the list."
+					}
+				]
+			},
+			{
+				"id": "listRoomState",
+				"expressionName": "ListRoomState",
+				"highlight": false,
+				"returnType": "string",
+				"params": [
+					{
+						"id": "index",
+						"type": "number",
+						"description": "The index of the room in the list."
+					}
+				]
 			}
 		]
 	},

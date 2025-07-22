@@ -22,6 +22,8 @@ const PLUGIN_CLASS = (SDK.Plugins.Lifeasdev_MultiplayerPlugin = class Multiplaye
         this._info.SetIsSingleGlobal(true);
         this._info.SetRuntimeModuleMainScript("c3runtime/main.js");
         this._info.AddC3RuntimeScript("c3runtime/workerside/webrtc.js");
+        /* 			this._info.AddC3RuntimeScript("c3runtime/mymodule.js");
+         */ this._info.SetDOMSideScripts(["c3runtime/domSide.js"]);
         this._info.AddFileDependency({
             filename: "c3runtime/webrtc.js",
             type: "external-dom-script",
@@ -34,7 +36,6 @@ const PLUGIN_CLASS = (SDK.Plugins.Lifeasdev_MultiplayerPlugin = class Multiplaye
             fileType: "js",
             scriptType: "module", // ✅ ahora también es módulo en el DOM
         });
-        this._info.SetDOMSideScripts(["c3runtime/domSide.js"]);
         /* 	SDK.Lang.PushContext(".properties");
          */
         /* 			this._info.SetProperties([

@@ -467,6 +467,50 @@
 								"desc": "Client Tag. return emtpy string if not found."
 							}
 						}
+					},
+					"listRoomCount": {
+						"translated-name": "ListRoomCount",
+						"description": "After On Room List, the number of rooms in the received list."
+					},
+					"listRoomName": {
+						"translated-name": "ListRoomName",
+						"description": "Returns the name of the room at the specified index in the received list.",
+						"params": {
+							"index": {
+								"name": "Index",
+								"desc": "The index of the room in the list."
+							}
+						}
+					},
+					"listRoomPeerCount": {
+						"translated-name": "ListRoomPeerCount",
+						"description": "Returns the number of peers in the room at the specified index in the received list.",
+						"params": {
+							"index": {
+								"name": "Index",
+								"desc": "The index of the room in the list."
+							}
+						}
+					},
+					"listRoomMaxPeerCount": {
+						"translated-name": "ListRoomMaxPeerCount",
+						"description": "Returns the maximum number of peers allowed in the room at the specified index in the received list.",
+						"params": {
+							"index": {
+								"name": "Index",
+								"desc": "The index of the room in the list."
+							}
+						}
+					},
+					"listRoomState": {
+						"translated-name": "ListRoomState",
+						"description": "Returns the state of the room at the specified index in the received list.",
+						"params": {
+							"index": {
+								"name": "Index",
+								"desc": "The index of the room in the list."
+							}
+						}
 					}
 				}
 			}

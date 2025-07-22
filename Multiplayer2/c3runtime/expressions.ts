@@ -57,4 +57,13 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
 	ListRoomState(this: SDKInstanceClass, index: number): string {
 		return this.roomListData[index]?.state || "";
 	},
+	ListInstanceCount(this: SDKInstanceClass): number {
+		return this.instanceListData.length;
+	},
+	ListInstanceName(this: SDKInstanceClass, index: number): string {
+		return this.instanceListData[index]?.name || "";
+	},
+	ListInstancePeerCount(this: SDKInstanceClass, index: number): number {
+		return this.instanceListData[index]?.peercount || 0;
+	},
 };

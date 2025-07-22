@@ -51,4 +51,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
 	onRoomList(this: SDKInstanceClass) {
 		return true;
 	},
+	onInstanceList(this: SDKInstanceClass) {
+		return true;
+	},
 };

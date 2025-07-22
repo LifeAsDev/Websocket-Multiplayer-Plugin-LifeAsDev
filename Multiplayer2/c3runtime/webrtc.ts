@@ -171,6 +171,11 @@ class ClientWebRTC {
 					clientTag: this.tag,
 					roomListData: msg.list,
 				});
+			case "instance-list":
+				this.eventManager.emit("instance-list", {
+					clienTag: this.tag,
+					instanceListData: msg.list,
+				});
 		}
 	}
 
@@ -787,6 +792,12 @@ class ClientWebRTC {
 			game,
 			instance,
 			which,
+		});
+	}
+	requestInstanceList(game: string): void {
+		this.sendSgws({
+			message: "list-instances",
+			game,
 		});
 	}
 }

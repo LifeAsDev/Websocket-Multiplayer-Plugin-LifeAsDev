@@ -43,6 +43,11 @@
 				"id": "onRoomList",
 				"scriptName": "onRoomList",
 				"isTrigger": true
+			},
+			{
+				"id": "onInstanceList",
+				"scriptName": "onInstanceList",
+				"isTrigger": true
 			}
 		],
 		"actions": [
@@ -103,6 +108,14 @@
 						"type": "combo",
 						"items": ["all", "unlocked", "available"]
 					}
+				]
+			},
+			{
+				"id": "requestInstanceList",
+				"scriptName": "requestInstanceList",
+				"params": [
+					{ "id": "clientTag", "type": "string" },
+					{ "id": "game", "type": "string" }
 				]
 			}
 		],
@@ -189,6 +202,38 @@
 						"id": "index",
 						"type": "number",
 						"description": "The index of the room in the list."
+					}
+				]
+			},
+			{
+				"id": "listInstanceCount",
+				"expressionName": "ListInstanceCount",
+				"highlight": false,
+				"returnType": "number"
+			},
+			{
+				"id": "listInstanceName",
+				"expressionName": "ListInstanceName",
+				"highlight": false,
+				"returnType": "string",
+				"params": [
+					{
+						"id": "index",
+						"type": "number",
+						"description": "The index of the game instance in the list."
+					}
+				]
+			},
+			{
+				"id": "listInstancePeerCount",
+				"expressionName": "ListInstancePeerCount",
+				"highlight": false,
+				"returnType": "number",
+				"params": [
+					{
+						"id": "index",
+						"type": "number",
+						"description": "The index of the game instance in the list."
 					}
 				]
 			}

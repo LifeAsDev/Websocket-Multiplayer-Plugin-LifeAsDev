@@ -1,8 +1,8 @@
 const DOM_COMPONENT_ID = "LifeAsDevWebRTC_DOMMessaging";
 
 class WebRTCDOMHandler extends globalThis.DOMHandler {
-	_instanceWebRTC = new self.WebRTC(); 
-/*  */
+	_instanceWebRTC = new self.WebRTC();
+	/*  */
 	constructor(iRuntime: IRuntimeInterface) {
 		super(iRuntime, DOM_COMPONENT_ID);
 
@@ -25,6 +25,7 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 			],
 			["kickPeer", (data) => this._handleKickPeer(data)],
 			["requestListRoom", (data) => this._handleRequestListRoom(data)],
+			["requestListInstance", (data) => this._handleRequestListInstance(data)],
 		]);
 		this._instanceWebRTC.eventManager.on(
 			"connected",
@@ -169,6 +170,15 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 				});
 			}
 		);
+		this._instanceWebRTC.eventManager.on(
+			"instance-list",
+			(data: { clientTag: string; instanceListData: any }) => {
+				this.PostToRuntime("onInstanceList", {
+					clienTag: data.clientTag,
+					instanceListData: data.instanceListData,
+				});
+			}
+		);
 	}
 
 	_handleConnect(data: JSONValue): void {
@@ -278,6 +288,14 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 		this._instanceWebRTC.clients
 			.get(clientTag)
 			?.requestRoomList(game, instance, which);
+	}
+	_handleRequestListInstance(data: JSONValue): void {
+		const { clientTag, game } = data as {
+			clientTag: string;
+			game: string;
+		};
+
+		this._instanceWebRTC.clients.get(clientTag)?.requestInstanceList(game);
 	}
 }
 

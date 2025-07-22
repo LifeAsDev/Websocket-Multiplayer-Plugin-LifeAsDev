@@ -20,6 +20,10 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 		peercount: number;
 		state: string;
 	}> = [];
+	instanceListData: Array<{
+		name: string;
+		peercount: number;
+	}> = [];
 	constructor() {
 		super({ domComponentId: DOM_COMPONENT_ID });
 
@@ -40,6 +44,7 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 			["onKicked", (msg) => this._onKickedRoom(msg)],
 			["onError", (msg) => this._onErrorSignalling(msg)],
 			["onRoomList", (msg) => this._onRoomList(msg)],
+			["onInstanceList", (msg) => this._onInstanceList(msg)],
 		]);
 
 		const properties = this._getInitProperties();
@@ -133,7 +138,12 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 		this.roomListData = roomListData;
 		this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onRoomList);
 	}
-
+	_onInstanceList(msg: any): void {
+		const { clientTag, instanceListData } = msg;
+		this.clientTag = clientTag;
+		this.instanceListData = instanceListData;
+		this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onInstanceList);
+	}
 	_release() {
 		super._release();
 	}

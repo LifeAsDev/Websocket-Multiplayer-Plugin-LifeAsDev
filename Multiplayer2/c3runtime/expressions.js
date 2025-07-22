@@ -54,5 +54,14 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
     ListRoomState(index) {
         return this.roomListData[index]?.state || "";
     },
+    ListInstanceCount() {
+        return this.instanceListData.length;
+    },
+    ListInstanceName(index) {
+        return this.instanceListData[index]?.name || "";
+    },
+    ListInstancePeerCount(index) {
+        return this.instanceListData[index]?.peercount || 0;
+    },
 };
 export {};

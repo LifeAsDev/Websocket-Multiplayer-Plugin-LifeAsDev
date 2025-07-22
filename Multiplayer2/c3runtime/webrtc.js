@@ -145,6 +145,11 @@ class ClientWebRTC {
                     clientTag: this.tag,
                     roomListData: msg.list,
                 });
+            case "instance-list":
+                this.eventManager.emit("instance-list", {
+                    clienTag: this.tag,
+                    instanceListData: msg.list,
+                });
         }
     }
     async connectToSignallingServer(serverUrl) {
@@ -625,6 +630,12 @@ class ClientWebRTC {
             game,
             instance,
             which,
+        });
+    }
+    requestInstanceList(game) {
+        this.sendSgws({
+            message: "list-instances",
+            game,
         });
     }
 }

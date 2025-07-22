@@ -141,4 +141,14 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
 			which,
 		});
 	},
+	requestInstanceList(
+		this: SDKInstanceClass,
+		clientTag: string,
+		game: string
+	): void {
+		this._postToDOM("requestListInstance", {
+			clientTag,
+			game,
+		});
+	},
 };

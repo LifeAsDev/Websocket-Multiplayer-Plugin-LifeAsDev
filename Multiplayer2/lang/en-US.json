@@ -120,6 +120,11 @@
 						"list-name": "On Room List",
 						"display-text": "On Room List",
 						"description": "Triggered when the room list is received from the signalling server. The RoomList expression contains the list of rooms."
+					},
+					"onInstanceList": {
+						"list-name": "On Instance List",
+						"display-text": "On Instance List",
+						"description": "Triggered when a request instance list is completed."
 					}
 				},
 				"actions": {
@@ -381,6 +386,21 @@
 								}
 							}
 						}
+					},
+					"requestInstanceList": {
+						"list-name": "Request Instance List",
+						"display-text": "Request instance list from signalling server Client Tag [i]{0}[/i] game [i]{1}[/i]",
+						"description": "Request the instance list from the signalling server.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							},
+							"game": {
+								"name": "Game",
+								"desc": "The name of the game to filter instances by."
+							}
+						}
 					}
 				},
 				"expressions": {
@@ -509,6 +529,30 @@
 							"index": {
 								"name": "Index",
 								"desc": "The index of the room in the list."
+							}
+						}
+					},
+					"listInstanceCount": {
+						"translated-name": "ListInstanceCount",
+						"description": "After On game instance list triggers, the number of game instances in the received list."
+					},
+					"listInstanceName": {
+						"translated-name": "ListInstanceName",
+						"description": "Returns the name of the game instance at the specified index in the received list.",
+						"params": {
+							"index": {
+								"name": "Index",
+								"desc": "The index of the game instance in the list."
+							}
+						}
+					},
+					"listInstancePeerCount": {
+						"translated-name": "ListInstancePeerCount",
+						"description": "Returns the number of peers in the game instance at the specified index in the received list.",
+						"params": {
+							"index": {
+								"name": "Index",
+								"desc": "The index of the game instance in the list."
 							}
 						}
 					}

@@ -78,5 +78,11 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Acts = {
             which,
         });
     },
+    requestInstanceList(clientTag, game) {
+        this._postToDOM("requestListInstance", {
+            clientTag,
+            game,
+        });
+    },
 };
 export {};

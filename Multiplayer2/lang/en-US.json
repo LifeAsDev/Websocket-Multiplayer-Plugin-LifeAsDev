@@ -560,6 +560,16 @@
 								"desc": "The index of the game instance in the list."
 							}
 						}
+					},
+					"peerCount": {
+						"translated-name": "PeerCount",
+						"description": "Returns the number of peers connected in the current room.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "The client tag to identify the room."
+							}
+						}
 					}
 				}
 			}

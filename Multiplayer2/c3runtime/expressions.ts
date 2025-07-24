@@ -66,4 +66,11 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
 	ListInstancePeerCount(this: SDKInstanceClass, index: number): number {
 		return this.instanceListData[index]?.peercount || 0;
 	},
+	PeerCount(this: SDKInstanceClass, clientTag: string): number {
+		const client = this.clients.get(clientTag);
+		if (!client || !client.isOnRoom) {
+			return 0;
+		}
+		return client.peerCount;
+	},
 };

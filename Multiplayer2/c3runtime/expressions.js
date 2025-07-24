@@ -63,5 +63,12 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
     ListInstancePeerCount(index) {
         return this.instanceListData[index]?.peercount || 0;
     },
+    PeerCount(clientTag) {
+        const client = this.clients.get(clientTag);
+        if (!client || !client.isOnRoom) {
+            return 0;
+        }
+        return client.peerCount;
+    },
 };
 export {};

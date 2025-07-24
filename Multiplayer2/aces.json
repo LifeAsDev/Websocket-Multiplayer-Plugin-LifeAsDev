@@ -375,6 +375,19 @@
 				"expressionName": "LeaveReason",
 				"returnType": "string",
 				"params": [{ "id": "clientTag", "type": "string" }]
+			},
+			{
+				"id": "peerCount",
+				"expressionName": "PeerCount",
+				"highlight": false,
+				"returnType": "number",
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string",
+						"description": "The client tag to identify the room."
+					}
+				]
 			}
 		]
 	},

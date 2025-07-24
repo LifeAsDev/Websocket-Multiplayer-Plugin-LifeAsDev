@@ -2,6 +2,7 @@ import type {
 	OnPeerMessageCallback,
 	TagCallback,
 	PeerConnectionWrapper,
+	ClientSerializable,
 } from "./webrtcTypes";
 
 class EventManager {
@@ -60,6 +61,7 @@ class ClientWebRTC {
 		this.tag = tag;
 		this.eventManager = eventManager;
 	}
+	public peerCount: number = 0;
 	broadcastPeerConnected(peerId: string, peerAlias: string) {
 		const message = JSON.stringify({
 			type: "peer-connected",
@@ -436,13 +438,12 @@ class ClientWebRTC {
 					clientTag: this.tag,
 					peerAlias: peerConnection.peerAlias,
 				});
-				if (this.isHost) {
-					this.sendPeerConnecteds(peerConnection.peerId);
-					this.broadcastPeerConnected(
-						peerConnection.peerId,
-						peerConnection.peerAlias
-					);
-				}
+				this.sendPeerConnecteds(peerConnection.peerId);
+				this.broadcastPeerConnected(
+					peerConnection.peerId,
+					peerConnection.peerAlias
+				);
+
 				this.sendSgws({
 					message: "confirm-peer",
 					id: peerConnection.peerId,
@@ -680,7 +681,7 @@ class ClientWebRTC {
 		}
 	};
 
-	toSerializable() {
+	toSerializable(): ClientSerializable {
 		return {
 			tag: this.tag,
 			isLoggedIn: this.isLoggedIn,
@@ -703,6 +704,7 @@ class ClientWebRTC {
 			simPdv: this.simPdv,
 			simPacketLoss: this.simPacketLoss,
 			leaveReason: this.leaveReason,
+			peerCount: this.peerCount,
 		};
 	}
 	disconnectFromSignalling = () => {
@@ -743,7 +745,6 @@ class ClientWebRTC {
 	): void {
 		const peerConnection = this.connectionsWebRTC.get(peerId);
 		if (!peerConnection) return;
-
 		for (const channel of Object.values(peerConnection.channels)) {
 			if (channel) {
 				channel.close();
@@ -755,7 +756,7 @@ class ClientWebRTC {
 		this.connectionsWebRTC.delete(peerId);
 		this.sendQueues.delete(peerId);
 
-		if (options.emit) {
+		if (options.emit && peerConnection.isReady) {
 			this.eventManager.emit("onPeerDisconnected", {
 				clientTag: this.tag,
 				peerId,

@@ -41,6 +41,7 @@ export type ClientSerializable = {
 	simPdv: number;
 	simPacketLoss: number;
 	leaveReason: string;
+	peerCount: number;
 };
 export interface PeerConnectionWrapper {
 	conn: RTCPeerConnection;
@@ -49,7 +50,7 @@ export interface PeerConnectionWrapper {
 		orderedReliable: RTCDataChannel | null;
 		unreliable: RTCDataChannel | null;
 	};
-	state: RTCIceConnectionState;
+	state: "new" | "connected";
 	lastPing: number | null;
 	isReady: boolean;
 	peerId: string;

@@ -47,6 +47,7 @@ class ClientWebRTC {
         this.tag = tag;
         this.eventManager = eventManager;
     }
+    peerCount = 0;
     broadcastPeerConnected(peerId, peerAlias) {
         const message = JSON.stringify({
             type: "peer-connected",
@@ -350,10 +351,8 @@ class ClientWebRTC {
                     clientTag: this.tag,
                     peerAlias: peerConnection.peerAlias,
                 });
-                if (this.isHost) {
-                    this.sendPeerConnecteds(peerConnection.peerId);
-                    this.broadcastPeerConnected(peerConnection.peerId, peerConnection.peerAlias);
-                }
+                this.sendPeerConnecteds(peerConnection.peerId);
+                this.broadcastPeerConnected(peerConnection.peerId, peerConnection.peerAlias);
                 this.sendSgws({
                     message: "confirm-peer",
                     id: peerConnection.peerId,
@@ -558,6 +557,7 @@ class ClientWebRTC {
             simPdv: this.simPdv,
             simPacketLoss: this.simPacketLoss,
             leaveReason: this.leaveReason,
+            peerCount: this.peerCount,
         };
     }
     disconnectFromSignalling = () => {
@@ -600,7 +600,7 @@ class ClientWebRTC {
         peerConnection.conn.close();
         this.connectionsWebRTC.delete(peerId);
         this.sendQueues.delete(peerId);
-        if (options.emit) {
+        if (options.emit && peerConnection.isReady) {
             this.eventManager.emit("onPeerDisconnected", {
                 clientTag: this.tag,
                 peerId,

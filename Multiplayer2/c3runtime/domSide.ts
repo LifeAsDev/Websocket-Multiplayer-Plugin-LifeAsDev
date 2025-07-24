@@ -59,6 +59,8 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 			(data: { clientTag: string }) => {
 				const client = this._instanceWebRTC.clients.get(data.clientTag);
 				if (client) {
+					client.peerCount = 1;
+
 					this.PostToRuntime("onJoinedRoom", {
 						clientTag: data.clientTag,
 						client: client.toSerializable(),
@@ -70,11 +72,16 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 		this._instanceWebRTC.eventManager.on(
 			"peerJoined",
 			(data: { clientTag: string; peerId: string; peerAlias: string }) => {
-				this.PostToRuntime("onPeerConnected", {
-					clientTag: data.clientTag,
-					peerId: data.peerId,
-					peerAlias: data.peerAlias,
-				});
+				const client = this._instanceWebRTC.clients.get(data.clientTag);
+				if (client) {
+					client.peerCount++;
+					this.PostToRuntime("onPeerConnected", {
+						clientTag: data.clientTag,
+						peerId: data.peerId,
+						peerAlias: data.peerAlias,
+						client: client.toSerializable(),
+					});
+				}
 			}
 		);
 
@@ -114,6 +121,7 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
 			(data: { clientTag: string; peerId: string; peerAlias: string }) => {
 				const client = this._instanceWebRTC.clients.get(data.clientTag);
 				if (client) {
+					client.peerCount--;
 					this.PostToRuntime("onPeerDisconnected", {
 						clientTag: data.clientTag,
 						client: client.toSerializable(),

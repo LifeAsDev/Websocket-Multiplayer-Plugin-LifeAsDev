@@ -277,6 +277,11 @@
 				"id": "onKicked",
 				"scriptName": "onKicked",
 				"isTrigger": true
+			},
+			{
+				"id": "onAnyPeerMessage",
+				"scriptName": "onAnyPeerMessage",
+				"isTrigger": true
 			}
 		],
 		"actions": [

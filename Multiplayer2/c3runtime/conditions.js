@@ -18,6 +18,9 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
     onPeerMessage(tag) {
         return tag === this.msgTag;
     },
+    onAnyPeerMessage() {
+        return true;
+    },
     onPeerConnected() {
         return true;
     },

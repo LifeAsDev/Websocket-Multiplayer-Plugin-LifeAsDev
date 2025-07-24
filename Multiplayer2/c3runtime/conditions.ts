@@ -21,6 +21,9 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
 	onPeerMessage(this: SDKInstanceClass, tag: string) {
 		return tag === this.msgTag;
 	},
+	onAnyPeerMessage(this: SDKInstanceClass) {
+		return true;
+	},
 	onPeerConnected(this: SDKInstanceClass) {
 		return true;
 	},

@@ -92,6 +92,7 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 		this.peerAlias = peerAlias;
 		this.msgTag = tag;
 		this.msg = message;
+		this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onAnyPeerMessage);
 		this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onPeerMessage);
 	}
 	_onDisconnectedFromSignalling(msg: any): void {

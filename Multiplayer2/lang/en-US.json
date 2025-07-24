@@ -42,6 +42,11 @@
 							}
 						}
 					},
+					"onAnyPeerMessage": {
+						"list-name": "On Any Peer Message",
+						"display-text": "On any peer message received",
+						"description": "Triggered when any message is received from a peer, regardless of the tag."
+					},
 					"isHost": {
 						"list-name": "Is Host",
 						"display-text": "Is host clientTag [i]{0}[/i]",

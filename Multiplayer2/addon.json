@@ -26,6 +26,7 @@
 		"c3runtime/channelSendQueue.js",
 		"c3runtime/workerside/webrtc.js",
 		"c3runtime/mymodule.js",
+		"c3runtime/waker.js",
 		"lang/en-US.json",
 		"aces.json",
 		"addon.json",

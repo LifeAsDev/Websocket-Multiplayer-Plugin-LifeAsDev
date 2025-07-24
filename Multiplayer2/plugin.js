@@ -28,13 +28,19 @@ const PLUGIN_CLASS = (SDK.Plugins.Lifeasdev_MultiplayerPlugin = class Multiplaye
             filename: "c3runtime/webrtc.js",
             type: "external-dom-script",
             fileType: "js",
-            scriptType: "module", // ✅ ahora también es módulo en el DOM
+            scriptType: "module",
         });
         this._info.AddFileDependency({
             filename: "c3runtime/channelSendQueue.js",
             type: "external-dom-script",
             fileType: "js",
-            scriptType: "module", // ✅ ahora también es módulo en el DOM
+            scriptType: "module",
+        });
+        this._info.AddFileDependency({
+            filename: "c3runtime/waker.js",
+            type: "external-runtime-script",
+            fileType: "js",
+            scriptType: "module",
         });
         /* 	SDK.Lang.PushContext(".properties");
          */

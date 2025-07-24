@@ -24,6 +24,8 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 		name: string;
 		peercount: number;
 	}> = [];
+	_wakerWorker: Worker | null = null;
+
 	constructor() {
 		super({ domComponentId: DOM_COMPONENT_ID });
 
@@ -52,6 +54,36 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 			// note properties may be null in some cases
 			/* this._testProperty = properties[0] as number; */
 		}
+		this._InitWakerWorker();
+	}
+	async _InitWakerWorker() {
+		this._wakerWorker = new Worker("./waker.js", {
+			type: "module",
+			name: "MultiplayerWaker2",
+		});
+		// Suponiendo que 'runtime' es el objeto que emite esos eventos
+		this.runtime.addEventListener("suspend", () => {
+			this._OnSuspend();
+		});
+
+		this.runtime.addEventListener("resume", () => {
+			this._OnResume();
+		});
+		this._wakerWorker.onerror = (e) => {
+			console.error("ErrorEvent :", e);
+		};
+		this._wakerWorker.onmessage = (e) => {
+			if (e.data === "tick" && this.runtime.isSuspended) {
+				performance.now();
+			}
+		};
+		this._wakerWorker.postMessage("");
+	}
+	_OnSuspend() {
+		this._wakerWorker && this._wakerWorker.postMessage("start");
+	}
+	_OnResume() {
+		this._wakerWorker && this._wakerWorker.postMessage("stop");
 	}
 	_onConnectedToSgWs(msg: any): void {
 		const { clientTag, client } = msg;
@@ -147,6 +179,7 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 		this.instanceListData = instanceListData;
 		this._trigger(C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds.onInstanceList);
 	}
+
 	_release() {
 		super._release();
 	}

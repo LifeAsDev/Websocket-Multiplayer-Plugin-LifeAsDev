@@ -73,5 +73,17 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
     CurrentClient() {
         return this.currentClientTag || "";
     },
+    FromID() {
+        return this.peerId;
+    },
+    FromAlias() {
+        return this.peerAlias;
+    },
+    HostAlias(tag) {
+        return this.clients.get(tag)?.hostAlias || "";
+    },
+    MyAlias(tag) {
+        return this.clients.get(tag)?.myAlias || "";
+    },
 };
 export {};

@@ -578,6 +578,46 @@
 					"currentClient": {
 						"translated-name": "CurrentClient",
 						"description": "current client tag"
+					},
+					"FromAlias": {
+						"translated-name": "FromAlias",
+						"description": "Returns the alias of the peer that sent the message in the revelant trigger",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "The client tag to identify."
+							}
+						}
+					},
+					"FromID": {
+						"translated-name": "FromID",
+						"description": "Returns the ID of the peer that sent the message in the revelant trigger",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "The client tag to identify."
+							}
+						}
+					},
+					"MyAlias": {
+						"translated-name": "MyAlias",
+						"description": "Returns the alias of the client tag.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. return emtpy string if not found."
+							}
+						}
+					},
+					"HostAlias": {
+						"translated-name": "HostAlias",
+						"description": "Returns the alias of the host client tag.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. return emtpy string if not found."
+							}
+						}
 					}
 				}
 			}

@@ -549,6 +549,54 @@
 						"description": "The client tag to identify the room."
 					}
 				]
+			},
+			{
+				"id": "FromAlias",
+				"expressionName": "FromAlias",
+				"highlight": false,
+				"returnType": "string",
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
+			},
+			{
+				"id": "FromID",
+				"expressionName": "FromID",
+				"highlight": false,
+				"returnType": "string",
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
+			},
+			{
+				"id": "MyAlias",
+				"expressionName": "MyAlias",
+				"highlight": false,
+				"returnType": "string",
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
+			},
+			{
+				"id": "HostAlias",
+				"expressionName": "HostAlias",
+				"highlight": false,
+				"returnType": "string",
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
 			}
 		]
 	},

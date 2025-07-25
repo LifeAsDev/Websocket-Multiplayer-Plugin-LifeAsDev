@@ -1,51 +1,64 @@
-﻿{
+{
 	"$schema": "../aces.schema.json",
-
 	"signalling": {
 		"conditions": [
 			{
-				"id": "onConnectedToSgWs",
+				"id": "on-connected",
 				"scriptName": "onConnectedToSgWs",
 				"isTrigger": true
 			},
 			{
-				"id": "onLoggedInToSgWs",
+				"id": "on-logged-in",
 				"scriptName": "onLoggedInToSgWs",
 				"isTrigger": true
 			},
 			{
-				"id": "isConnected",
+				"id": "is-connected",
 				"scriptName": "isConnected",
-				"params": [{ "id": "clientTag", "type": "string" }]
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
 			},
 			{
-				"id": "isLoggedIn",
+				"id": "is-logged-in",
 				"scriptName": "isLoggedIn",
-				"params": [{ "id": "clientTag", "type": "string" }]
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
 			},
 			{
-				"id": "onLeftRoom",
+				"id": "on-left-room",
 				"scriptName": "onLeftRoom",
 				"isTrigger": true
 			},
 			{
-				"id": "isInRoom",
+				"id": "is-in-room",
 				"scriptName": "isInRoom",
-				"params": [{ "id": "clientTag", "type": "string" }]
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
 			},
 			{
-				"id": "onError",
+				"id": "on-error",
 				"scriptName": "onError",
 				"isTrigger": true
 			},
-
 			{
-				"id": "onRoomList",
+				"id": "on-room-list",
 				"scriptName": "onRoomList",
 				"isTrigger": true
 			},
 			{
-				"id": "onInstanceList",
+				"id": "on-game-instance-list",
 				"scriptName": "onInstanceList",
 				"isTrigger": true
 			},
@@ -65,49 +78,97 @@
 						"type": "string",
 						"initialValue": "\"wss://multiplayer.construct.net\""
 					},
-					{ "id": "tag", "type": "string" }
+					{
+						"id": "tag",
+						"type": "string"
+					}
 				]
 			},
 			{
 				"id": "log-in",
 				"scriptName": "logIn",
 				"params": [
-					{ "id": "alias", "type": "string" },
-					{ "id": "tag", "type": "string" }
+					{
+						"id": "alias",
+						"type": "string"
+					},
+					{
+						"id": "tag",
+						"type": "string"
+					}
 				]
 			},
 			{
-				"id": "simulateLatency",
+				"id": "simulate-latency",
 				"scriptName": "simulateLatency",
 				"params": [
-					{ "id": "latencyMs", "type": "number", "initialValue": "100" },
-					{ "id": "pdvMs", "type": "number", "initialValue": "30" },
-					{ "id": "lossPercent", "type": "number", "initialValue": "5" },
-					{ "id": "clientTag", "type": "string" }
+					{
+						"id": "latencyMs",
+						"type": "number",
+						"initialValue": "100"
+					},
+					{
+						"id": "pdvMs",
+						"type": "number",
+						"initialValue": "30"
+					},
+					{
+						"id": "lossPercent",
+						"type": "number",
+						"initialValue": "5"
+					},
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
 				]
 			},
 			{
-				"id": "disconnectFromRoom",
+				"id": "disconnect-room",
 				"scriptName": "disconnectFromRoom",
-				"params": [{ "id": "clientTag", "type": "string" }]
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
 			},
 			{
-				"id": "disconnectFromSignalling",
+				"id": "disconnect-signalling",
 				"scriptName": "disconnectFromSignalling",
-				"params": [{ "id": "clientTag", "type": "string" }]
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
 			},
 			{
-				"id": "leaveRoomOnSignalling",
+				"id": "leave-room",
 				"scriptName": "leaveRoomOnSignalling",
-				"params": [{ "id": "clientTag", "type": "string" }]
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
 			},
 			{
-				"id": "requestRoomList",
+				"id": "request-room-list",
 				"scriptName": "requestRoomList",
 				"params": [
-					{ "id": "clientTag", "type": "string" },
-					{ "id": "game", "type": "string" },
-					{ "id": "instance", "type": "string" },
+					{
+						"id": "clientTag",
+						"type": "string"
+					},
+					{
+						"id": "game",
+						"type": "string"
+					},
+					{
+						"id": "instance",
+						"type": "string"
+					},
 					{
 						"id": "which",
 						"type": "combo",
@@ -116,11 +177,17 @@
 				]
 			},
 			{
-				"id": "requestInstanceList",
+				"id": "request-game-instance-list",
 				"scriptName": "requestInstanceList",
 				"params": [
-					{ "id": "clientTag", "type": "string" },
-					{ "id": "game", "type": "string" }
+					{
+						"id": "clientTag",
+						"type": "string"
+					},
+					{
+						"id": "game",
+						"type": "string"
+					}
 				]
 			}
 		],
@@ -136,21 +203,36 @@
 				"expressionName": "CurrentGame",
 				"highlight": false,
 				"returnType": "string",
-				"params": [{ "id": "clientTag", "type": "string" }]
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
 			},
 			{
 				"id": "currentInstance",
 				"expressionName": "CurrentInstance",
 				"highlight": false,
 				"returnType": "string",
-				"params": [{ "id": "clientTag", "type": "string" }]
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
 			},
 			{
 				"id": "currentRoom",
 				"expressionName": "CurrentRoom",
 				"highlight": false,
 				"returnType": "string",
-				"params": [{ "id": "clientTag", "type": "string" }]
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
 			},
 			{
 				"id": "listRoomCount",
@@ -249,47 +331,56 @@
 			}
 		]
 	},
-
 	"room": {
 		"conditions": [
 			{
-				"id": "onJoinedRoom",
+				"id": "on-joined-room",
 				"scriptName": "onJoinedRoom",
 				"isTrigger": true
 			},
 			{
-				"id": "onPeerMessage",
+				"id": "on-peer-message",
 				"scriptName": "onPeerMessage",
 				"isTrigger": true,
-				"params": [{ "id": "tag", "type": "string" }]
+				"params": [
+					{
+						"id": "tag",
+						"type": "string"
+					}
+				]
 			},
 			{
-				"id": "onPeerConnected",
+				"id": "on-peer-connected",
 				"scriptName": "onPeerConnected",
 				"isTrigger": true
 			},
 			{
-				"id": "isHost",
+				"id": "is-host",
 				"scriptName": "isHost",
-				"params": [{ "id": "tag", "type": "string" }]
+				"params": [
+					{
+						"id": "tag",
+						"type": "string"
+					}
+				]
 			},
 			{
-				"id": "onDisconnectedFromSignalling",
+				"id": "on-disconnected",
 				"scriptName": "onDisconnectedFromSignalling",
 				"isTrigger": true
 			},
 			{
-				"id": "onPeerDisconnected",
+				"id": "on-peer-disconnected",
 				"scriptName": "onPeerDisconnected",
 				"isTrigger": true
 			},
 			{
-				"id": "onKicked",
+				"id": "on-kicked",
 				"scriptName": "onKicked",
 				"isTrigger": true
 			},
 			{
-				"id": "onAnyPeerMessage",
+				"id": "on-any-peer-message",
 				"scriptName": "onAnyPeerMessage",
 				"isTrigger": true
 			}
@@ -299,37 +390,83 @@
 				"id": "join-room",
 				"scriptName": "joinRoom",
 				"params": [
-					{ "id": "game", "type": "string" },
-					{ "id": "instance", "type": "string" },
-					{ "id": "room", "type": "string" },
-					{ "id": "tag", "type": "string" },
-					{ "id": "max-peers", "type": "number" }
+					{
+						"id": "game",
+						"type": "string"
+					},
+					{
+						"id": "instance",
+						"type": "string"
+					},
+					{
+						"id": "room",
+						"type": "string"
+					},
+					{
+						"id": "tag",
+						"type": "string"
+					},
+					{
+						"id": "max-peers",
+						"type": "number"
+					}
 				]
 			},
 			{
 				"id": "auto-join-room",
 				"scriptName": "autoJoinRoom",
 				"params": [
-					{ "id": "game", "type": "string" },
-					{ "id": "instance", "type": "string" },
-					{ "id": "room", "type": "string" },
-					{ "id": "tag", "type": "string" },
-					{ "id": "max-peers", "type": "number" },
-					{ "id": "locking", "type": "combo", "items": ["true", "false"] }
+					{
+						"id": "game",
+						"type": "string"
+					},
+					{
+						"id": "instance",
+						"type": "string"
+					},
+					{
+						"id": "first-room",
+						"type": "string"
+					},
+					{
+						"id": "tag",
+						"type": "string"
+					},
+					{
+						"id": "max-peers",
+						"type": "number"
+					},
+					{
+						"id": "locking",
+						"type": "combo",
+						"items": ["dont-lock", "lock-when-full"]
+					}
 				]
 			},
 			{
-				"id": "sendMessage",
+				"id": "send-message",
 				"scriptName": "sendPeerMessage",
 				"params": [
-					{ "id": "peerId", "type": "string" },
-					{ "id": "tag", "type": "string" },
-					{ "id": "clientTag", "type": "string" },
-					{ "id": "message", "type": "string" },
+					{
+						"id": "peerId",
+						"type": "string"
+					},
+					{
+						"id": "tag",
+						"type": "string"
+					},
+					{
+						"id": "clientTag",
+						"type": "string"
+					},
+					{
+						"id": "message",
+						"type": "string"
+					},
 					{
 						"id": "mode",
 						"type": "combo",
-						"items": ["unorderedReliable", "orderedReliable", "unreliable"]
+						"items": ["reliable-unordered", "reliable-ordered", "unreliable"]
 					}
 				]
 			}
@@ -364,7 +501,12 @@
 				"expressionName": "MyID",
 				"highlight": false,
 				"returnType": "string",
-				"params": [{ "id": "tag", "type": "string" }]
+				"params": [
+					{
+						"id": "tag",
+						"type": "string"
+					}
+				]
 			},
 			{
 				"id": "peerAlias",
@@ -372,19 +514,28 @@
 				"highlight": false,
 				"returnType": "string"
 			},
-
 			{
 				"id": "hostId",
 				"expressionName": "HostID",
 				"highlight": false,
 				"returnType": "string",
-				"params": [{ "id": "tag", "type": "string" }]
+				"params": [
+					{
+						"id": "tag",
+						"type": "string"
+					}
+				]
 			},
 			{
 				"id": "leaveReason",
 				"expressionName": "LeaveReason",
 				"returnType": "string",
-				"params": [{ "id": "clientTag", "type": "string" }]
+				"params": [
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
+				]
 			},
 			{
 				"id": "peerCount",
@@ -401,31 +552,51 @@
 			}
 		]
 	},
-
 	"roomHost": {
 		"actions": [
 			{
-				"id": "broadcastMessage",
+				"id": "broadcast-message",
 				"scriptName": "broadcastMessage",
 				"params": [
-					{ "id": "peerId", "type": "string" },
-					{ "id": "tag", "type": "string" },
-					{ "id": "clientTag", "type": "string" },
-					{ "id": "message", "type": "string" },
+					{
+						"id": "from-id",
+						"type": "string"
+					},
+					{
+						"id": "tag",
+						"type": "string"
+					},
+					{
+						"id": "clientTag",
+						"type": "string"
+					},
+					{
+						"id": "message",
+						"type": "string"
+					},
 					{
 						"id": "mode",
 						"type": "combo",
-						"items": ["unorderedReliable", "orderedReliable", "unreliable"]
+						"items": ["reliable-unordered", "reliable-ordered", "unreliable"]
 					}
 				]
 			},
 			{
-				"id": "kickPeer",
+				"id": "kick-peer",
 				"scriptName": "kickPeer",
 				"params": [
-					{ "id": "peerId", "type": "string" },
-					{ "id": "reason", "type": "string" },
-					{ "id": "clientTag", "type": "string" }
+					{
+						"id": "peerId",
+						"type": "string"
+					},
+					{
+						"id": "reason",
+						"type": "string"
+					},
+					{
+						"id": "clientTag",
+						"type": "string"
+					}
 				]
 			}
 		],

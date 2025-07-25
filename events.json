@@ -1,0 +1,288 @@
+{
+	"is-c3-clipboard-data": true,
+	"type": "events",
+	"items": [
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "is-host",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-any-peer-message",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-kicked",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-peer-connected",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-peer-disconnected",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-peer-message",
+					"objectClass": "Multiplayer",
+					"parameters": {
+						"tag": "\"\""
+					}
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "is-connected",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "is-in-room",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "is-logged-in",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-error",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-connected",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-disconnected",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-game-instance-list",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-joined-room",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-left-room",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-logged-in",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": []
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-room-list",
+					"objectClass": "Multiplayer"
+				}
+			],
+			"actions": [
+				{
+					"id": "request-room-list",
+					"objectClass": "Multiplayer",
+					"parameters": {
+						"game": "\"\"",
+						"instance": "\"\"",
+						"which": "all"
+					}
+				},
+				{
+					"id": "request-game-instance-list",
+					"objectClass": "Multiplayer",
+					"parameters": {
+						"game": "\"\""
+					}
+				},
+				{
+					"id": "log-in",
+					"objectClass": "Multiplayer",
+					"parameters": {
+						"alias": "\"\""
+					}
+				},
+				{
+					"id": "leave-room",
+					"objectClass": "Multiplayer"
+				},
+				{
+					"id": "disconnect-signalling",
+					"objectClass": "Multiplayer"
+				},
+				{
+					"id": "connect",
+					"objectClass": "Multiplayer",
+					"parameters": {
+						"server": "\"wss://multiplayer.construct.net\""
+					}
+				},
+				{
+					"id": "join-room",
+					"objectClass": "Multiplayer",
+					"parameters": {
+						"game": "\"MyCompany-MyGame\"",
+						"instance": "\"default\"",
+						"room": "\"\"",
+						"max-peers": "0"
+					}
+				},
+				{
+					"id": "auto-join-room",
+					"objectClass": "Multiplayer",
+					"parameters": {
+						"game": "\"MyCompany-MyGame\"",
+						"instance": "\"default\"",
+						"first-room": "\"\"",
+						"max-peers": "2",
+						"locking": "lock-when-full"
+					}
+				},
+				{
+					"id": "broadcast-message",
+					"objectClass": "Multiplayer",
+					"parameters": {
+						"from-id": "\"\"",
+						"tag": "\"\"",
+						"message": "\"\"",
+						"mode": "reliable-ordered"
+					}
+				},
+				{
+					"id": "kick-peer",
+					"objectClass": "Multiplayer",
+					"parameters": {
+						"peer-id": "\"\"",
+						"reason": "\"\""
+					}
+				},
+				{
+					"id": "simulate-latency",
+					"objectClass": "Multiplayer",
+					"parameters": {
+						"latency": "0.1",
+						"pdv": "0.03",
+						"packet-loss": "0.05"
+					}
+				},
+				{
+					"id": "send-message",
+					"objectClass": "Multiplayer",
+					"parameters": {
+						"peer-id": "\"\"",
+						"tag": "\"\"",
+						"message": "\"\"",
+						"mode": "reliable-ordered"
+					}
+				},
+				{
+					"id": "disconnect-room",
+					"objectClass": "Multiplayer"
+				},
+				{
+					"id": "log",
+					"objectClass": "Browser",
+					"parameters": {
+						"type": "log",
+						"message": "Multiplayer.ListInstanceName(0)&Multiplayer.ListInstanceCount&Multiplayer.ListInstancePeerCount(0)&Multiplayer.ListRoomCount&Multiplayer.ListRoomMaxPeerCount(0)&Multiplayer.ListRoomName(0)&Multiplayer.ListRoomPeerCount(0)&Multiplayer.ListRoomState(0)&Multiplayer.FromAlias&Multiplayer.FromID&Multiplayer.HostAlias&Multiplayer.HostID&Multiplayer.LeaveReason&Multiplayer.Message&Multiplayer.PeerAlias&Multiplayer.PeerCount&Multiplayer.PeerID&Multiplayer.Tag&Multiplayer.CurrentGame&Multiplayer.CurrentInstance&Multiplayer.CurrentRoom&Multiplayer.ErrorMessage&Multiplayer.MyAlias&Multiplayer.MyID"
+					}
+				}
+			]
+		}
+	]
+}

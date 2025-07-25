@@ -1,6 +1,5 @@
 ﻿{
 	"$schema": "../../plugin.lang.schema.json",
-
 	"languageTag": "en-US",
 	"fileDescription": "Strings for MyCustomPlugin.",
 	"text": {
@@ -16,22 +15,22 @@
 					"room": "Room"
 				},
 				"conditions": {
-					"onConnectedToSgWs": {
+					"on-connected": {
 						"list-name": "On Connected",
 						"display-text": "On signalling connected",
 						"description": "Triggered when connected to the signalling."
 					},
-					"onLoggedInToSgWs": {
+					"on-logged-in": {
 						"list-name": "On Logged In",
 						"display-text": "On signalling logged in",
 						"description": "Triggered when logged in to the signalling."
 					},
-					"onJoinedRoom": {
+					"on-joined-room": {
 						"list-name": "On Joined Room",
 						"display-text": "On joined room",
 						"description": "Triggered when successfully joined a room."
 					},
-					"onPeerMessage": {
+					"on-peer-message": {
 						"list-name": "On Peer Message",
 						"display-text": "On peer message with tag [i]{0}[/i]",
 						"description": "Triggered when a message is received.",
@@ -42,12 +41,12 @@
 							}
 						}
 					},
-					"onAnyPeerMessage": {
+					"on-any-peer-message": {
 						"list-name": "On Any Peer Message",
 						"display-text": "On any peer message received",
 						"description": "Triggered when any message is received from a peer, regardless of the tag."
 					},
-					"isHost": {
+					"is-host": {
 						"list-name": "Is Host",
 						"display-text": "Is host clientTag [i]{0}[/i]",
 						"description": "Returns true if the client tag is host.",
@@ -58,22 +57,22 @@
 							}
 						}
 					},
-					"onPeerConnected": {
+					"on-peer-connected": {
 						"list-name": "On Peer Connected",
 						"display-text": "On peer connected",
 						"description": "Triggered on peer connected to host."
 					},
-					"onDisconnectedFromSignalling": {
+					"on-disconnected": {
 						"list-name": "On Disconnected From Signalling",
 						"display-text": "Disconnected From signalling",
 						"description": "Triggered on disconnected from signalling server"
 					},
-					"onPeerDisconnected": {
+					"on-peer-disconnected": {
 						"list-name": "On Peer Disconnected",
 						"display-text": "On Peer Disconnected",
 						"description": "Triggered when peer disconnect (either from host or a peer leaving the host)."
 					},
-					"isConnected": {
+					"is-connected": {
 						"list-name": "Is Connected",
 						"display-text": "Is Connected (Client Tag [i]{0}[/i])",
 						"description": "True if connected to a signalling server",
@@ -84,7 +83,7 @@
 							}
 						}
 					},
-					"isLoggedIn": {
+					"is-logged-in": {
 						"list-name": "Is logged in",
 						"display-text": "Is logged in (Client Tag [i]{0}[/i])",
 						"description": "True if logged in to a signalling server",
@@ -95,17 +94,17 @@
 							}
 						}
 					},
-					"onLeftRoom": {
+					"on-left-room": {
 						"list-name": "On Left Room",
 						"display-text": "On Left Room",
 						"description": "On left room on signalling server"
 					},
-					"onKicked": {
+					"on-kicked": {
 						"list-name": "On Kicked",
 						"display-text": "On Kicked",
 						"description": "Triggered when kicked from a room"
 					},
-					"isInRoom": {
+					"is-in-room": {
 						"list-name": "Is in room",
 						"display-text": "Is in room clientTag [i]{0}[/i]",
 						"description": "Returns true if the client tag is in a room.",
@@ -116,17 +115,17 @@
 							}
 						}
 					},
-					"onError": {
+					"on-error": {
 						"list-name": "On error",
 						"display-text": "On signalling error",
 						"description": "Triggered if an error occurs with the signalling server. The ErrorMessage expression indicates the type of error that occurred."
 					},
-					"onRoomList": {
+					"on-room-list": {
 						"list-name": "On Room List",
 						"display-text": "On Room List",
 						"description": "Triggered when the room list is received from the signalling server. The RoomList expression contains the list of rooms."
 					},
-					"onInstanceList": {
+					"on-game-instance-list": {
 						"list-name": "On Instance List",
 						"display-text": "On Instance List",
 						"description": "Triggered when a request instance list is completed."
@@ -208,7 +207,7 @@
 								"name": "Instance",
 								"desc": "The name of the instance to auto join."
 							},
-							"room": {
+							"first-room": {
 								"name": "Room",
 								"desc": "The name of the room to auto join."
 							},
@@ -224,13 +223,13 @@
 								"name": "Locking",
 								"desc": "If true, the room will be locked to prevent new peers from joining.",
 								"items": {
-									"true": "Yes",
-									"false": "No"
+									"lock-when-full": "Lock when full",
+									"dont-lock": "Don't lock"
 								}
 							}
 						}
 					},
-					"sendMessage": {
+					"send-message": {
 						"list-name": "Send message to peer",
 						"display-text": "Send message [i]{3}[/i] to peer [i]{0}[/i] tag [i]{1}[/i] clientTag [i]{2}[/i] mode [i]{4}[/i]",
 						"description": "Send a message to a peer in the room.",
@@ -255,14 +254,14 @@
 								"name": "Mode",
 								"desc": "Transmision mode of the message.",
 								"items": {
-									"orderedReliable": "Reliable ordered",
-									"unorderedReliable": "Reliable unordered",
+									"reliable-ordered": "Reliable ordered",
+									"reliable-unordered": "Reliable unordered",
 									"unreliable": "Unreliable"
 								}
 							}
 						}
 					},
-					"simulateLatency": {
+					"simulate-latency": {
 						"list-name": "Simulate Latency",
 						"display-text": "Simulate network conditions: latency [i]{0}[/i] ms, jitter [i]{1}[/i] ms, packet loss [i]{2}[/i]% client tag [i]{3}[/i]",
 						"description": "Set artificial latency, jitter (PDV) and packet loss percentage for network simulation.",
@@ -285,13 +284,13 @@
 							}
 						}
 					},
-					"broadcastMessage": {
+					"broadcast-message": {
 						"list-name": "Broadcast Message",
 						"display-text": "Broadcast tag [i]{1}[/i] message [i]{3}[/i] (from [i]{0}[/i], Client Tag [i]{2}[/i], mode [i]{4}[/i])",
 						"description": "Send a message to a peer in the room.",
 						"params": {
-							"peerId": {
-								"name": "Peer ID",
+							"from-id": {
+								"name": "From ID",
 								"desc": "The ID of the peer origin. blank to indicate from host."
 							},
 							"tag": {
@@ -310,14 +309,14 @@
 								"name": "Mode",
 								"desc": "Transmision mode of the message.",
 								"items": {
-									"orderedReliable": "Reliable ordered",
-									"unorderedReliable": "Reliable unordered",
+									"reliable-ordered": "Reliable ordered",
+									"reliable-unordered": "Reliable unordered",
 									"unreliable": "Unreliable"
 								}
 							}
 						}
 					},
-					"disconnectFromRoom": {
+					"disconnect-room": {
 						"list-name": "Disconnect from room",
 						"display-text": "Disconnect from room Client Tag [i]{0}[/i]",
 						"description": "Disconnect from room",
@@ -328,7 +327,7 @@
 							}
 						}
 					},
-					"disconnectFromSignalling": {
+					"disconnect-signalling": {
 						"list-name": "Disconnect from signalling",
 						"display-text": "Disconnect from signalling server Client Tag [i]{0}[/i]",
 						"description": "Disconnect from signalling server",
@@ -339,7 +338,7 @@
 							}
 						}
 					},
-					"leaveRoomOnSignalling": {
+					"leave-room": {
 						"list-name": "Leave room on signalling",
 						"display-text": "Leave room on signalling Client Tag [i]{0}[/i]",
 						"description": "Leave room on signalling server (room connection remain)",
@@ -350,7 +349,7 @@
 							}
 						}
 					},
-					"kickPeer": {
+					"kick-peer": {
 						"list-name": "Kick peer from room",
 						"display-text": "Kick peer [i]{0}[/i] Client Tag [i]{2}[/i](reason: [i]{1}[/i]",
 						"description": "Leave room on signalling server (room connection remain)",
@@ -369,7 +368,7 @@
 							}
 						}
 					},
-					"requestRoomList": {
+					"request-room-list": {
 						"list-name": "Request Room List",
 						"display-text": "Request room list from signalling server Client Tag [i]{0}[/i] game [i]{1}[/i] instance [i]{2}[/i] which [i]{3}[/i]",
 						"description": "Request the room list from the signalling server.",
@@ -397,7 +396,7 @@
 							}
 						}
 					},
-					"requestInstanceList": {
+					"request-game-instance-list": {
 						"list-name": "Request Instance List",
 						"display-text": "Request instance list from signalling server Client Tag [i]{0}[/i] game [i]{1}[/i]",
 						"description": "Request the instance list from the signalling server.",

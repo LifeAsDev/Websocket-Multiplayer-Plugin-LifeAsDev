@@ -9,6 +9,71 @@
 		<button id="addClientBtn">+ Add Client</button>
 		<div id="clients"></div>
 
-		<script src="main.js"></script>
+		<script>
+			// Cargar los archivos JSON usando fetch
+			Promise.all([
+				fetch("events.json").then((response) => response.json()),
+				fetch("Multiplayer2/aces.json").then((response) => response.json()),
+			])
+				.then(([eventsJson, acesJson]) => {
+					// Extraer las IDs de condiciones, acciones y expresiones de ambos archivos
+					const eventConditionIds = eventsJson.items
+						.filter((item) => item.conditions)
+						.flatMap((item) => item.conditions.map((condition) => condition.id))
+						.filter(Boolean);
+
+					const eventActionIds = eventsJson.items
+						.filter((item) => item.actions)
+						.flatMap((item) => item.actions.map((action) => action.id))
+						.filter(Boolean);
+
+					const acesConditionIds = acesJson.signalling.conditions.map(
+						(item) => item.id
+					);
+					const acesActionIds = acesJson.signalling.actions.map(
+						(item) => item.id
+					);
+					const acesExpressionIds = acesJson.signalling.expressions.map(
+						(item) => item.id
+					);
+
+					// Comparar las IDs
+					const missingConditionsInAces = eventConditionIds.filter(
+						(id) => !acesConditionIds.includes(id)
+					);
+					const missingActionsInAces = eventActionIds.filter(
+						(id) => !acesActionIds.includes(id)
+					);
+
+					const missingConditionsInEvents = acesConditionIds.filter(
+						(id) => !eventConditionIds.includes(id)
+					);
+					const missingActionsInEvents = acesActionIds.filter(
+						(id) => !eventActionIds.includes(id)
+					);
+
+					// Mostrar resultados
+					console.log(
+						"Condiciones en eventos pero no en aces.json:",
+						missingConditionsInAces
+					);
+					console.log(
+						"Condiciones en aces.json pero no en eventos:",
+						missingConditionsInEvents
+					);
+					console.log(
+						"Acciones en eventos pero no en aces.json:",
+						missingActionsInAces
+					);
+					console.log(
+						"Acciones en aces.json pero no en eventos:",
+						missingActionsInEvents
+					);
+					console.log("Expresiones en aces.json:", acesExpressionIds); // Opcional
+				})
+				.catch((error) => {
+					console.error("Error al cargar los archivos JSON:", error);
+				});
+		</script>
 	</body>
 </html>

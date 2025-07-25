@@ -14,6 +14,7 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
     roomListData = [];
     instanceListData = [];
     _wakerWorker = null;
+    currentClientTag = "";
     constructor() {
         super({ domComponentId: DOM_COMPONENT_ID });
         // Initialise object properties

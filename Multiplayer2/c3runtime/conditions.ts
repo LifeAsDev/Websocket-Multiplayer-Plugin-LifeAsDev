@@ -57,4 +57,16 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Cnds = {
 	onInstanceList(this: SDKInstanceClass) {
 		return true;
 	},
+	forEachClient(this: SDKInstanceClass) {
+		const loopCtx = this.runtime.sdk.createLoopingConditionContext();
+
+		for (const [clientTag, client] of this.clients.entries()) {
+			// Establecer el cliente actual para que pueda ser accedido en otras condiciones
+			this.currentClientTag = clientTag;
+			loopCtx.retrigger();
+
+			if (loopCtx.isStopped) break;
+		}
+		loopCtx.release();
+	},
 };

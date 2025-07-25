@@ -48,6 +48,11 @@
 				"id": "onInstanceList",
 				"scriptName": "onInstanceList",
 				"isTrigger": true
+			},
+			{
+				"id": "forEachClient",
+				"scriptName": "forEachClient",
+				"isLooping": true
 			}
 		],
 		"actions": [
@@ -236,6 +241,11 @@
 						"description": "The index of the game instance in the list."
 					}
 				]
+			},
+			{
+				"id": "currentClient",
+				"expressionName": "CurrentClient",
+				"returnType": "string"
 			}
 		]
 	},

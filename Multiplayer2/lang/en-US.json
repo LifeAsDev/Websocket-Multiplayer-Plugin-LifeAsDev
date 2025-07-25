@@ -130,6 +130,11 @@
 						"list-name": "On Instance List",
 						"display-text": "On Instance List",
 						"description": "Triggered when a request instance list is completed."
+					},
+					"forEachClient": {
+						"list-name": "For Each Client",
+						"display-text": "For each client",
+						"description": "Triggered for each client."
 					}
 				},
 				"actions": {
@@ -570,6 +575,10 @@
 								"desc": "The client tag to identify the room."
 							}
 						}
+					},
+					"currentClient": {
+						"translated-name": "CurrentClient",
+						"description": "current client tag"
 					}
 				}
 			}

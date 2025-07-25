@@ -25,7 +25,7 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 		peercount: number;
 	}> = [];
 	_wakerWorker: Worker | null = null;
-
+	currentClientTag: string = "";
 	constructor() {
 		super({ domComponentId: DOM_COMPONENT_ID });
 

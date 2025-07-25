@@ -70,5 +70,8 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
         }
         return client.peerCount;
     },
+    CurrentClient() {
+        return this.currentClientTag || "";
+    },
 };
 export {};

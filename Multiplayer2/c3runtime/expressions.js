@@ -6,7 +6,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
     ClientTag() {
         return this.clientTag;
     },
-    message() {
+    Message() {
         return this.msg;
     },
     PeerID() {
@@ -24,7 +24,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
     LeaveReason(clienTag) {
         return this.clients.get(clienTag)?.leaveReason;
     },
-    messageTag() {
+    Tag() {
         return this.msgTag;
     },
     ErrorMessage() {

@@ -193,13 +193,13 @@
 		],
 		"expressions": [
 			{
-				"id": "errorMessage",
+				"id": "ErrorMessage",
 				"expressionName": "ErrorMessage",
 				"highlight": false,
 				"returnType": "string"
 			},
 			{
-				"id": "currentGame",
+				"id": "CurrentGame",
 				"expressionName": "CurrentGame",
 				"highlight": false,
 				"returnType": "string",
@@ -211,7 +211,7 @@
 				]
 			},
 			{
-				"id": "currentInstance",
+				"id": "CurrentInstance",
 				"expressionName": "CurrentInstance",
 				"highlight": false,
 				"returnType": "string",
@@ -223,7 +223,7 @@
 				]
 			},
 			{
-				"id": "currentRoom",
+				"id": "CurrentRoom",
 				"expressionName": "CurrentRoom",
 				"highlight": false,
 				"returnType": "string",
@@ -235,13 +235,13 @@
 				]
 			},
 			{
-				"id": "listRoomCount",
+				"id": "ListRoomCount",
 				"expressionName": "ListRoomCount",
 				"highlight": false,
 				"returnType": "number"
 			},
 			{
-				"id": "listRoomName",
+				"id": "ListRoomName",
 				"expressionName": "ListRoomName",
 				"highlight": false,
 				"returnType": "string",
@@ -254,7 +254,7 @@
 				]
 			},
 			{
-				"id": "listRoomPeerCount",
+				"id": "ListRoomPeerCount",
 				"expressionName": "ListRoomPeerCount",
 				"highlight": false,
 				"returnType": "number",
@@ -267,7 +267,7 @@
 				]
 			},
 			{
-				"id": "listRoomMaxPeerCount",
+				"id": "ListRoomMaxPeerCount",
 				"expressionName": "ListRoomMaxPeerCount",
 				"highlight": false,
 				"returnType": "number",
@@ -280,7 +280,7 @@
 				]
 			},
 			{
-				"id": "listRoomState",
+				"id": "ListRoomState",
 				"expressionName": "ListRoomState",
 				"highlight": false,
 				"returnType": "string",
@@ -293,13 +293,13 @@
 				]
 			},
 			{
-				"id": "listInstanceCount",
+				"id": "ListInstanceCount",
 				"expressionName": "ListInstanceCount",
 				"highlight": false,
 				"returnType": "number"
 			},
 			{
-				"id": "listInstanceName",
+				"id": "ListInstanceName",
 				"expressionName": "ListInstanceName",
 				"highlight": false,
 				"returnType": "string",
@@ -312,7 +312,7 @@
 				]
 			},
 			{
-				"id": "listInstancePeerCount",
+				"id": "ListInstancePeerCount",
 				"expressionName": "ListInstancePeerCount",
 				"highlight": false,
 				"returnType": "number",
@@ -448,7 +448,7 @@
 				"scriptName": "sendPeerMessage",
 				"params": [
 					{
-						"id": "peerId",
+						"id": "peer-id",
 						"type": "string"
 					},
 					{
@@ -473,19 +473,19 @@
 		],
 		"expressions": [
 			{
-				"id": "message",
-				"expressionName": "message",
+				"id": "Message",
+				"expressionName": "Message",
 				"highlight": false,
 				"returnType": "string"
 			},
 			{
-				"id": "messageTag",
-				"expressionName": "messageTag",
+				"id": "Tag",
+				"expressionName": "Tag",
 				"highlight": false,
 				"returnType": "string"
 			},
 			{
-				"id": "peerId",
+				"id": "PeerID",
 				"expressionName": "PeerID",
 				"highlight": false,
 				"returnType": "string"
@@ -497,7 +497,7 @@
 				"returnType": "string"
 			},
 			{
-				"id": "myId",
+				"id": "MyID",
 				"expressionName": "MyID",
 				"highlight": false,
 				"returnType": "string",
@@ -509,13 +509,13 @@
 				]
 			},
 			{
-				"id": "peerAlias",
+				"id": "PeerAlias",
 				"expressionName": "PeerAlias",
 				"highlight": false,
 				"returnType": "string"
 			},
 			{
-				"id": "hostId",
+				"id": "HostID",
 				"expressionName": "HostID",
 				"highlight": false,
 				"returnType": "string",
@@ -527,7 +527,7 @@
 				]
 			},
 			{
-				"id": "leaveReason",
+				"id": "LeaveReason",
 				"expressionName": "LeaveReason",
 				"returnType": "string",
 				"params": [
@@ -538,7 +538,7 @@
 				]
 			},
 			{
-				"id": "peerCount",
+				"id": "PeerCount",
 				"expressionName": "PeerCount",
 				"highlight": false,
 				"returnType": "number",

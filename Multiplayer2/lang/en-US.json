@@ -234,7 +234,7 @@
 						"display-text": "Send message [i]{3}[/i] to peer [i]{0}[/i] tag [i]{1}[/i] clientTag [i]{2}[/i] mode [i]{4}[/i]",
 						"description": "Send a message to a peer in the room.",
 						"params": {
-							"peerId": {
+							"peer-id": {
 								"name": "Peer ID",
 								"desc": "The ID of the peer to send the message to."
 							},
@@ -413,15 +413,15 @@
 					}
 				},
 				"expressions": {
-					"message": {
+					"Message": {
 						"translated-name": "Message",
 						"description": "Returns the message of the revelant trigger."
 					},
-					"messageTag": {
+					"Tag": {
 						"translated-name": "Message Tag",
 						"description": "Returns the message tag of the revelant trigger."
 					},
-					"peerId": {
+					"PeerID": {
 						"translated-name": "PeerID",
 						"description": "Returns the peer ID of the revelant trigger."
 					},
@@ -429,7 +429,7 @@
 						"translated-name": "ClientTag",
 						"description": "Returns the client tag of the revelant trigger."
 					},
-					"myId": {
+					"MyID": {
 						"translated-name": "MyID",
 						"description": "Returns the ID of the client tag.",
 						"params": {
@@ -439,7 +439,7 @@
 							}
 						}
 					},
-					"hostId": {
+					"HostID": {
 						"translated-name": "HostID",
 						"description": "Returns the host ID of the client tag.",
 						"params": {
@@ -449,11 +449,11 @@
 							}
 						}
 					},
-					"peerAlias": {
+					"PeerAlias": {
 						"translated-name": "PeerAlias",
 						"description": "Returns the peer alias of the revelant trigger"
 					},
-					"leaveReason": {
+					"LeaveReason": {
 						"translated-name": "LeaveReason",
 						"description": "Returns in 'On Peer Disconnected', the leave reason if known",
 						"params": {
@@ -463,11 +463,11 @@
 							}
 						}
 					},
-					"errorMessage": {
+					"ErrorMessage": {
 						"translated-name": "ErrorMessage",
 						"description": "In On signalling error, the error message if available."
 					},
-					"currentGame": {
+					"CurrentGame": {
 						"translated-name": "CurrentGame",
 						"description": "Returns the Game of the client tag.",
 						"params": {
@@ -477,7 +477,7 @@
 							}
 						}
 					},
-					"currentInstance": {
+					"CurrentInstance": {
 						"translated-name": "CurrentInstance",
 						"description": "Returns the Instance of the client tag.",
 						"params": {
@@ -487,7 +487,7 @@
 							}
 						}
 					},
-					"currentRoom": {
+					"CurrentRoom": {
 						"translated-name": "CurrentRoom",
 						"description": "Returns the Room name of the client tag.",
 						"params": {
@@ -497,11 +497,11 @@
 							}
 						}
 					},
-					"listRoomCount": {
+					"ListRoomCount": {
 						"translated-name": "ListRoomCount",
 						"description": "After On Room List, the number of rooms in the received list."
 					},
-					"listRoomName": {
+					"ListRoomName": {
 						"translated-name": "ListRoomName",
 						"description": "Returns the name of the room at the specified index in the received list.",
 						"params": {
@@ -511,7 +511,7 @@
 							}
 						}
 					},
-					"listRoomPeerCount": {
+					"ListRoomPeerCount": {
 						"translated-name": "ListRoomPeerCount",
 						"description": "Returns the number of peers in the room at the specified index in the received list.",
 						"params": {
@@ -521,7 +521,7 @@
 							}
 						}
 					},
-					"listRoomMaxPeerCount": {
+					"ListRoomMaxPeerCount": {
 						"translated-name": "ListRoomMaxPeerCount",
 						"description": "Returns the maximum number of peers allowed in the room at the specified index in the received list.",
 						"params": {
@@ -531,7 +531,7 @@
 							}
 						}
 					},
-					"listRoomState": {
+					"ListRoomState": {
 						"translated-name": "ListRoomState",
 						"description": "Returns the state of the room at the specified index in the received list.",
 						"params": {
@@ -541,11 +541,11 @@
 							}
 						}
 					},
-					"listInstanceCount": {
+					"ListInstanceCount": {
 						"translated-name": "ListInstanceCount",
 						"description": "After On game instance list triggers, the number of game instances in the received list."
 					},
-					"listInstanceName": {
+					"ListInstanceName": {
 						"translated-name": "ListInstanceName",
 						"description": "Returns the name of the game instance at the specified index in the received list.",
 						"params": {
@@ -555,7 +555,7 @@
 							}
 						}
 					},
-					"listInstancePeerCount": {
+					"ListInstancePeerCount": {
 						"translated-name": "ListInstancePeerCount",
 						"description": "Returns the number of peers in the game instance at the specified index in the received list.",
 						"params": {
@@ -565,7 +565,7 @@
 							}
 						}
 					},
-					"peerCount": {
+					"PeerCount": {
 						"translated-name": "PeerCount",
 						"description": "Returns the number of peers connected in the current room.",
 						"params": {

@@ -9,7 +9,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
 	ClientTag(this: SDKInstanceClass) {
 		return this.clientTag;
 	},
-	message(this: SDKInstanceClass) {
+	Message(this: SDKInstanceClass) {
 		return this.msg;
 	},
 	PeerID(this: SDKInstanceClass) {
@@ -27,7 +27,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
 	LeaveReason(this: SDKInstanceClass, clienTag: string) {
 		return this.clients.get(clienTag)?.leaveReason;
 	},
-	messageTag(this: SDKInstanceClass) {
+	Tag(this: SDKInstanceClass) {
 		return this.msgTag;
 	},
 	ErrorMessage(this: SDKInstanceClass) {

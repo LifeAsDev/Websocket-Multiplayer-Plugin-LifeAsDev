@@ -618,6 +618,62 @@
 								"desc": "Client Tag. return emtpy string if not found."
 							}
 						}
+					},
+					"PeerIDFromAlias": {
+						"translated-name": "PeerIDFromAlias",
+						"description": "Returns the peer ID corresponding to a given alias for the specified client.",
+						"params": {
+							"alias": {
+								"name": "Alias",
+								"desc": "The alias to look up."
+							},
+							"clientTag": {
+								"name": "Client tag",
+								"desc": "The tag identifying the client context."
+							}
+						}
+					},
+					"PeerAliasFromID": {
+						"translated-name": "PeerAliasFromID",
+						"description": "Returns the alias associated with a given peer ID for the specified client.",
+						"params": {
+							"peerid": {
+								"name": "Peer ID",
+								"desc": "The peer ID to look up."
+							},
+							"clientTag": {
+								"name": "Client tag",
+								"desc": "The tag identifying the client context."
+							}
+						}
+					},
+					"PeerIDAt": {
+						"translated-name": "PeerIDAt",
+						"description": "Returns the peer ID at the given index in the peer list for the specified client.",
+						"params": {
+							"index": {
+								"name": "Index",
+								"desc": "The index in the peer list."
+							},
+							"clientTag": {
+								"name": "Client tag",
+								"desc": "The tag identifying the client context."
+							}
+						}
+					},
+					"PeerAliasAt": {
+						"translated-name": "PeerAliasAt",
+						"description": "Returns the alias at the given index in the peer list for the specified client.",
+						"params": {
+							"index": {
+								"name": "Index",
+								"desc": "The index in the peer list."
+							},
+							"clientTag": {
+								"name": "Client tag",
+								"desc": "The tag identifying the client context."
+							}
+						}
 					}
 				}
 			}

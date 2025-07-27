@@ -1,4 +1,4 @@
-{
+﻿{
 	"$schema": "../aces.schema.json",
 	"signalling": {
 		"conditions": [
@@ -596,6 +596,42 @@
 						"id": "clientTag",
 						"type": "string"
 					}
+				]
+			},
+			{
+				"id": "PeerIDFromAlias",
+				"expressionName": "PeerIDFromAlias",
+				"returnType": "string",
+				"params": [
+					{ "id": "alias", "type": "string" },
+					{ "id": "clientTag", "type": "string", "autocompleteId": "clientTag" }
+				]
+			},
+			{
+				"id": "PeerAliasFromID",
+				"expressionName": "PeerAliasFromID",
+				"returnType": "string",
+				"params": [
+					{ "id": "peerid", "type": "string" },
+					{ "id": "clientTag", "type": "string", "autocompleteId": "clientTag" }
+				]
+			},
+			{
+				"id": "PeerIDAt",
+				"expressionName": "PeerIDAt",
+				"returnType": "string",
+				"params": [
+					{ "id": "index", "type": "number" },
+					{ "id": "clientTag", "type": "string", "autocompleteId": "clientTag" }
+				]
+			},
+			{
+				"id": "PeerAliasAt",
+				"expressionName": "PeerAliasAt",
+				"returnType": "string",
+				"params": [
+					{ "id": "index", "type": "number" },
+					{ "id": "clientTag", "type": "string", "autocompleteId": "clientTag" }
 				]
 			}
 		]

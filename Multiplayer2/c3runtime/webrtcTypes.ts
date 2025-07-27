@@ -42,6 +42,7 @@ export type ClientSerializable = {
 	simPacketLoss: number;
 	leaveReason: string;
 	peerCount: number;
+	peersList: { peerId: string; peerAlias: string }[];
 };
 export interface PeerConnectionWrapper {
 	conn: RTCPeerConnection;

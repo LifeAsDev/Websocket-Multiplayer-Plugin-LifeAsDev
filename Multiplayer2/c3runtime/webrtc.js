@@ -43,6 +43,7 @@ class ClientWebRTC {
     simPacketLoss = 0;
     sendQueues = new Map();
     leaveReason = "";
+    peersList = []; // Array of tuples [peerId, peerAlias]
     constructor(tag, eventManager) {
         this.tag = tag;
         this.eventManager = eventManager;
@@ -558,6 +559,7 @@ class ClientWebRTC {
             simPacketLoss: this.simPacketLoss,
             leaveReason: this.leaveReason,
             peerCount: this.peerCount,
+            peersList: this.peersList,
         };
     }
     disconnectFromSignalling = () => {

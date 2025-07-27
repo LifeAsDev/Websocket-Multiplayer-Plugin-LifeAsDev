@@ -88,4 +88,43 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
 	MyAlias(this: SDKInstanceClass, tag: string) {
 		return this.clients.get(tag)?.myAlias || "";
 	},
+	PeerIDFromAlias(
+		this: SDKInstanceClass,
+		alias: string,
+		clientTag: string
+	): string {
+		const client = this.clients.get(clientTag);
+		if (!client) return "";
+		const match = client.peersList.find((p) => p.peerAlias === alias);
+		return match ? match.peerId : "";
+	},
+
+	PeerAliasFromID(
+		this: SDKInstanceClass,
+		peerId: string,
+		clientTag: string
+	): string {
+		const client = this.clients.get(clientTag);
+		if (!client) return "";
+		const match = client.peersList.find((p) => p.peerId === peerId);
+		return match ? match.peerAlias : "";
+	},
+
+	PeerIDAt(this: SDKInstanceClass, index: number, clientTag: string): string {
+		const client = this.clients.get(clientTag);
+		if (!client) return "";
+		const peer = client.peersList[index];
+		return peer ? peer.peerId : "";
+	},
+
+	PeerAliasAt(
+		this: SDKInstanceClass,
+		index: number,
+		clientTag: string
+	): string {
+		const client = this.clients.get(clientTag);
+		if (!client) return "";
+		const peer = client.peersList[index];
+		return peer ? peer.peerAlias : "";
+	},
 };

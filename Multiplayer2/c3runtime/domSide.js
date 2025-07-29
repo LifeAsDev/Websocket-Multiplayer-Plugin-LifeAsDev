@@ -52,6 +52,7 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
                 client.peersList = [
                     { peerId: client.myid, peerAlias: client.myAlias },
                 ];
+                console.log("peerJoined", client.tag, client.peersList);
                 this.PostToRuntime("onJoinedRoom", {
                     clientTag: data.clientTag,
                     client: client.toSerializable(),
@@ -66,6 +67,7 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
                     peerId: data.peerId,
                     peerAlias: data.peerAlias,
                 });
+                console.log("peerConnected", client.tag, client.peersList);
                 this.PostToRuntime("onPeerConnected", {
                     clientTag: data.clientTag,
                     peerId: data.peerId,

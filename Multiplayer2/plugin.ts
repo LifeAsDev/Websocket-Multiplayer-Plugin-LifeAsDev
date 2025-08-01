@@ -58,7 +58,6 @@ const PLUGIN_CLASS =
 				new SDK.PluginProperty("integer", "test-property", 0),
 			]);
  */
-			SDK.Lang.PopContext(); // .properties
 
 			SDK.Lang.PopContext();
 		}

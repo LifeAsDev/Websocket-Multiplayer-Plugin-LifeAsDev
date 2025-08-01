@@ -28,7 +28,6 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 	currentClientTag: string = "";
 	constructor() {
 		super({ domComponentId: DOM_COMPONENT_ID });
-
 		// Initialise object properties
 		/* 	this._testProperty = 0; */
 		this._addDOMMessageHandlers([

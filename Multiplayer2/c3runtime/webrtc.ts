@@ -662,7 +662,6 @@ class ClientWebRTC {
 				break;
 
 			case "peer-connecteds-list":
-				console.log(parsedMessage.peers);
 				for (const p of parsedMessage.peers) {
 					if (p.peerId === this.myid) continue;
 					this.eventManager.emit("peerJoined", {

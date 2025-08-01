@@ -61,17 +61,21 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
         this._instanceWebRTC.eventManager.on("peerJoined", (data) => {
             const client = this._instanceWebRTC.clients.get(data.clientTag);
             if (client) {
-                client.peerCount++;
-                client.peersList.push({
-                    peerId: data.peerId,
-                    peerAlias: data.peerAlias,
-                });
-                this.PostToRuntime("onPeerConnected", {
-                    clientTag: data.clientTag,
-                    peerId: data.peerId,
-                    peerAlias: data.peerAlias,
-                    client: client.toSerializable(),
-                });
+                const alreadyExists = client.peersList.some((peer) => peer.peerId === data.peerId);
+                console.log("peerJoined", data, client.peersList);
+                if (!alreadyExists) {
+                    client.peerCount++;
+                    client.peersList.push({
+                        peerId: data.peerId,
+                        peerAlias: data.peerAlias,
+                    });
+                    this.PostToRuntime("onPeerConnected", {
+                        clientTag: data.clientTag,
+                        peerId: data.peerId,
+                        peerAlias: data.peerAlias,
+                        client: client.toSerializable(),
+                    });
+                }
             }
         });
         this._instanceWebRTC.eventManager.on("peerMessage", (data) => {

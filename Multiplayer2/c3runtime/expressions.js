@@ -68,7 +68,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
         if (!client || !client.isOnRoom) {
             return 0;
         }
-        return client.peerCount;
+        return client.peersList.length;
     },
     CurrentClient() {
         return this.currentClientTag || "";
@@ -101,6 +101,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
     },
     PeerIDAt(index, clientTag) {
         const client = this.clients.get(clientTag);
+        console.log(client);
         if (!client)
             return "";
         const peer = client.peersList[index];

@@ -71,7 +71,7 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
 		if (!client || !client.isOnRoom) {
 			return 0;
 		}
-		return client.peerCount;
+		return client.peersList.length;
 	},
 	CurrentClient(this: SDKInstanceClass): string {
 		return this.currentClientTag || "";

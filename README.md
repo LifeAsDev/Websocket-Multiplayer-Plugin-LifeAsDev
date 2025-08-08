@@ -1,4 +1,4 @@
-# 🎮 Construct 3 MultiplayerPlus Plugin
+#  Construct 3 MultiplayerPlus Plugin
 
 **An extended version of Construct 3's official Multiplayer plugin** with support for **multiple simultaneous connections**.
 
@@ -6,7 +6,7 @@ Useful for advanced use cases such as mirrored rooms, multi-peer setups, or hybr
 
 ---
 
-## ✨ Features
+##  Features
 
 -  Supports multiple connections in the same project
 -  API compatible with the original Multiplayer plugin
@@ -15,13 +15,13 @@ Useful for advanced use cases such as mirrored rooms, multi-peer setups, or hybr
 
 ## 📦 Installation
 
-1. Download the `.c3addon` file from the [Releases](./releases) section.
+1. Download the `.c3addon` file from here [download](https://www.construct.net/en/make-games/addons/1486/multiplayerplus).
 2. In Construct 3:  
    `Menu > View > Addon Manager > Install new addon`
 
 ---
 
-## 🧪 Example Use Cases
+##  Example Use Cases
 
 - Local testing
 - Server + client + observer architecture
@@ -30,17 +30,18 @@ Useful for advanced use cases such as mirrored rooms, multi-peer setups, or hybr
 
 ---
 
-## 💬 Compatibility
+## Compatibility
 
 The plugin mimics the original Multiplayer plugin’s API as closely as possible. Existing projects may be adapted with minimal changes, while gaining much more flexibility.
 
 ---
 
-## ☕ Support This Plugin
+## Support This Plugin
 
 If you found this plugin helpful, consider supporting my work 
 
-**[Donate via PayPal](https://www.paypal.com/donate/?hosted_button_id=QNVVSN2LAEXZ6)**
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=QNVVSN2LAEXZ6)
+
 
 ---
 

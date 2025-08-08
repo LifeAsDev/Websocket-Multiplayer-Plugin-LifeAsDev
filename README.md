@@ -48,4 +48,4 @@ If you found this plugin helpful, consider supporting my work
 ## 📄 License
 
 MIT — Free to use, modify and share. Attribution is appreciated.  
-Created by [LifeAsDev]
+Created by LifeAsDev

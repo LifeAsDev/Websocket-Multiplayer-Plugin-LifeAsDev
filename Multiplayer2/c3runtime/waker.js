@@ -10,7 +10,6 @@ function stopTimer() {
 		((timer_running = !1), clearInterval(timer_id), (timer_id = -1));
 }
 function tick() {
-	console.log("debug");
 	timer_running && self.postMessage("tick");
 }
 self.addEventListener(

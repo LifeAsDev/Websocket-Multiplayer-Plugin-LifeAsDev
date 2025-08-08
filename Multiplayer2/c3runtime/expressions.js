@@ -101,7 +101,6 @@ C3.Plugins.Lifeasdev_MultiplayerPlugin.Exps = {
     },
     PeerIDAt(index, clientTag) {
         const client = this.clients.get(clientTag);
-        console.log(client);
         if (!client)
             return "";
         const peer = client.peersList[index];

@@ -62,7 +62,6 @@ class WebRTCDOMHandler extends globalThis.DOMHandler {
             const client = this._instanceWebRTC.clients.get(data.clientTag);
             if (client) {
                 const alreadyExists = client.peersList.some((peer) => peer.peerId === data.peerId);
-                console.log("peerJoined", data, client.peersList);
                 if (!alreadyExists) {
                     client.peerCount++;
                     client.peersList.push({

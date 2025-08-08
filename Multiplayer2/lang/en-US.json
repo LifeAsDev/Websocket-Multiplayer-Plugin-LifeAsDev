@@ -5,9 +5,9 @@
 	"text": {
 		"plugins": {
 			"lifeasdev_multiplayerplugin": {
-				"name": "Multiplayer2",
-				"description": "Multiplayer2 with multiple room connections",
-				"help-url": "https://www.construct.net",
+				"name": "MultiplayerPlus",
+				"description": "Multiplayer; with multiple room connections",
+				"help-url": "https://github.com/LifeAsDev/C3-websockets",
 				"aceCategories": {
 					"signalling": "Signalling",
 					"roomHost": "Room: Host",

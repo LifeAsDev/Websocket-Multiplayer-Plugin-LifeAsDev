@@ -1,0 +1,461 @@
+﻿{
+	"$schema": "../../plugin.lang.schema.json",
+	"languageTag": "en-US",
+	"fileDescription": "Strings for MyCustomPlugin.",
+	"text": {
+		"plugins": {
+			"lifeasdev_multiplayerwebsocketplusplugin": {
+				"name": "MultiplayerWebsocketPlusPlugin",
+				"description": "Multiplayer simple websocket",
+				"help-url": "https://github.com/LifeAsDev/Websocket-Multiplayer-Plugin-LifeAsDev",
+				"aceCategories": {
+					"signalling": "Signalling",
+					"roomHost": "Room: Host",
+					"roomClient": "Room: Client",
+					"room": "Room"
+				},
+				"conditions": {
+					"on-connected": {
+						"list-name": "On Connected",
+						"display-text": "On signalling connected",
+						"description": "Triggered when connected to the signalling."
+					},
+
+					"on-joined-room": {
+						"list-name": "On Joined Room",
+						"display-text": "On joined room",
+						"description": "Triggered when successfully joined a room."
+					},
+					"on-peer-message": {
+						"list-name": "On Peer Message",
+						"display-text": "On peer message with tag [i]{0}[/i]",
+						"description": "Triggered when a message is received.",
+						"params": {
+							"tag": {
+								"name": "Tag",
+								"desc": "tag to identify message."
+							}
+						}
+					},
+					"on-any-peer-message": {
+						"list-name": "On Any Peer Message",
+						"display-text": "On any peer message received",
+						"description": "Triggered when any message is received from a peer, regardless of the tag."
+					},
+					"is-host": {
+						"list-name": "Is Host",
+						"display-text": "Is host clientTag [i]{0}[/i]",
+						"description": "Returns true if the client tag is host.",
+						"params": {
+							"tag": {
+								"name": "Tag",
+								"desc": "Client Tag."
+							}
+						}
+					},
+					"on-peer-connected": {
+						"list-name": "On Peer Connected",
+						"display-text": "On peer connected",
+						"description": "Triggered on peer connected to host."
+					},
+					"on-disconnected": {
+						"list-name": "On Disconnected From Signalling",
+						"display-text": "Disconnected From signalling",
+						"description": "Triggered on disconnected from signalling server"
+					},
+					"on-peer-disconnected": {
+						"list-name": "On Peer Disconnected",
+						"display-text": "On Peer Disconnected",
+						"description": "Triggered when peer disconnect (either from host or a peer leaving the host)."
+					},
+					"is-connected": {
+						"list-name": "Is Connected",
+						"display-text": "Is Connected (Client Tag [i]{0}[/i])",
+						"description": "True if connected to a signalling server",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							}
+						}
+					},
+					"is-in-room": {
+						"list-name": "Is in room",
+						"display-text": "Is in room clientTag [i]{0}[/i]",
+						"description": "Returns true if the client tag is in a room.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag."
+							}
+						}
+					},
+					"on-error": {
+						"list-name": "On error",
+						"display-text": "On signalling error",
+						"description": "Triggered if an error occurs with the signalling server. The ErrorMessage expression indicates the type of error that occurred."
+					},
+					"on-room-list": {
+						"list-name": "On Room List",
+						"display-text": "On Room List",
+						"description": "Triggered when the room list is received from the signalling server. The RoomList expression contains the list of rooms."
+					}
+				},
+				"actions": {
+					"connect": {
+						"list-name": "Connect to signalling server",
+						"display-text": "Connect to signalling server at [i]{0}[/i] clientTag [i]{1}[/i]",
+						"description": "Connect to the signalling server.",
+						"params": {
+							"url": {
+								"name": "URL",
+								"desc": "The URL of the signalling server to connect to."
+							},
+							"tag": {
+								"name": "Tag",
+								"desc": "Client Tag. Create if not found."
+							}
+						}
+					},
+
+					"join-room": {
+						"list-name": "Join room",
+						"display-text": "Join room [i]{2}[/i] Game [i]{0}[/i] Instance [i]{1}[/i] max-peers [i]{4}[/i] clientTag [i]{3}[/i]",
+						"description": "Join a room on the signalling server.",
+						"params": {
+							"game": {
+								"name": "Game",
+								"desc": "The name of the game to join."
+							},
+							"instance": {
+								"name": "Instance",
+								"desc": "The name of the instance to join."
+							},
+							"room": {
+								"name": "Room",
+								"desc": "The name of the room to join."
+							},
+							"tag": {
+								"name": "Tag",
+								"desc": "Client Tag. Ignored if not found."
+							},
+							"max-peers": {
+								"name": "Max Peers",
+								"desc": "The maximum number of peers allowed in the room. Leave 0 to ignore."
+							}
+						}
+					},
+
+					"send-message": {
+						"list-name": "Send message to peer",
+						"display-text": "Send message [i]{3}[/i] to peer [i]{0}[/i] tag [i]{1}[/i] clientTag [i]{2}[/i] mode [i]{4}[/i]",
+						"description": "Send a message to a peer in the room.",
+						"params": {
+							"peer-id": {
+								"name": "Peer ID",
+								"desc": "The ID of the peer to send the message to."
+							},
+							"tag": {
+								"name": "Tag",
+								"desc": "tag to identify message."
+							},
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							},
+							"message": {
+								"name": "Message",
+								"desc": "The message to send."
+							},
+							"mode": {
+								"name": "Mode",
+								"desc": "Transmision mode of the message.",
+								"items": {
+									"reliable-ordered": "Reliable ordered",
+									"reliable-unordered": "Reliable unordered",
+									"unreliable": "Unreliable"
+								}
+							}
+						}
+					},
+
+					"broadcast-message": {
+						"list-name": "Broadcast Message",
+						"display-text": "Broadcast tag [i]{1}[/i] message [i]{3}[/i] (from [i]{0}[/i], Client Tag [i]{2}[/i], mode [i]{4}[/i])",
+						"description": "Send a message to a peer in the room.",
+						"params": {
+							"from-id": {
+								"name": "From ID",
+								"desc": "The ID of the peer origin. blank to indicate from host."
+							},
+							"tag": {
+								"name": "Tag",
+								"desc": "tag to identify message."
+							},
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							},
+							"message": {
+								"name": "Message",
+								"desc": "The message to send."
+							},
+							"mode": {
+								"name": "Mode",
+								"desc": "Transmision mode of the message.",
+								"items": {
+									"reliable-ordered": "Reliable ordered",
+									"reliable-unordered": "Reliable unordered",
+									"unreliable": "Unreliable"
+								}
+							}
+						}
+					},
+					"disconnect-room": {
+						"list-name": "Disconnect from room",
+						"display-text": "Disconnect from room Client Tag [i]{0}[/i]",
+						"description": "Disconnect from room",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							}
+						}
+					},
+					"disconnect-signalling": {
+						"list-name": "Disconnect from signalling",
+						"display-text": "Disconnect from signalling server Client Tag [i]{0}[/i]",
+						"description": "Disconnect from signalling server",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							}
+						}
+					},
+
+					"kick-peer": {
+						"list-name": "Kick peer from room",
+						"display-text": "Kick peer [i]{0}[/i] Client Tag [i]{2}[/i](reason: [i]{1}[/i]",
+						"description": "Leave room on signalling server (room connection remain)",
+						"params": {
+							"peerId": {
+								"name": "PeerID",
+								"desc": "ID to identify peer."
+							},
+							"reason": {
+								"name": "Reason",
+								"desc": "Reason message for peer"
+							},
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							}
+						}
+					},
+					"request-room-list": {
+						"list-name": "Request Room List",
+						"display-text": "Request room list from signalling server Client Tag [i]{0}[/i] game [i]{1}[/i] instance [i]{2}[/i] which [i]{3}[/i]",
+						"description": "Request the room list from the signalling server.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. Ignored if not found."
+							},
+							"game": {
+								"name": "Game",
+								"desc": "The name of the game to filter rooms by."
+							},
+							"instance": {
+								"name": "Instance",
+								"desc": "The name of the instance to filter rooms by."
+							},
+							"which": {
+								"name": "Which",
+								"desc": "return rooms by state",
+								"items": {
+									"all": "all",
+									"unlocked": "unlocked",
+									"available": "available"
+								}
+							}
+						}
+					}
+				},
+				"expressions": {
+					"Message": {
+						"translated-name": "Message",
+						"description": "Returns the message of the revelant trigger."
+					},
+					"Tag": {
+						"translated-name": "Message Tag",
+						"description": "Returns the message tag of the revelant trigger."
+					},
+					"PeerID": {
+						"translated-name": "PeerID",
+						"description": "Returns the peer ID of the revelant trigger."
+					},
+
+					"MyID": {
+						"translated-name": "MyID",
+						"description": "Returns the ID of the client tag.",
+						"params": {
+							"tag": {
+								"name": "Tag",
+								"desc": "Client Tag. return emtpy string if not found."
+							}
+						}
+					},
+					"HostID": {
+						"translated-name": "HostID",
+						"description": "Returns the host ID of the client tag.",
+						"params": {
+							"tag": {
+								"name": "Tag",
+								"desc": "Client Tag. return emtpy string if not found."
+							}
+						}
+					},
+					"PeerAlias": {
+						"translated-name": "PeerAlias",
+						"description": "Returns the peer alias of the revelant trigger"
+					},
+					"ErrorMessage": {
+						"translated-name": "ErrorMessage",
+						"description": "In On signalling error, the error message if available."
+					},
+					"CurrentRoom": {
+						"translated-name": "CurrentRoom",
+						"description": "Returns the Room name of the client tag.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. return emtpy string if not found."
+							}
+						}
+					},
+					"ListRoomCount": {
+						"translated-name": "ListRoomCount",
+						"description": "After On Room List, the number of rooms in the received list."
+					},
+					"ListRoomName": {
+						"translated-name": "ListRoomName",
+						"description": "Returns the name of the room at the specified index in the received list.",
+						"params": {
+							"index": {
+								"name": "Index",
+								"desc": "The index of the room in the list."
+							}
+						}
+					},
+					"PeerCount": {
+						"translated-name": "PeerCount",
+						"description": "Returns the number of peers connected in the current room.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "The client tag to identify the room."
+							}
+						}
+					},
+					"FromAlias": {
+						"translated-name": "FromAlias",
+						"description": "Returns the alias of the peer that sent the message in the revelant trigger",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "The client tag to identify."
+							}
+						}
+					},
+					"FromID": {
+						"translated-name": "FromID",
+						"description": "Returns the ID of the peer that sent the message in the revelant trigger",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "The client tag to identify."
+							}
+						}
+					},
+					"MyAlias": {
+						"translated-name": "MyAlias",
+						"description": "Returns the alias of the client tag.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. return emtpy string if not found."
+							}
+						}
+					},
+					"HostAlias": {
+						"translated-name": "HostAlias",
+						"description": "Returns the alias of the host client tag.",
+						"params": {
+							"clientTag": {
+								"name": "Client Tag",
+								"desc": "Client Tag. return emtpy string if not found."
+							}
+						}
+					},
+					"PeerIDFromAlias": {
+						"translated-name": "PeerIDFromAlias",
+						"description": "Returns the peer ID corresponding to a given alias for the specified client.",
+						"params": {
+							"alias": {
+								"name": "Alias",
+								"desc": "The alias to look up."
+							},
+							"clientTag": {
+								"name": "Client tag",
+								"desc": "The tag identifying the client context."
+							}
+						}
+					},
+					"PeerAliasFromID": {
+						"translated-name": "PeerAliasFromID",
+						"description": "Returns the alias associated with a given peer ID for the specified client.",
+						"params": {
+							"peerid": {
+								"name": "Peer ID",
+								"desc": "The peer ID to look up."
+							},
+							"clientTag": {
+								"name": "Client tag",
+								"desc": "The tag identifying the client context."
+							}
+						}
+					},
+					"PeerIDAt": {
+						"translated-name": "PeerIDAt",
+						"description": "Returns the peer ID at the given index in the peer list for the specified client.",
+						"params": {
+							"index": {
+								"name": "Index",
+								"desc": "The index in the peer list."
+							},
+							"clientTag": {
+								"name": "Client tag",
+								"desc": "The tag identifying the client context."
+							}
+						}
+					},
+					"PeerAliasAt": {
+						"translated-name": "PeerAliasAt",
+						"description": "Returns the alias at the given index in the peer list for the specified client.",
+						"params": {
+							"index": {
+								"name": "Index",
+								"desc": "The index in the peer list."
+							},
+							"clientTag": {
+								"name": "Client tag",
+								"desc": "The tag identifying the client context."
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

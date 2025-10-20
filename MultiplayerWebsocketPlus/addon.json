@@ -1,0 +1,34 @@
+﻿{
+	"$schema": "../plugin.addon.schema.json",
+
+	"is-c3-addon": true,
+	"sdk-version": 2,
+	"min-construct-version": "r401",
+	"type": "plugin",
+	"name": "MultiplayerWebsocketPlusPlugin",
+	"id": "Lifeasdev_MultiplayerWebsocketPlusPlugin",
+	"version": "1.0.0.0",
+	"author": "LifeAsDev",
+	"website": "https://github.com/LifeAsDev/Websocket-Multiplayer-Plugin-LifeAsDev",
+	"documentation": "https://github.com/LifeAsDev/Websocket-Multiplayer-Plugin-LifeAsDev",
+	"description": "Multiplayer simple websocket",
+	"editor-scripts": ["plugin.js", "type.js", "instance.js"],
+	"file-list": [
+		"c3runtime/main.js",
+		"c3runtime/plugin.js",
+		"c3runtime/type.js",
+		"c3runtime/instance.js",
+		"c3runtime/conditions.js",
+		"c3runtime/actions.js",
+		"c3runtime/expressions.js",
+		"c3runtime/waker.js",
+		"c3runtime/socketio-client.js",
+		"lang/en-US.json",
+		"aces.json",
+		"addon.json",
+		"icon.svg",
+		"instance.js",
+		"plugin.js",
+		"type.js"
+	]
+}

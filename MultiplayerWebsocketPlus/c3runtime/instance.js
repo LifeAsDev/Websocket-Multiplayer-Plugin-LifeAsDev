@@ -1,12 +1,26 @@
 const C3 = globalThis.C3;
-const DOM_COMPONENT_ID = "LifeAsDevWebRTC_DOMMessaging";
+const DOM_COMPONENT_ID = "LifeAsDevWebsocket_DOMMessaging";
+import ClientSignalling from "./client-signalling.js";
+
 class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
-    /* _testProperty: number;
-     */
-    _release() {
-        super._release();
-    }
-    /* _setTestProperty(n: number) {
+	/* _testProperty: number;
+	 */
+
+	client = new ClientSignalling();
+	_wakerWorker = null;
+	constructor() {
+		super({ domComponentId: DOM_COMPONENT_ID });
+		const properties = this._getInitProperties();
+		if (properties) {
+			// note properties may be null in some cases
+			/* this._testProperty = properties[0] as number; */
+		}
+		this._InitWakerWorker();
+	}
+	_release() {
+		super._release();
+	}
+	/* _setTestProperty(n: number) {
         this._testProperty = n;
     }
 
@@ -14,14 +28,42 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
         return this._testProperty;
     }
  */
-    _saveToJson() {
-        return {
-        // data to be saved for savegames
-        };
-    }
-    _loadFromJson(o) {
-        // load state for savegames
-    }
+	async _InitWakerWorker() {
+		this._wakerWorker = new Worker("./waker.js", {
+			type: "module",
+			name: "MultiplayerWaker2",
+		});
+		// Suponiendo que 'runtime' es el objeto que emite esos eventos
+		this.runtime.addEventListener("suspend", () => {
+			this._OnSuspend();
+		});
+		this.runtime.addEventListener("resume", () => {
+			this._OnResume();
+		});
+		this._wakerWorker.onerror = (e) => {
+			console.error("ErrorEvent :", e);
+		};
+		this._wakerWorker.onmessage = (e) => {
+			if (e.data === "tick" && this.runtime.isSuspended) {
+				performance.now();
+			}
+		};
+		this._wakerWorker.postMessage("");
+	}
+	_OnSuspend() {
+		this._wakerWorker && this._wakerWorker.postMessage("start");
+	}
+	_OnResume() {
+		this._wakerWorker && this._wakerWorker.postMessage("stop");
+	}
+	_saveToJson() {
+		return {
+			// data to be saved for savegames
+		};
+	}
+	_loadFromJson(o) {
+		// load state for savegames
+	}
 }
-C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Instance = SingleGlobalInstance;
-export {};
+C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Instance =
+	SingleGlobalInstance;

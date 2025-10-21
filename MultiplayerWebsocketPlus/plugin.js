@@ -21,6 +21,8 @@ const PLUGIN_CLASS = (SDK.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin = cla
         this._info.SetHelpUrl(globalThis.lang(".help-url"));
         this._info.SetIsSingleGlobal(true);
         this._info.SetRuntimeModuleMainScript("c3runtime/main.js");
+        this._info.AddC3RuntimeScript("c3runtime/client-signalling.js");
+        this._info.AddC3RuntimeScript("c3runtime/mymodule.js");
         this._info.AddFileDependency({
             filename: "c3runtime/waker.js",
             type: "external-runtime-script",

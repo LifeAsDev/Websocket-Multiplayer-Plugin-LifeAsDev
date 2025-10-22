@@ -1,5 +1,5 @@
 // Asegúrate de cargar primero socket.io.min.js antes de este script
-import { io, Socket } from "./socketio-client.js";
+import "./socketio-client.js";
 export default class ClientSignalling {
 	serverUrl;
 	socket = null;
@@ -7,12 +7,17 @@ export default class ClientSignalling {
 	isHost = false;
 	connected = false;
 	peers = new Map();
-	runtime;
 	options;
+	messageTag = "";
 	eventHandlers = {};
+	lastRoomsList = [];
+	lastMessage = "";
+	relevantPeerId = "";
+	myId = "";
+	leaveReason = "";
+	errorMessage = "";
 	constructor(options = {}) {
 		this.serverUrl = "";
-		this.runtime = runtime;
 		this.options = {
 			path: options.path || "/signalling/socket.io",
 			reconnect: options.reconnect !== false,
@@ -24,29 +29,73 @@ export default class ClientSignalling {
 		if (this.connected) return;
 		this.serverUrl = serverUrl;
 		this.socket = io(this.serverUrl, { path: this.options.path });
+
 		this.socket.on("signalling:connected", () => {
 			this.connected = true;
-			this.runtime.callFunction("WS-OnConnected");
+			this.myId = this.socket.id;
+			this._emitLocal("connected");
 		});
-		this.socket.on("disconnect", () => {
+		this.socket.on("signalling:disconnect", () => {
 			this.connected = false;
 			this._emitLocal("disconnect");
 		});
-		this.socket.on("room_created", (roomName) => {
-			this.room = roomName;
+		this.socket.on("disconnect", (reason) => {
+			console.log("Desconectado del servidor:", reason);
+			this.connected = false;
+			this._emitLocal("disconnect");
+		});
+
+		this.socket.on("room_created", (data) => {
+			this.room = data.room;
 			this.isHost = true;
-			this.runtime.callFunction("WS-OnJoinedRoom");
+			this.peers.clear();
+			data.peers.forEach((p) => this.peers.set(p.id, p));
+			this._emitLocal("joined_room", data);
 		});
-		this.socket.on("room_joined", (roomName) => {
-			this.room = roomName;
-			this.isHost = false;
-			this.runtime.callFunction("WS-OnJoinedRoom");
+
+		this.socket.on("room_joined", (data) => {
+			this.room = data.room;
+			this.isHost = this.myId === data.hostId; // confirmar si soy host
+			this.peers.clear();
+
+			// Guardar todos los peers
+			data.peers.forEach((peer) => {
+				this.peers.set(peer.id, peer);
+
+				// Solo emitir "peer_joined" para otros, no para mí
+				if (peer.id !== this.myId) {
+					this.relevantPeerId = peer.id;
+					this._emitLocal("peer_joined", peer);
+				}
+			});
+
+			this._emitLocal("joined_room");
 		});
-		this.socket.on("signalling:message", (data) => {
+
+		this.socket.on("message", (data) => {
 			this.onMessage(data);
 		});
 		this.socket.on("signalling:rooms_list", (rooms) => {
-			this.runtime.callFunction("WS-RoomsList", rooms.join(","));
+			this.lastRoomsList = rooms;
+			this._emitLocal("rooms_list");
+		});
+
+		this.socket.on("peer_joined", (peer) => {
+			this.peers.set(peer.id, peer);
+			if (peer.id !== this.myId) {
+				this.relevantPeerId = peer.id;
+				this._emitLocal("peer_joined", peer);
+			}
+		});
+
+		this.socket.on("peer_left", (peerId) => {
+			this.peers.delete(peerId);
+			this.relevantPeerId = peerId;
+			this._emitLocal("peer_left", peerId);
+		});
+		this.socket.on("error", (errorMessage) => {
+			this.errorMessage = errorMessage;
+			this._emitLocal("error", errorMessage);
 		});
 	}
 	// 🔹 Crear sala (host)
@@ -65,7 +114,7 @@ export default class ClientSignalling {
 		this.socket?.emit("leave_room", this.room);
 		this.room = null;
 		this.isHost = false;
-		this.runtime.callFunction("WS-OnDisconnectedFromRoom");
+		this._emitLocal("disconnected_from_room");
 	}
 	// 🔹 Desconectar del servidor de señalización
 	disconnectFromSignalling() {
@@ -74,11 +123,10 @@ export default class ClientSignalling {
 		this.connected = false;
 		this.room = null;
 		this.isHost = false;
-		this.runtime.callFunction("WS-OnDisconnectedFromSignalling");
+		this._emitLocal("disconnected_from_signalling");
 	}
 	sendMessage(targetId, message, tag = "") {
 		if (!this.socket || !this.room) return;
-		if (!this.isHost) targetId = null;
 		this.socket.emit("send_message", {
 			targetId: targetId === "" ? undefined : targetId,
 			message,
@@ -107,6 +155,9 @@ export default class ClientSignalling {
 	}
 	// placeholder para el método que manejaba mensajes del servidor
 	onMessage(data) {
+		this.lastMessage = data.message;
+		this.messageTag = data.tag || "";
+		this.relevantPeerId = data.from || "";
 		this._emitLocal("message", data);
 	}
 }

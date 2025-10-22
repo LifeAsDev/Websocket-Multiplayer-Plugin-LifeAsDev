@@ -5,8 +5,8 @@ import ClientSignalling from "./client-signalling.js";
 class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 	/* _testProperty: number;
 	 */
+	client = null;
 
-	client = new ClientSignalling();
 	_wakerWorker = null;
 	constructor() {
 		super({ domComponentId: DOM_COMPONENT_ID });
@@ -15,11 +15,60 @@ class SingleGlobalInstance extends globalThis.ISDKInstanceBase {
 			// note properties may be null in some cases
 			/* this._testProperty = properties[0] as number; */
 		}
+
+		this.client = new ClientSignalling();
+
+		this.client.on("connected", () => {
+			this._trigger(
+				C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Cnds
+					.onConnectedToSgWs
+			);
+		});
+		this.client.on("error", () => {
+			this._trigger(
+				C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Cnds.onError
+			);
+		});
+
+		this.client.on("joined_room", () => {
+			this._trigger(
+				C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Cnds.onJoinedRoom
+			);
+		});
+
+		this.client.on("rooms_list", () => {
+			this._trigger(
+				C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Cnds.onRoomList
+			);
+		});
+
+		this.client.on("message", () => {
+			this._trigger(
+				C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Cnds.onPeerMessage
+			);
+			this._trigger(
+				C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Cnds
+					.onAnyPeerMessage
+			);
+		});
+
+		this.client.on("peer_joined", () => {
+			this._trigger(
+				C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Cnds.onPeerConnected
+			);
+		});
+		this.client.on("disconnect", () => {
+			this._trigger(
+				C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Cnds
+					.onDisconnectedFromSignalling
+			);
+		});
 		this._InitWakerWorker();
 	}
 	_release() {
 		super._release();
 	}
+
 	/* _setTestProperty(n: number) {
         this._testProperty = n;
     }

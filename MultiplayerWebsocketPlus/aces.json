@@ -13,10 +13,6 @@
 			},
 
 			{
-				"id": "is-in-room",
-				"scriptName": "isInRoom"
-			},
-			{
 				"id": "on-error",
 				"scriptName": "onError",
 				"isTrigger": true
@@ -86,19 +82,6 @@
 						"description": "The index of the room in the list."
 					}
 				]
-			},
-			{
-				"id": "ListRoomPeerCount",
-				"expressionName": "ListRoomPeerCount",
-				"highlight": false,
-				"returnType": "number",
-				"params": [
-					{
-						"id": "index",
-						"type": "number",
-						"description": "The index of the room in the list."
-					}
-				]
 			}
 		]
 	},
@@ -127,13 +110,11 @@
 			},
 			{
 				"id": "is-host",
-				"scriptName": "isHost",
-				"params": [
-					{
-						"id": "tag",
-						"type": "string"
-					}
-				]
+				"scriptName": "isHost"
+			},
+			{
+				"id": "is-in-room",
+				"scriptName": "isInRoom"
 			},
 			{
 				"id": "on-disconnected",
@@ -236,13 +217,6 @@
 				"expressionName": "PeerCount",
 				"highlight": false,
 				"returnType": "number"
-			},
-
-			{
-				"id": "FromID",
-				"expressionName": "FromID",
-				"highlight": false,
-				"returnType": "string"
 			}
 		]
 	},

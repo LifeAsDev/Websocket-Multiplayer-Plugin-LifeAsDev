@@ -24,7 +24,6 @@
 		"c3runtime/waker.js",
 		"c3runtime/socketio-client.js",
 		"c3runtime/client-signalling.js",
-		"c3runtime/mymodule.js",
 		"lang/en-US.json",
 		"aces.json",
 		"addon.json",
